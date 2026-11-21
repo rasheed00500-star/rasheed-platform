@@ -324,7 +324,7 @@ function side(){const cur=ROUTEBASE[view.route]||view.route;const me=PEOPLE[S.me
  return `<aside class="side ${ui.side?'open':''}" aria-label="القائمة"><div class="logo"><span class="m">${ic('layers',20,'#fff')}</span><div><b>منصة رشيد</b><span>الموارد البشرية والخدمات</span></div></div>
  ${NAV[S.me].map(n=>typeof n==='string'?`<div class="sec">${n}</div>`:(()=>{const c=n[3]?n[3]():0;return `<button class="nav ${cur===n[2]?'on':''}" data-go="${n[2]}">${ic(n[0],19)}<span>${n[1]}</span>${c?`<span class="n ${n[4]?'r':''}">${c}</span>`:''}</button>`})()).join('')}
  <button class="nav" data-act="reload" style="margin-top:10px">${ic('hist',19)}<span>تحديث البيانات</span></button>
- <div class="me">${av(S.me)}<div style="line-height:1.35;flex:1;min-width:0"><b style="font-size:13.5px">${me.full}</b><br><span style="font-size:11.5px;color:var(--mute)">${S.me!==S.realMe?'معاينة · ':''}${me.role}</span></div>${S.realMe==='r'?`<select class="inp" style="width:auto;height:30px;font-size:12px;padding:0 6px" data-preview aria-label="معاينة كـ">${['r','s','k'].map(p=>`<option value="${p}" ${S.me===p?'selected':''}>${PEOPLE[p].name}</option>`).join('')}</select>`:`<button class="btn sm" data-act="logout">خروج</button>`}</div></aside>`}
+ <div class="me">${av(S.me)}<div style="line-height:1.35;flex:1;min-width:0"><b style="font-size:13.5px">${me.full}</b><br><span style="font-size:11.5px;color:var(--mute)">${S.me!==S.realMe?'معاينة · ':''}${me.role}</span></div>${S.realMe==='r'?`<select class="inp" style="width:auto;height:30px;font-size:12px;padding:0 6px" data-preview aria-label="معاينة كـ">${['r','s','k'].map(p=>`<option value="${p}" ${S.me===p?'selected':''}>${PEOPLE[p].name}</option>`).join('')}</select>`:''}<button class="ib" data-act="logout" title="تسجيل خروج" aria-label="تسجيل خروج" style="width:32px;height:32px">${ic('x',15)}</button></div></aside>`}
 function topbar(crumbs){const n=S.notifs.filter(x=>x.new).length;
  return `<header class="top"><button class="ib burger" data-act="burger" aria-label="القائمة">${ic('menu',19)}</button><div class="crumb">${crumbs.map((c,i)=>i===crumbs.length-1?`<b>${c}</b>`:`<span>${c}</span>${ic('left',14)}`).join('')}</div>
  <button class="srch" data-act="search" aria-label="بحث">${ic('search',17)}<span class="t">ابحث عن موظف، سيارة، مهمة، عميل…</span><kbd>Ctrl K</kbd></button>
@@ -548,7 +548,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-go],[data
  if(a==='search'){searchModal();return}
  if(a==='newtask'){newTask();return}if(a==='newsvc'){newSvc();return}if(a==='newclient'){newClient();return}if(a==='newproc'){newProc();return}
  if(a==='reload'){boot(true);return}
- if(a==='logout'){msalApp.logoutRedirect();return}
+ if(a==='logout'){msalApp.logoutRedirect({account:ACC,postLogoutRedirectUri:location.origin+location.pathname});return}
  if(a==='go'){go(x);return}
  if(a==='cal'){let m=(ui.cm??TODAY.getMonth())+(+x),yy=ui.cy??TODAY.getFullYear();if(m<0){m=11;yy--}if(m>11){m=0;yy++}ui.cm=m;ui.cy=yy;render();return}
  if(a==='print'){const w=window.open('','_blank');if(!w){toast('اسمح بالنوافذ المنبثقة للطباعة');return}w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>تقرير</title><style>body{font-family:Tahoma,sans-serif;padding:24px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px 8px;font-size:12px;text-align:right}th{background:#eef3ef}</style></head><body><h2>${esc(repData().title)}</h2><p>${fmt(TODAY)}</p>${document.getElementById('reptbl').innerHTML}<p style="white-space:pre-line;margin-top:18px">${esc(repMsg(repData()))}</p></body></html>`);w.document.close();w.print();return}
@@ -863,7 +863,7 @@ async function boot(reload){
   try{
     if(!reload){const r=await msalApp.handleRedirectPromise();if(r&&r.account)ACC=r.account}
     ACC=ACC||msalApp.getAllAccounts()[0];
-    if(!ACC){splash('سجّل دخولك بحساب الشركة',`<button class="btn pri" style="height:46px;padding:0 24px;margin-top:6px" id="login">${ic('user',18)}تسجيل الدخول بحساب مايكروسوفت</button>`);document.getElementById('login').onclick=()=>msalApp.loginRedirect({scopes:SC});return}
+    if(!ACC){splash('سجّل دخولك بحساب الشركة',`<button class="btn pri" style="height:46px;padding:0 24px;margin-top:6px" id="login">${ic('user',18)}تسجيل الدخول بحساب مايكروسوفت</button>`);document.getElementById('login').onclick=()=>msalApp.loginRedirect({scopes:SC,prompt:'select_account'});return}
     splash('جاري تحميل البيانات…');
     if(!SITE)SITE=(await G('/sites/'+CFG.sitePath)).id;
     await loadAll();
