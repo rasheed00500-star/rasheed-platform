@@ -213,6 +213,9 @@ textarea.inp{height:auto;padding:10px 12px;resize:vertical}
 .seg5 button{grid-column:span 2;padding:0 6px}
 .seg5 button:nth-child(n+4){grid-column:span 3}
 
+.me{flex-wrap:wrap;row-gap:8px}
+.me>div:nth-child(2){flex:1 1 110px}
+
 </style>
 </head>
 <body>
@@ -697,7 +700,8 @@ function doneOnDay(p,dayStr){const nm=PEOPLE[p].name;const out=[];
  return out}
 const kIcon={proc:'layers',rem:'bell',task:'check',step:'layers'};
 function agItem(x,col){const t=x.t;const late=x.date&&days(x.date)<0;
- return `<div class="ag-it ${x.kind}">${x.kind==='proc'?`<span class="ag-ic" style="background:var(--brT);color:var(--br)">${ic('layers',15)}</span>`:`<button class="cb" data-act="done:${t.id}" aria-label="تم">${''}</button>`}
+ const VI={proc:['layers','var(--brT)','var(--br)'],client:['phone','var(--ambT)','var(--amb)'],svc:['brief','var(--vioT)','var(--vio)']}[x.kind];
+ return `<div class="ag-it ${x.kind}">${VI?`<span class="ag-ic" style="background:${VI[1]};color:${VI[2]}">${ic(VI[0],15)}</span>`:`<button class="cb" data-act="done:${t.id}" aria-label="تم">${''}</button>`}
  <button class="ag-tx" data-go="${x.go}"><b>${esc(x.title)}</b><span>${esc(x.sub||'')}</span><i>${x.kind==='rem'?`<em class="tg rem">${ic('bell',11)}تذكير</em>`:''}${x.kind==='proc'?`<em class="tg proc">إجراء</em>`:''}${t.emp?`<em class="tg">${esc(t.emp.split(' ').slice(0,2).join(' '))}</em>`:''}${t.co&&!isFor(t.co)?`<em class="tg">${esc(t.co)}</em>`:''}${col==='late'&&x.date?`<em class="tg red">${-days(x.date)} يوم تأخير</em>`:''}${['week','later'].includes(col)&&x.date?`<em class="tg">${DAYN[D(x.date).getDay()]} ${x.date.slice(0,5)}</em>`:''}</i></button></div>`}
 function myDay(p){const B=agenda(p);const done=doneOnDay(p,TODAYS);const todo=B.late.length+B.today.length;const pct=todo+done.length?Math.round(done.length/(todo+done.length)*100):100;
  const col=(k,label,cls,arr,empty)=>`<section class="ag-col ${cls}"><header><b>${label}</b><span>${arr.length}</span></header><div class="ag-list">${arr.map(x=>agItem(x,k)).join('')||`<div class="ag-empty">${empty}</div>`}</div></section>`;
@@ -872,6 +876,48 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form]
   if(/إقامة|خروج وعودة/.test(tpl.title)&&!emp){toast('اختر الموظف لهذا الإجراء');return}act(async()=>{const steps=tpl.steps.map((s,i)=>{const d=new Date(start);d.setDate(d.getDate()+Math.max(0,(s.o||0)-(tpl.steps[0].o||0)));return{n:i+1,t:s.t,w:s.w||tpl.owner,g:s.g||'',d:ymd(d),ok:false,by:'',on:''}});
    const it=await spCreate('Tasks',{Title:tpl.title+(emp?' · '+emp.name:''),AssignedTo:steps[0].w,AssignedBy:PEOPLE[S.me].name,DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:emp?emp.co:'فوريستا',LinkRef:`REC:${tpl.id}:M${Date.now()}`,Status:'مفتوحة',Steps:JSON.stringify(steps),EmpName:emp?emp.name:''});RAW.Tasks.push(it);if(KEY[steps[0].w]&&KEY[steps[0].w]!==S.me)await notify(steps[0].w,`إجراء جديد: ${tpl.title}${emp?' · '+emp.name:''}`,'الخطوة 1: '+steps[0].t,'proc-'+it.id,'layers');closeModal();setTimeout(()=>go('proc-'+it.id),0)},'بدأ الإجراء');return}
 },true);
+
+/* ===================== v3: contract/probation, saudi, calendar, auto-refresh, virtual agenda items ===================== */
+const isSaudi=n=>/سعود/.test(n||'');
+const _buildV2=build;
+build=function(){_buildV2();const byId={};RAW.Employees.forEach(r=>byId[r.id]=r);
+ S.employees.forEach(e=>{const r=byId[e.id]||{};e.ce=iso2(r.ContractEnd);e.pe=iso2(r.ProbationEnd);e.saudi=isSaudi(r.Nationality);e.qiwa=r.QiwaContractStatus||'';if(e.saudi){e.iq='';e.wp=''}})};
+EXT.push(['ce','نهاية العقد','emp','file'],['pe','نهاية فترة التجربة','emp','clock']);
+expRows=function(){const out=[];visEmp().forEach(e=>['iq','wp','pp','med','ce','pe'].forEach(k=>{if(e[k])out.push({k,owner:e.name,sub:e.job,date:e[k],n:days(e[k]),go:'emp-'+e.id,upd:['ce','pe'].includes(k)?'go:emp-'+e.id:`doc:emp:${e.id}:${k}`,eid:e.id})}));
+ visVeh().forEach(v=>{const o=v.l+' '+v.n;const base={owner:o,sub:v.m+(v.user?' · '+v.user:''),go:'veh-'+v.id};
+  if(v.reg)out.push({...base,k:'reg',date:v.reg,n:v.regR?Math.max(days(v.reg),1):days(v.reg),note:v.regR?'قيد التجديد':'',upd:`doc:veh:${v.id}:reg`});
+  if(v.insp)out.push({...base,k:'insp',date:v.insp,n:days(v.insp),upd:`doc:veh:${v.id}:insp`});
+  const insD=v._d.ins&&v._d.ins.ExpiryDate?iso2(v._d.ins.ExpiryDate):'';out.push({...base,k:'ins',date:insD,n:v.ins==='ساري'?(insD?days(insD):9999):v.ins==='قيد التجديد'?1:-1,note:insD?'':v.ins==='ساري'?'ساري حسب أبشر':v.ins,upd:`doc:veh:${v.id}:ins`});
+  if(v.op)out.push({...base,k:'op',date:v.op==='none'?'':v.op,n:v.op==='none'?-1:days(v.op),note:v.op==='none'?'ما فيه كرت':'',upd:`doc:veh:${v.id}:op`});
+  if(v.authType&&v.auth)out.push({...base,k:'auth',date:v.auth,n:days(v.auth),upd:`vedit:${v.id}`})});return out};
+// default expiry filter: everything except contract/probation unless chosen
+if(!ui.ex)ui.ex={types:EXT.map(x=>x[0]),st:'both',win:30};
+/* employee page: saudi + contract */
+const _empV3=PAGES.emp;PAGES.emp=p=>{let h=_empV3(p);const e=S.employees.find(x=>x.id==p.id);if(!e||S.me==='k')return h;
+ if(e.saudi)['الإقامة','رخصة العمل'].forEach(l=>{const i=h.indexOf(`>${l}</b>`);if(i<0)return;const j=h.indexOf('غير مسجل</span>',i);const k=h.indexOf('غير مسجل</div>',i);if(k>0&&k<j)h=h.slice(0,k)+'لا ينطبق (سعودي)'+h.slice(k+8);const j2=h.indexOf('غير مسجل</span>',i);if(j2>0)h=h.slice(0,j2)+'لا ينطبق'+h.slice(j2+8)});
+ const row=(l,d)=>`<div><div class="mini">${l}</div><b style="font-size:14px;font-weight:600">${d||'—'}</b>${d?`<div style="margin-top:3px">${days(d)<0?pill('انتهى','exp'):days(d)<=60?pill('باقي '+days(d)+' يوم','soon'):''}</div>`:''}</div>`;
+ const add=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;padding:12px 20px 18px;border-top:1px solid var(--line2)">${row('نهاية فترة التجربة',e.pe)}${row('نهاية العقد',e.ce)}${e.qiwa?`<div><div class="mini">العقد في قوى</div><b style="font-size:14px;font-weight:600">${esc(e.qiwa)}</b></div>`:''}</div>`;
+ const mk='<h3>البيانات الأساسية</h3>';const i=h.indexOf(mk);if(i>=0){const j=h.indexOf('</section>',i);h=h.slice(0,j)+add+h.slice(j)}return h};
+/* calendar with expiries */
+PAGES.calendar=()=>{const y=ui.cy??TODAY.getFullYear(),mo=ui.cm??TODAY.getMonth();const first=new Date(y,mo,1);const off=first.getDay();const nd=new Date(y,mo+1,0).getDate();const cells=Array.from({length:Math.ceil((off+nd)/7)*7},(_,i)=>i-off+1);
+ const showX=ui.calX!==false;const ev={};const add=(d,o)=>{if(!d)return;(ev[d]=ev[d]||[]).push(o)};
+ S.tasks.filter(t=>!t.done&&canSeeTask(t)&&(S.me==='r'||(t.kind==='proc'?t.curWho:t.who)===S.me)).forEach(t=>{const who=t.kind==='proc'?t.curWho:t.who;add(t.kind==='proc'?t.curDue:t.due,{t:t.title,c:PEOPLE[who].c,go:(t.kind==='proc'?'proc':'task')+'-'+t.id})});
+ if(showX&&S.me!=='k')expRows().filter(r=>r.date&&r.n>=-7&&!['ins'].includes(r.k)).forEach(r=>add(r.date,{t:expLbl(r.k)+' · '+r.owner,c:'',go:r.go,x:1}));
+ return `<div class="ph"><div><h1>التقويم</h1><p>${MONN[mo]} ${y} · ${S.me==='r'?'مهام الفريق':'مهامي'}${showX&&S.me!=='k'?' وتواريخ الانتهاء':''}</p></div><div class="acts">${S.me!=='k'?`<button class="chip ${showX?'on':''}" data-act="calx">${ic('alert',15)}تواريخ الانتهاء</button>`:''}${btn('الشهر اللي فات','right','','cal:-1')}${btn('الشهر الجاي','left','','cal:1')}</div></div>
+ <section class="card" style="padding:16px;overflow-x:auto"><div style="display:grid;grid-template-columns:repeat(7,minmax(90px,1fr));gap:6px;min-width:660px">${DAYN.map(d=>`<div class="mini" style="text-align:center;font-weight:600">${d}</div>`).join('')}${cells.map(d=>{const ds=d>0&&d<=nd?fmt(new Date(y,mo,d)):'';const isT=ds===fmt(TODAY);const L=ds?(ev[ds]||[]):[];return `<div style="min-height:96px;border-radius:10px;background:${ds?(isT?'var(--brT)':'var(--bg)'):'transparent'};padding:6px;display:flex;flex-direction:column;gap:3px;min-width:0">${ds?`<b style="font-size:12px;${isT?'color:var(--br)':''}">${d}</b>`:''}${L.slice(0,4).map(o=>`<button data-go="${o.go}" title="${esc(o.t)}" style="font-size:11px;font-weight:600;${o.x?'background:#fff;color:var(--amb);border:1px solid #F0DDBE':`background:${o.c};color:#fff;border:0`};border-radius:5px;padding:2px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right">${esc(o.t)}</button>`).join('')}${L.length>4?`<span class="mini">+${L.length-4}</span>`:''}</div>`}).join('')}</div>
+ <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px" class="mini">${Object.values(PEOPLE).map(p=>`<span style="display:inline-flex;align-items:center;gap:5px"><i style="width:10px;height:10px;border-radius:3px;background:${p.c}"></i>${p.name}</span>`).join('')}${showX&&S.me!=='k'?`<span style="display:inline-flex;align-items:center;gap:5px"><i style="width:10px;height:10px;border-radius:3px;border:1px solid var(--amb)"></i>تاريخ انتهاء</span>`:''}</div></section>`};
+/* virtual agenda items: client follow-ups + service steps */
+const _agV3=agenda;agenda=function(p){const B=_agV3(p);const put=x=>{const n=x.date?days(x.date):null;(n===null?B.none:n<0?B.late:n===0?B.today:n===1?B.tom:n===2?B.after:n<=7?B.week:B.later).push(x)};
+ if(p!=='s'){S.clients.filter(c=>c.owner===p).forEach(c=>{const due=fmt(new Date(D(c.lastTouch).getTime()+c.every*864e5));if(days(due)<=7)put({t:{id:0,co:c.name,emp:''},date:due,title:`تابع مع ${c.name}`,sub:`آخر تواصل ${c.lastTouch} · نحدّثه كل ${c.every} أيام`,kind:'client',go:'client-'+c.id})});
+  S.services.filter(s=>s.owner===p&&s.status!=='منجزة'&&s.done<s.steps.length).forEach(s=>{const it=s.stepItems[s.done]||{};const due=iso2(it.NextFollowUp)||s.due;put({t:{id:0,co:s.clientName,emp:''},date:due,title:s.svc,sub:`الخطوة ${s.done+1} من ${s.steps.length}: ${s.steps[s.done]}`,kind:'svc',go:'client-'+s.client})})}
+ Object.values(B).forEach(a=>a.sort((a,b)=>(D(a.date)||0)-(D(b.date)||0)));return B};
+/* auto refresh + tab title */
+let lastLoad=Date.now();
+async function softReload(){if(busy||document.getElementById('layer').innerHTML||document.activeElement&&['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;try{await loadAll();build();lastLoad=Date.now();const y=document.getElementById('main')?.scrollTop||0;render();const m=document.getElementById('main');if(m)m.scrollTop=y}catch(e){console.warn('refresh',e)}}
+setInterval(()=>{if(document.visibilityState==='visible'&&S.loaded&&Date.now()-lastLoad>4.5*60e3)softReload()},60e3);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.loaded&&Date.now()-lastLoad>2*60e3)softReload()});
+const _renderV3=render;render=function(){_renderV3();if(!S.loaded)return;const n=S.notifs.filter(x=>x.new).length;const B=agenda(S.me);const due=B.late.length+B.today.length;document.title=(n||due?`(${n||due}) `:'')+'منصة رشيد'};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act="calx"]');if(el){ui.calX=ui.calX===false;render()}},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
