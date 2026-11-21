@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منصة رشيد</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap">
+<style>
+body{margin:0;background:#F6F7F5;color:#14201A;font-family:'IBM Plex Sans Arabic',Tahoma,sans-serif;display:grid;place-items:center;min-height:100vh;padding:16px;box-sizing:border-box}
+.c{background:#fff;border:1px solid #E3E8E4;border-radius:18px;padding:32px;width:min(560px,100%);box-shadow:0 20px 40px -24px rgba(0,0,0,.2)}
+.m{width:52px;height:52px;border-radius:14px;background:linear-gradient(145deg,#2C8A63,#17694A);display:grid;place-items:center;margin-bottom:14px}
+h1{margin:0 0 4px;font-size:24px}p{margin:0;color:#6E7A73}
+button{margin-top:22px;height:46px;padding:0 22px;border-radius:12px;border:0;background:#17694A;color:#fff;font:600 15px inherit;font-family:inherit;cursor:pointer}
+pre{background:#F6F7F5;border-radius:12px;padding:14px;font-size:13px;white-space:pre-wrap;direction:rtl;margin-top:18px;max-height:50vh;overflow:auto}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="m"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+  <h1>منصة رشيد</h1>
+  <p>اختبار الربط مع حساب مايكروسوفت و SharePoint</p>
+  <button id="go">تسجيل الدخول بحساب مايكروسوفت</button>
+  <pre id="out">جاهز…</pre>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.3/lib/msal-browser.min.js"></script>
+<script>
+const CFG={clientId:'c3a2a4ad-64df-4795-b55a-7d01451f68e9',tenant:'a4e44478-bcdf-4085-9e66-b311efb5e5d0',site:'rasheedhrservices.sharepoint.com:/sites/RasheedHRServices'};
+const out=document.getElementById('out');const log=t=>out.textContent+='\n'+t;
+const app=new msal.PublicClientApplication({auth:{clientId:CFG.clientId,authority:'https://login.microsoftonline.com/'+CFG.tenant,redirectUri:location.origin+location.pathname},cache:{cacheLocation:'localStorage'}});
+const SC=['User.Read','Sites.ReadWrite.All'];
+async function token(){const acc=app.getAllAccounts()[0];try{return (await app.acquireTokenSilent({scopes:SC,account:acc})).accessToken}catch(e){return (await app.acquireTokenPopup({scopes:SC})).accessToken}}
+async function g(path){const r=await fetch('https://graph.microsoft.com/v1.0'+path,{headers:{Authorization:'Bearer '+await token()}});if(!r.ok)throw new Error(r.status+' '+(await r.text()).slice(0,200));return r.json()}
+async function run(){out.textContent='جاري…';
+  try{
+    if(!app.getAllAccounts().length)await app.loginPopup({scopes:SC});
+    const me=await g('/me');log('✓ دخلت باسم: '+me.displayName+' ('+me.userPrincipalName+')');
+    const site=await g('/sites/'+CFG.site);log('✓ وصلت لموقع SharePoint: '+site.displayName);
+    const lists=await g('/sites/'+site.id+'/lists?$select=displayName,name,list&$top=100');
+    const L=lists.value.filter(l=>!l.list||!l.list.hidden);log('✓ القوائم ('+L.length+'):');
+    for(const l of L){try{const it=await g('/sites/'+site.id+'/lists/'+l.id+'/items?$top=999&$select=id');log('   • '+l.displayName+' — '+it.value.length+' عنصر')}catch(e){log('   • '+l.displayName+' — تعذّر العد')}}
+    log('\nالربط شغّال ✓');
+  }catch(e){log('✗ خطأ: '+e.message)}
+}
+document.getElementById('go').onclick=run;
+app.handleRedirectPromise().catch(e=>log('✗ '+e.message));
+</script>
+</body>
+</html>
