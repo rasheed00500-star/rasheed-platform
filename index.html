@@ -229,6 +229,26 @@ textarea.inp{height:auto;padding:10px 12px;resize:vertical}
 .hx span{color:var(--mute);min-width:70px}
 .hx s{color:var(--mute)}
 .hx b{color:var(--ink);font-weight:600}
+/* v5 design */
+.sumline{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px!important;font-size:13.5px;color:var(--ink2)!important;background:var(--w);border:1px solid var(--line);border-radius:10px;padding:6px 12px;width:fit-content}
+.sumline b{color:var(--ink)}
+.ph>div:first-child{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center}
+.ph>div:first-child>*:not(.pgi){grid-column:2}
+.pgi{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;grid-row:1/span 3;align-self:start;margin-top:2px}
+.brandlogo{background:#fff!important;border:1.5px dashed var(--line);color:var(--mute);font-size:11px;font-weight:700;overflow:hidden}
+.brandlogo img{width:100%;height:100%;object-fit:contain}
+#app[data-sec="t"] .nav.on{background:#E3F4F5;color:#0F7C86}
+#app[data-sec="b"] .nav.on{background:var(--bluT);color:var(--blu)}
+#app[data-sec="v"] .nav.on{background:var(--vioT);color:var(--vio)}
+#app[data-sec="a"] .nav.on{background:#FDF2E2;color:#B4690E}
+.bnav{display:none}
+@media (max-width:820px){
+ .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--w);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around;box-shadow:0 -6px 18px -12px rgba(0,0,0,.2)}
+ .bnav button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--mute);position:relative;padding:4px 0}
+ .bnav button.on{color:var(--br)}
+ .bnav button b{position:absolute;top:0;inset-inline-end:calc(50% - 22px);background:var(--red);color:#fff;font-size:10px;border-radius:10px;padding:0 5px;line-height:16px}
+ .body{padding-bottom:84px!important}
+}
 
 </style>
 </head>
@@ -950,7 +970,7 @@ async function contractEngine(){const tpl=RAW.Recurring.find(r=>r.Trigger==='ع�
  for(const e of RAW.Employees.filter(e=>e.EmpStatus!=='منتهي'&&e.ContractEnd)){const n=days(iso2(e.ContractEnd));if(n>60||n<-30)continue;const key=`REC:${tpl.id}:E${e.id}-${e.ContractEnd.slice(0,10).replace(/-/g,'')}`;if(RAW.Tasks.some(t=>(t.LinkRef||'')===key))continue;
   const steps=st.map((s,i)=>{const d=new Date(TODAY);d.setDate(d.getDate()+(s.o||0));return{n:i+1,t:s.t,w:s.w||tpl.Owner,g:s.g||'',d:ymd(d),ok:false,by:'',on:''}});
   const it=await spCreate('Tasks',{Title:`تجديد عقد · ${e.Title}`,EmpName:e.Title,AssignedTo:steps[0].w,AssignedBy:'المنصة',DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:e.Company||'فوريستا',LinkRef:key,Status:'مفتوحة',Steps:JSON.stringify(steps)},{label:'تجديد عقد · '+e.Title});RAW.Tasks.push(it);made++;
-  await notify(steps[0].w,`عقد ${e.Title} ${n<0?'انتهى قبل '+(-n)+' يوم':'ينتهي بعد '+n+' يوم'}`,'قرّر: تجديد أو عدم تجديد','proc-'+it.id,'file')}return made}
+  await notify(steps[0].w,`عقد ${e.Title} ${n<0?'انتهى قبل '+(-n)+(-n>2&&-n<11?' أيام':' يوم'):'ينتهي بعد '+n+(n>2&&n<11?' أيام':' يوم')}`,'قرّر: تجديد أو عدم تجديد','proc-'+it.id,'file')}return made}
 async function escalate(){let n=0;for(const t of S.tasks){if(t.done)continue;const who=t.kind==='proc'?t.curWho:t.who;const due=t.kind==='proc'?t.curDue:t.due;if(!due||who==='r')continue;const late=-days(due);if(late<2)continue;
   const title=`متأخرة عند ${PEOPLE[who].name}: ${t.title}`.slice(0,250);const sub=`كان موعدها ${due}${t.kind==='proc'&&t.curStep?' · الخطوة: '+t.curStep.t:''}`;if(RAW.Notifications.some(x=>x.Title===title&&(x.Sub||'').startsWith(`كان موعدها ${due}`)))continue;
   try{const it=await spCreate('Notifications',{Title:title,ToUser:'رشيد',Sub:sub,Link:(t.kind==='proc'?'proc-':'task-')+t.id,Icon:'alert',IsRead:false});RAW.Notifications.push(it);n++}catch(e){}}return n}
@@ -992,7 +1012,7 @@ PAGES.missing=()=>{if(S.me==='k')return noAccess();const L=missingRows();const f
 /* ---------- employee files ---------- */
 const empFolder=e=>`مرفقات المنصة/الموظفين/${e.name.replace(/["*:<>?\/\\|#%]/g,'')}`;
 const _empV4=PAGES.emp;PAGES.emp=prm=>{const h=_empV4(prm);const e=S.employees.find(x=>x.id==prm.id);if(!e||S.me==='k')return h;setTimeout(()=>loadEmpFiles(e),0);
- return h+`<section class="card" style="overflow:hidden"><div class="ch"><h3>ملفات الموظف</h3><span class="s">صورة الإقامة، الجواز، العقد، الإيصالات…</span><label class="btn sm" style="margin-inline-start:auto;cursor:pointer">${ic('plus',14)}رفع ملف<input type="file" hidden data-up="emp:${e.id}"></label></div><div id="empfiles"><div class="empty" style="padding:14px">جاري التحميل…</div></div></section>`};
+ return h+`<section class="card" style="overflow:hidden"><div class="ch"><h3>ملفات الموظف</h3><span class="s">صورة الإقامة، الجواز، العقد، الإيصالات… · ارفع صورة الموظف باسم «صورة» تطلع في ملفه</span><label class="btn sm" style="margin-inline-start:auto;cursor:pointer">${ic('plus',14)}رفع ملف<input type="file" hidden data-up="emp:${e.id}"></label></div><div id="empfiles"><div class="empty" style="padding:14px">جاري التحميل…</div></div></section>`};
 async function loadEmpFiles(e){const box=document.getElementById('empfiles');if(!box)return;const L=await driveList(empFolder(e));if(!document.getElementById('empfiles'))return;box.innerHTML=L.length?L.map(f=>`<a class="li" href="${esc(f.webUrl)}" target="_blank" rel="noopener" style="padding:10px 20px;text-decoration:none;color:inherit">${ic('file',16,'var(--blu)')}<div style="flex:1"><b style="font-size:13.5px;font-weight:600">${esc(f.name)}</b><div class="mini">${fmt(new Date(f.createdDateTime))}${f.createdBy&&f.createdBy.user?' · '+esc(f.createdBy.user.displayName):''}</div></div><span class="mini">${Math.round((f.size||0)/1024)} KB</span></a>`).join(''):'<div class="empty" style="padding:14px">ما فيه ملفات للحين</div>'}
 document.addEventListener('change',async e=>{const inp=e.target.closest('input[data-up]');if(!inp||!inp.files.length)return;const file=inp.files[0];inp.value='';if(file.size>4*1024*1024){toast('الملف أكبر من 4MB');return}const [kind,id]=inp.dataset.up.split(':');const clean=file.name.replace(/["*:<>?\/\\|#%]/g,'_');
  if(kind==='emp'){const emp=S.employees.find(x=>x.id==id);act(async()=>{await drivePut(`${empFolder(emp)}/${clean}`,file,file.type);AUDIT_HOOK('رفع ملف','Employees',emp.id,null,{file:clean},{Title:emp.name,Company:emp.co})},'انرفع الملف');return}
@@ -1029,6 +1049,40 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   const changed=raw?Object.keys(it.f).filter(k=>JSON.stringify(raw[k]??null)!==JSON.stringify(it.f[k]??null)):[];confirmBox('استرجاع التغيير',`بيرجع «${esc(it.title)}» زي ما كان قبل هذا التغيير:<br>${Object.keys(it.b).map(k=>`• ${FLD[k]||k}: <b>${esc(fmtVal(k,it.b[k]))}</b>`).join('<br>')}${changed.length?`<br><br><span style="color:var(--amb)">تنبيه: صار عليه تعديل ثاني بعدها (${changed.map(k=>FLD[k]||k).join('، ')})، والاسترجاع بيرجعه لقبل هذا التغيير.</span>`:''}`,`restore2:${x}`);return}
  if(a==='restore2'){const it=auditRows().find(q=>q.id==x);closeModal();act(async()=>{const raw=(RAW[it.list]||[]).find(q=>q.id==it.rid);if(it.act==='إضافة'){await spPatch('Tasks',it.rid,{Status:'ملغاة'},{noAudit:true});if(raw)raw.Status='ملغاة'}else{const b={...it.b};await spPatch(it.list,it.rid,b,{noAudit:true});if(raw)Object.assign(raw,b)}AUDIT_HOOK('استرجاع',it.list,it.rid,it.f,it.b||{},raw,it.title.replace(/^\S+ \S+: /,''))},'رجع زي ما كان ✓');return}
 },true);
+
+/* ===================== v5 design layer (section colors, mobile bar, lighter home, avatars, branding) ===================== */
+const BRAND={name:'منصة رشيد',sub:'الموارد البشرية والخدمات',logo:''};
+const SECT={home:'g',tasks:'g',calendar:'g',procs:'g',task:'g',proc:'g',employees:'t',emp:'t',docs:'t',expiry:'t',missing:'t',leaves:'t',vehicles:'b',veh:'b',clients:'v',client:'v',services:'v',transferred:'v',reports:'a',achieve:'a',history:'a',auto:'a'};
+const SECI={g:['home','var(--br)','var(--brT)'],t:['users','#0F7C86','#E3F4F5'],b:['car','var(--blu)','var(--bluT)'],v:['brief','var(--vio)','var(--vioT)'],a:['chart','#B4690E','#FDF2E2']};
+const PAGEI={home:'home',tasks:'check',calendar:'cal',procs:'layers',task:'check',proc:'layers',employees:'users',emp:'user',expiry:'alert',missing:'alert',leaves:'plane',vehicles:'car',veh:'car',clients:'brief',client:'bldg',services:'inbox',reports:'chart',achieve:'ok',history:'hist',auto:'repeat',transferred:'inbox'};
+/* lighter home: summary line + collapsible reminder */
+const _homeV5=PAGES.home;PAGES.home=()=>{let h=_homeV5();const B=agenda(S.me);const E=S.me==='k'?[]:expRows().filter(r=>r.n>=0&&r.n<=7);
+ const sum=`<p class="sumline">${ic('cal',15)} عندك <b>${B.today.length}</b> اليوم${B.late.length?` · <b style="color:var(--red)">${B.late.length}</b> متأخر`:''}${S.me!=='k'?` · <b>${E.length}</b> وثائق تنتهي هالأسبوع`:''}${B.tom.length?` · <b>${B.tom.length}</b> بكرة`:''}</p>`;
+ h=h.replace(/<p>[^<]*<\/p><\/div><div class="acts">/,`<p>${todayLong()}</p>${sum}</div><div class="acts">`);
+ if(!ui.remOpen){const i=h.indexOf('<form class="card rem-box"');if(i>=0){const j=h.indexOf('</form>',i)+7;h=h.slice(0,i)+h.slice(j)}h=h.replace('<div class="acts">',`<div class="acts">${btn('تذكير','bell','',`remopen`)}`)}
+ return h};
+/* avatars */
+const personSvg=c=>`<svg viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true"><rect width="40" height="40" fill="${c}22"/><circle cx="20" cy="15" r="7" fill="${c}"/><path d="M6 38c1.5-8 7-12 14-12s12.5 4 14 12z" fill="${c}"/></svg>`;
+const photoAv=(e,size=36)=>e.photo?`<span class="av" style="width:${size}px;height:${size}px;padding:0;overflow:hidden"><img src="${esc(e.photo)}" alt="" style="width:100%;height:100%;object-fit:cover"></span>`:`<span class="av" style="width:${size}px;height:${size}px;padding:0;overflow:hidden;background:#fff">${personSvg(e.c)}</span>`;
+/* render wrapper */
+const _renderV5=render;render=function(){_renderV5();if(!S.loaded)return;const app=document.getElementById('app');const sec=SECT[view.route]||'g';app.dataset.sec=sec;
+ const h1=document.querySelector('.ph h1');if(h1&&!h1.previousElementSibling?.classList?.contains('pgi')){const s=SECI[sec];const sp=document.createElement('span');sp.className='pgi';sp.style.cssText=`background:${s[2]};color:${s[1]}`;sp.innerHTML=ic(PAGEI[view.route]||s[0],20);h1.parentNode.insertBefore(sp,h1)}
+ // sidebar icon tints
+ document.querySelectorAll('.side .nav[data-go]').forEach(n=>{const s=SECI[SECT[n.dataset.go]||'g'];const svg=n.querySelector('svg');if(svg)svg.style.color=s[1]});
+ // brand
+ const lg=document.querySelector('.side .logo');if(BRAND.logo&&lg&&!lg.dataset.b){lg.dataset.b=1;lg.innerHTML=`<span class="m brandlogo">${BRAND.logo?`<img src="${BRAND.logo}" alt="">`:`<span>شعار</span>`}</span><div><b>${BRAND.name}</b><span>${BRAND.sub}</span></div>`}
+ // employee avatars in tables
+ if(['employees','emp'].includes(view.route)){document.querySelectorAll('tr[data-go^="emp-"] .av, .card > .av').forEach(a=>{const id=+(a.closest('tr')?.dataset.go||'').replace('emp-','')||view.params.id;const e=S.employees.find(x=>x.id===id);if(e){const big=a.style.width==='72px';a.outerHTML=photoAv(e,big?72:36)}})}
+ // mobile bottom bar
+ let bn=document.getElementById('bnav');if(!bn){bn=document.createElement('nav');bn.id='bnav';bn.className='bnav';document.body.appendChild(bn)}
+ const items=S.me==='k'?[['home','يومي','home'],['check','مهامي','tasks'],['brief','العملاء','clients'],['search','بحث','@search'],['menu','المزيد','@menu']]:[['home','يومي','home'],['check','مهامي','tasks'],['alert','الانتهاءات','expiry'],['search','بحث','@search'],['menu','المزيد','@menu']];
+ const cur=ROUTEBASE[view.route]||view.route;bn.innerHTML=items.map(i=>{const on=cur===i[2];const cnt=i[2]==='tasks'?(agenda(S.me).late.length+agenda(S.me).today.length):i[2]==='expiry'?expRows().filter(r=>r.n<=30).length:0;return `<button ${i[2][0]==='@'?`data-act="${i[2]==='@search'?'search':'burger'}"`:`data-go="${i[2]}"`} class="${on?'on':''}">${ic(i[0],21)}<span>${i[1]}</span>${cnt?`<b>${cnt}</b>`:''}</button>`}).join('')};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act="remopen"]');if(el){ui.remOpen=true;render();setTimeout(()=>document.getElementById('rm-t')?.focus(),30)}},true);
+/* printed reports with letterhead */
+printHtml=function(title,html){const w=window.open('','_blank');if(!w){toast('اسمح بالنوافذ المنبثقة للطباعة');return}w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>${esc(title)}</title><style>body{font-family:Tahoma,sans-serif;padding:28px;color:#14201A}.lh{display:flex;align-items:center;gap:14px;border-bottom:3px solid #17694A;padding-bottom:12px;margin-bottom:18px}.lh .lg{width:54px;height:54px;border-radius:12px;background:#E7F3EC;display:grid;place-items:center;color:#17694A;font-weight:700;font-size:12px}.lh b{font-size:18px;display:block}.lh span{color:#6E7A73;font-size:12px}.lh .d{margin-inline-start:auto;text-align:left;font-size:12px;color:#6E7A73}h2{margin:0 0 4px}table{width:100%;border-collapse:collapse;margin-top:12px}td,th{border:1px solid #ccc;padding:6px 8px;font-size:12px;text-align:right}th{background:#eef3ef}.ft{margin-top:30px;border-top:1px solid #ddd;padding-top:8px;font-size:11px;color:#888;display:flex;justify-content:space-between}</style></head><body><div class="lh"><div class="lg">${BRAND.logo?`<img src="${BRAND.logo}" style="max-width:100%;max-height:100%">`:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#17694A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>'}</div><div><b>${BRAND.name}</b><span>${BRAND.sub}</span></div><div class="d">${fmt(TODAY)}<br>${PEOPLE[S.realMe].full}</div></div>${html}<div class="ft"><span>${BRAND.name} · ${BRAND.sub}</span><span>صفحة 1</span></div></body></html>`);w.document.close();w.print()};
+
+/* real employee photo: file named صورة… in employee folder */
+const _lefV5=loadEmpFiles;loadEmpFiles=async function(e){const L=await driveList(empFolder(e));const ph=L.find(f=>/^(صورة|photo)/i.test(f.name)&&/\.(jpe?g|png|webp)$/i.test(f.name)&&f['@microsoft.graph.downloadUrl']);if(ph){e.photo=ph['@microsoft.graph.downloadUrl'];const a=document.querySelector('.card > .av, .card > span.av');if(a)a.outerHTML=photoAv(e,72)}return _lefV5(e)};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
