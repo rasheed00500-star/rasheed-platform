@@ -18,7 +18,7 @@ pre{background:#F6F7F5;border-radius:12px;padding:14px;font-size:13px;white-spac
 <div class="c">
   <div class="m"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
   <h1>منصة رشيد</h1>
-  <p>اختبار الربط مع حساب مايكروسوفت و SharePoint</p>
+  <p>اختبار الربط مع حساب مايكروسوفت و SharePoint · نسخة 2</p>
   <button id="go">تسجيل الدخول بحساب مايكروسوفت</button>
   <pre id="out">جاهز…</pre>
 </div>
@@ -35,9 +35,9 @@ async function run(){out.textContent='جاري…';
     if(!app.getAllAccounts().length)await app.loginPopup({scopes:SC});
     const me=await g('/me');log('✓ دخلت باسم: '+me.displayName+' ('+me.userPrincipalName+')');
     const site=await g('/sites/'+CFG.site);log('✓ وصلت لموقع SharePoint: '+site.displayName);
-    const lists=await g('/sites/'+site.id+'/lists?$select=displayName,name,list&$top=100');
+    const lists=await g('/sites/'+site.id+'/lists?$select=id,displayName,name,list&$top=100');
     const L=lists.value.filter(l=>!l.list||!l.list.hidden);log('✓ القوائم ('+L.length+'):');
-    for(const l of L){try{const it=await g('/sites/'+site.id+'/lists/'+l.id+'/items?$top=999&$select=id');log('   • '+l.displayName+' — '+it.value.length+' عنصر')}catch(e){log('   • '+l.displayName+' — تعذّر العد')}}
+    let first=true;for(const l of L){try{const it=await g('/sites/'+site.id+'/lists/'+l.id+'/items?$expand=fields($select=Title)&$top=500');log('   • '+l.displayName+' — '+it.value.length+' عنصر')}catch(e){log('   • '+l.displayName+' — تعذّر العد'+(first?' ['+e.message+']':''));first=false}}
     log('\nالربط شغّال ✓');
   }catch(e){log('✗ خطأ: '+e.message)}
 }
