@@ -670,6 +670,9 @@ const TODAYS=fmt(TODAY);
 /* ---- enrich tasks after build ---- */
 const _buildV1=build;
 build=function(){_buildV1();
+ {const tpl={};RAW.Recurring.forEach(r=>tpl[r.id]=r);const latestWk={};RAW.Tasks.forEach(r=>{const m=(r.LinkRef||'').match(/^REC:(\d+):(\d{4}-\d{2}-\d{2})$/);if(m&&tpl[m[1]]&&tpl[m[1]].Frequency==='أسبوعي'&&(!latestWk[m[1]]||m[2]>latestWk[m[1]]))latestWk[m[1]]=m[2]});
+  const hide=r=>{const lr=r.LinkRef||'';let m=lr.match(/^REC:(\d+):\d{4}-\d{2}$/);if(m&&tpl[m[1]]&&['إقامة','يدوي'].includes(tpl[m[1]].Trigger))return true;m=lr.match(/^REC:(\d+):(\d{4}-\d{2}-\d{2})$/);if(m&&r.Status!=='منجزة'&&latestWk[m[1]]&&m[2]<latestWk[m[1]])return true;return false};
+  const H=new Set(RAW.Tasks.filter(hide).map(r=>r.id));S.tasks=S.tasks.filter(t=>!H.has(t.id));S.procs=S.procs.filter(p=>!H.has(p.id))}
  S.tasks.forEach(t=>{const r=rawTask(t.id)||{};t.kind=t.steps?'proc':r.ReqType==='تذكير'?'rem':'task';t.emp=r.EmpName||'';t.doneOn=iso2(r.DoneOn);t.notes=r.Notes||'';t.by=KEY[r.AssignedBy]||null;t.raw=r;
   if(t.steps){const i=t.steps.findIndex(s=>!s.ok);t.cur=i;t.curStep=i>=0?t.steps[i]:null;t.curWho=i>=0?(KEY[t.steps[i].w]||t.who):t.who;t.curDue=i>=0&&t.steps[i].d?d2f(t.steps[i].d):t.due}});
  S.procs.forEach(p=>{if(!p.emp&&p.task.emp){const e=S.employees.find(e=>e.name===p.task.emp);if(e)p.emp=e.id}p.empName=p.task.emp||(S.employees.find(e=>e.id===p.emp)||{}).name||''});
@@ -741,6 +744,7 @@ function stepSpec(t){const s={in:[]};
  if(/رخصة العمل/.test(t)&&/(إصدار|تجديد)/.test(t)&&!/(سداد|أيهم)/.test(t))s.in.push(['wpm','مدة رخصة العمل',[3,6,9,12],'شهر']);
  if(/مقيم/.test(t)&&/تجديد/.test(t)&&!/خروج/.test(t))s.in.push(['iqm','مدة تجديد الإقامة',[3,6,9,12],'شهر']);
  if(/خروج وعودة/.test(t)&&/تسجيل الطلب/.test(t)){s.in.push(['ert','نوع التأشيرة',['مفردة','متعددة'],'']);s.in.push(['erm','مدة الخروج والعودة',[1,2,3,6],'شهر']);s.in.push(['erd','تاريخ السفر','date',''])}
+ if(/مبررات/.test(t)&&/هل/.test(t))s.in.push(['just','فيه موظفين يحتاجون مبررات في مدد؟',['لا','نعم'],'']);
  if(/تحديث تاريخ الإقامة/.test(t))s.updIq=1;
  if(/تسجيل رقم التأشيرة|آخر موعد للعودة/.test(t))s.regTr=1;
  return s}
@@ -748,6 +752,13 @@ const mths=m=>m==1?'شهر':m==2?'شهرين':m+' أشهر';
 function procVals(p){const v={};p.task.steps.forEach(s=>Object.assign(v,s.v||{}));Object.assign(v,(ui.sv||{})[p.id]||{});return v}
 function newIqDate(p,v){const e=S.employees.find(e=>e.id===p.emp);if(!e||!v.iqm)return '';const base=e.iq&&D(e.iq)>TODAY?D(e.iq):TODAY;return fmt(addMonths(base,v.iqm))}
 function stepMsg(p,title,v){const emp=p.empName||'الموظف';const nx=newIqDate(p,v);
+ const mon=(p.title.split('·')[1]||'').trim()||MONN[TODAY.getMonth()];
+ if(/تذكير أيهم بالرواتب/.test(title)){const [y,mo]=(()=>{const x=mon.match(/(\S+)\s+(\d{4})/);return x?[+x[2],MONN.indexOf(x[1])]:[TODAY.getFullYear(),TODAY.getMonth()]})();const a=new Date(y,mo,1),b=new Date(y,mo+1,0);const lv=S.leaves.filter(l=>l.status==='معتمد'&&isFor(l.co)&&D(l.from)&&D(l.from)<=b&&(!l.to||D(l.to)>=a));
+  return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنذكّركم بموعد رواتب شهر ${mon}.\nالتغييرات لهذا الشهر:\n• الإجازات: ${lv.length?lv.map(l=>`${l.emp} (${l.type} ${l.from.slice(0,5)}–${(l.to||'').slice(0,5)})`).join('، '):'لا يوجد'}\n• الغياب والخصومات: لا يوجد\n• موظفين جدد أو منتهين: لا يوجد\nونرجو إرسال ملف حماية الأجور بعد التحويل. وشكراً لكم.`}}
+ if(/التأكد إن أيهم حوّل الرواتب/.test(title))return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nهل تم تحويل رواتب شهر ${mon}؟ نحتاج ملف حماية الأجور لرفعه في منصة مدد. وشكراً.`};
+ if(/استلام ملف حماية الأجور/.test(title))return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنرجو إرسال ملف حماية الأجور لرواتب شهر ${mon} عشان نرفعه في منصة مدد. وشكراً لكم.`};
+ if(/التأكد من قبول الملف/.test(title))return {to:'رشيد / القروب',m:`تم بحمد الله رفع ملف حماية الأجور لرواتب شهر ${mon} في منصة مدد وتم قبوله${v.just==='نعم'?'، مع إدخال المبررات اللازمة للموظفين':' بدون الحاجة لأي مبررات'}.\nالإيصال محفوظ.`};
+ if(/رفع الملف في منصة مدد/.test(title))return null;
  if(/أيهم/.test(title)&&/رخصة العمل/.test(title))return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنرجو سداد رسوم تجديد إقامة ${emp}:\n• رخصة العمل لمدة ${v.wpm?mths(v.wpm):'…'}\n• رسوم الجوازات (الإقامة) لمدة ${v.iqm?mths(v.iqm):v.wpm?mths(v.wpm):'…'}\nوإرسال الإيصال بعد السداد. وشكراً لكم.`};
  if(/التأكد إن أيهم سدد/.test(title))return {to:'أيهم',m:`أستاذ أيهم، نذكّركم بسداد رسوم رخصة العمل والإقامة لـ ${emp}، ونرجو إرسال الإيصال. وشكراً.`};
  if(/صورة التجديد/.test(title))return {to:'قروب الشركة',m:`تم بحمد الله تجديد إقامة ${emp}${v.iqm?' لمدة '+mths(v.iqm):''}${nx?'، وتنتهي الإقامة الجديدة بتاريخ '+nx:''}.\nمرفق صورة التجديد وإيصال سداد رسوم رخصة العمل والإقامة.`};
@@ -853,7 +864,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form]
  if(a==='rem'){e.preventDefault();const t=document.getElementById('rm-t').value.trim();if(!t)return;const who=document.getElementById('rm-w').value;const dd=document.getElementById('rm-d').value;const w=ui.remWhen||'today';const due=dd?new Date(dd):new Date(TODAY.getTime()+({today:0,tom:1,after:2}[w])*864e5);
   act(async()=>{const it=await spCreate('Tasks',{Title:t,AssignedTo:PEOPLE[who].name,AssignedBy:PEOPLE[S.me].name,DueDate:toIso(due),Company:S.me==='k'?'':'فوريستا',Status:'مفتوحة',ReqType:'تذكير',Chain:[S.me].concat(who!==S.me?[who]:[]).join(',')});RAW.Tasks.push(it);if(who!==S.me)await notify(PEOPLE[who].name,`تذكير من ${PEOPLE[S.me].name}: ${t}`,fmt(due),'home','bell');ui.remDate=''},who===S.me?'انضاف التذكير ليومك':'وصل التذكير لـ'+PEOPLE[who].name);return}
  if(a==='newproc2'){e.preventDefault();const tid=f.querySelector('input[name=tp]:checked')?.value;const tpl=S.allTemplates.find(t=>t.id==tid);const eid=document.getElementById('p2-e').value;const emp=S.employees.find(q=>q.id==eid);const start=new Date(document.getElementById('p2-d').value||ymd(TODAY));
-  act(async()=>{const steps=tpl.steps.map((s,i)=>{const d=new Date(start);d.setDate(d.getDate()+Math.max(0,(s.o||0)-(tpl.steps[0].o||0)));return{n:i+1,t:s.t,w:s.w||tpl.owner,g:s.g||'',d:ymd(d),ok:false,by:'',on:''}});
+  if(/إقامة|خروج وعودة/.test(tpl.title)&&!emp){toast('اختر الموظف لهذا الإجراء');return}act(async()=>{const steps=tpl.steps.map((s,i)=>{const d=new Date(start);d.setDate(d.getDate()+Math.max(0,(s.o||0)-(tpl.steps[0].o||0)));return{n:i+1,t:s.t,w:s.w||tpl.owner,g:s.g||'',d:ymd(d),ok:false,by:'',on:''}});
    const it=await spCreate('Tasks',{Title:tpl.title+(emp?' · '+emp.name:''),AssignedTo:steps[0].w,AssignedBy:PEOPLE[S.me].name,DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:emp?emp.co:'فوريستا',LinkRef:`REC:${tpl.id}:M${Date.now()}`,Status:'مفتوحة',Steps:JSON.stringify(steps),EmpName:emp?emp.name:''});RAW.Tasks.push(it);if(KEY[steps[0].w]&&KEY[steps[0].w]!==S.me)await notify(steps[0].w,`إجراء جديد: ${tpl.title}${emp?' · '+emp.name:''}`,'الخطوة 1: '+steps[0].t,'proc-'+it.id,'layers');closeModal();setTimeout(()=>go('proc-'+it.id),0)},'بدأ الإجراء');return}
 },true);
 
