@@ -811,6 +811,10 @@ td:has(.no18){white-space:nowrap}
 #nv18{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:10px;background:#14201A;color:#fff;border-radius:14px;padding:10px 12px 10px 16px;box-shadow:0 12px 30px -12px rgba(0,0,0,.5);font-size:14px;font-weight:600;white-space:nowrap}
 #nv18 button{border:0;background:#2FB389;color:#fff;font:inherit;font-weight:700;border-radius:10px;padding:7px 14px;cursor:pointer}
 @media (min-width:900px){#nv18{bottom:24px}}
+.ps18{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid #CFE0F5;background:#F5F9FE;border-radius:10px;padding:6px 10px;font:inherit;cursor:pointer;text-align:right;min-width:170px;max-width:260px;white-space:normal}
+.ps18:hover{border-color:#9DBFE6}
+.ps18 b{font-size:12.5px;color:#2D5E9C}.ps18 small{font-size:12px;color:var(--ink2);line-height:1.4}
+.ps18 .pb{display:block;width:100%;height:4px;border-radius:99px;background:#DCE7F5;margin-top:3px;overflow:hidden}.ps18 .pb i{display:block;height:100%;background:#2D69B0;border-radius:99px}
 
 </style>
 </head>
@@ -3023,7 +3027,7 @@ function rows18(){const d=ui.d18;const X=expRows();const idn=e=>{const r=(RAW.Em
  if(d.tab==='emp'){let L=visEmp().map(e=>({e,n:e.iq?days(e.iq):null}));L=L.filter(o=>m(o.e.name,o.e.job,o.e.nat,idn(o.e))&&(!d.nat||o.e.nat===d.nat)&&(!d.st||stOf18(o.n)===d.st));
   return {head:['الموظف','رقم الهوية / الإقامة','الجنسية','الإقامة','الموقع'],L,row:({e,n})=>`<tr class="cl" data-go="emp-${e.id}"><td>${nm18(e)}</td><td dir="ltr" style="text-align:right">${esc(idn(e)||'—')}</td><td>${esc(e.nat||'—')}</td><td>${/سعود/.test(e.nat)?'<span class="mini">لا ينطبق</span>':pillSt18(n)}</td><td>${e.loc==='خارج'?pill('خارج المملكة','vio'):e.leave?pill('في إجازة','info'):'<span class="mini">داخل المملكة</span>'}</td></tr>`}}
  if(d.tab==='iq'){let L=visEmp().filter(e=>!/سعود/.test(e.nat||'')).map(e=>({e,n:e.iq?days(e.iq):null}));L=L.filter(o=>m(o.e.name,o.e.job,o.e.nat,idn(o.e))&&(!d.nat||o.e.nat===d.nat)&&(!d.st||stOf18(o.n)===d.st)).sort((a,b)=>(a.n??9e9)-(b.n??9e9));
-  return {head:['الموظف','رقم الإقامة','الجنسية','انتهاء الإقامة','الحالة','الإجراء'],L,row:({e,n})=>{const pr=S.procs.find(p=>p.emp===e.id&&p.done<p.steps.length&&/إقامة/.test(p.title));return `<tr class="cl" data-go="emp-${e.id}"><td>${nm18(e)}</td><td dir="ltr" style="text-align:right">${esc(idn(e)||'—')}</td><td>${esc(e.nat||'—')}</td><td>${e.iq||'—'}</td><td>${pillSt18(n)}</td><td>${pr?`<button class="tag" data-go="proc-${pr.id}" style="border:0;background:var(--bluT);color:var(--blu)">جاري · ${pr.done+1}/${pr.steps.length}</button>`:n!==null&&n<=W18&&S.me!=='k'?btn('ابدأ تجديد','layers','sm',`startiq:${e.id}`):'<span class="mini">—</span>'}</td></tr>`}}}
+  return {head:['الموظف','رقم الإقامة','الجنسية','انتهاء الإقامة','الحالة','حالة الإجراء'],L,row:({e,n})=>{const pr=S.procs.find(p=>p.emp===e.id&&p.done<p.steps.length&&/إقامة/.test(p.title));return `<tr class="cl" data-go="emp-${e.id}"><td>${nm18(e)}</td><td dir="ltr" style="text-align:right">${esc(idn(e)||'—')}</td><td>${esc(e.nat||'—')}</td><td>${e.iq||'—'}</td><td>${pillSt18(n)}</td><td>${pr?`<button class="tag" data-go="proc-${pr.id}" style="border:0;background:var(--bluT);color:var(--blu)">جاري · ${pr.done+1}/${pr.steps.length}</button>`:n!==null&&n<=W18&&S.me!=='k'?btn('ابدأ تجديد','layers','sm',`startiq:${e.id}`):'<span class="mini">—</span>'}</td></tr>`}}}
  if(d.tab==='soon'){let L=X.filter(r=>r.n<=W18).filter(r=>m(r.owner,r.sub,expLbl(r.k),docNo18(r))&&(!d.st||stOf18(r.n)===d.st));const o=k=>{const i=EXT.findIndex(x=>x[0]===k);return (EXT[i]&&EXT[i][2]==='veh'?100:0)+i};L.sort((a,b)=>o(a.k)-o(b.k)||a.n-b.n);
   return {head:['النوع','الاسم / اللوحة','الرقم','تاريخ الانتهاء','الحالة','الإجراء'],L,row:r=>`<tr class="cl" data-go="${r.go}"><td><span class="tn18">${ic((EXT.find(x=>x[0]===r.k)||[])[3]||'file',15)}${expLbl(r.k)}</span></td><td><b style="font-weight:600">${esc(r.owner)}</b><small class="sb">${esc(r.sub||'')}</small></td>${noCell18(r)}<td>${r.date||'—'}</td><td>${pillSt18(r.n)}</td><td>${btn('تحديث','edit','sm',r.upd)}</td></tr>`}}
  let L=visVeh().map(v=>({v,is:vehIssues(v).filter(x=>['reg','insp','ins','op'].includes(x))}));L=L.filter(o=>m(o.v.l,o.v.n,o.v.m,o.v.user)&&(!d.st||(d.st==='exp'?o.is.length:d.st==='ok'?!o.is.length:true)));L.sort((a,b)=>b.is.length-a.is.length);
@@ -3073,11 +3077,18 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261123223222';
+const APPV18='20261123223847';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
 setTimeout(chkV18,4000);setInterval(chkV18,5*60*1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)chkV18()});
+
+/* v18.4 — «حالة الإجراء» بدل «جاري · 0 من 6»: وش الخطوة الحين وعند مين */
+function pst18(id){const p=S.procs.find(x=>x.id==id);if(!p)return null;const s=p.steps[p.done]||p.steps[p.steps.length-1];const who=PEOPLE[s[2]]?PEOPLE[s[2]].name:'';const pct=Math.round(p.done/p.steps.length*100);
+ return `<button class="ps18" data-go="proc-${p.id}" title="افتح الإجراء"><b>${p.done?'التجديد ماشي':'التجديد بدأ'}</b><small>الحين: ${esc(s[0])}${who?' · عند '+who:''}</small><span class="pb"><i style="width:${Math.max(pct,6)}%"></i></span></button>`}
+const fixPs18=h=>typeof h!=='string'?h:h.replace(/<button class="tag" data-go="proc-(\d+)"[^>]*>[^<]*<\/button>/g,(m,id)=>pst18(id)||m).replace(/<button class="pill t-ok" data-go="proc-(\d+)"[^>]*>إجراء التجديد جاري[^<]*<\/button>/g,(m,id)=>pst18(id)||m);
+['expiry','fixdates'].forEach(k=>{const o=PAGES[k];if(o)PAGES[k]=prm=>{let h=fixPs18(o(prm));if(k==='expiry')h=h.replace('<th>الحالة</th><th>الإجراء</th>','<th>الحالة</th><th>حالة الإجراء</th>');return h}});
+const _tbody18v4=tbody18;tbody18=function(){return fixPs18(_tbody18v4())};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
