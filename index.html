@@ -2206,16 +2206,16 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form=
 const ARK11='أركان';
 const isArk11=t=>(t.co||'')===ARK11;
 const isExt11=t=>!t.steps&&t.co&&t.co!==ARK11&&!isFor(t.co);
-const wsTasks11=k=>S.tasks.filter(t=>!t.steps&&(k==='ark'?isArk11(t):isExt11(t))&&(S.me!=='s'));
+const wsTasks11=k=>S.tasks.filter(t=>!t.steps&&(k==='ark'?isArk11(t):k==='for'?isFor(t.co||''):isExt11(t))&&(S.me!=='s')&&(k!=='for'||S.me==='r'||canSeeTask(t)||grants8('k').foresta));
 const rawOf11=t=>RAW.Tasks.find(r=>r.id===t.id)||{};
 const typ11=t=>{const r=rawOf11(t);return r.ReqType==='تذكير'?'rem':r.ReqType==='متابعة'?'fol':'task'};
 const rpt11=t=>{const m=/^RPT:([wm])/.exec(rawOf11(t).LinkRef||'');return m?m[1]:''};
 const TYP11={task:['مهمة','check','#12705E','#E4F2EE'],rem:['تذكير','bell','#6650C2','#F0EDFB'],fol:['متابعة','clock','#B4700F','#FDF5E5']};
-const WSC11={ark:['#2D69B0','#E9F1FA','bldg','أركان','شغل شركة أركان بينك وبين خالد'],ext:['#12705E','#E4F2EE','brief','أعمال العملاء','الشغل الخارجي للعملاء والشركات الثانية']};
+const WSC11={for:['#A9690A','#FDF3E1','users','مهام فوريستا','كل مهام فوريستا العادية (غير الإجراءات) ومين عنده كل وحدة'],ark:['#2D69B0','#E9F1FA','bldg','أركان','شغل شركة أركان بينك وبين خالد'],ext:['#12705E','#E4F2EE','brief','أعمال العملاء','الشغل الخارجي للعملاء والشركات الثانية']};
 const due11=t=>t.due?(days(t.due)<0?pill('متأخرة '+(-days(t.due))+' يوم','exp'):days(t.due)===0?pill('اليوم','soon'):days(t.due)===1?pill('بكرة','soon'):pill(t.due.slice(0,5),days(t.due)<=7?'soon':'info')):'<span class="mini">بدون موعد</span>';
 const canWs11=()=>S.me==='r'||S.me==='k';
 
-function wsRow11(t,kind){const ty=TYP11[typ11(t)];const rp=rpt11(t);const co=kind==='ext'?`<span class="tag11" style="--c:#12705E;--t:#E4F2EE">${esc(t.co)}</span>`:'';
+function wsRow11(t,kind){const ty=TYP11[typ11(t)];const rp=rpt11(t);const co=kind==='ext'||kind==='for'&&false?`<span class="tag11" style="--c:#12705E;--t:#E4F2EE">${esc(t.co)}</span>`:'';
  return `<div class="wr11 ${t.done?'dn':''}"><button class="cb ${t.done?'ok':''}" data-act="done:${t.id}" aria-label="${t.done?'رجّعها مفتوحة':'تمّت'}">${t.done?ic('tick',12,'#fff',3):''}</button><button class="tx" data-go="task-${t.id}"><b>${esc(t.title)}</b><small><span class="tag11" style="--c:${ty[2]};--t:${ty[3]}">${ic(ty[1],12)}${ty[0]}</span>${co}${rp?`<span class="mini">${ic('repeat',12)} ${rp==='w'?'كل أسبوع':'كل شهر'}</span>`:''}${t.sub&&t.sub!==rawOf11(t).ReqType?`<span class="mini">${esc(t.sub.slice(0,60))}</span>`:''}</small></button>${t.done?'<span class="mini">خلصت</span>':due11(t)}<span class="who11">${av(t.who)}<span>${PEOPLE[t.who].name}</span></span></div>`}
 
 function wsPage11(kind){if(!canWs11())return noAccess();const C=WSC11[kind];const all=wsTasks11(kind);const open=all.filter(t=>!t.done);
@@ -2225,7 +2225,7 @@ function wsPage11(kind){if(!canWs11())return noAccess();const C=WSC11[kind];cons
  const wk=open.filter(t=>t.due&&days(t.due)>=0&&days(t.due)<=7).length,lt=open.filter(t=>t.due&&days(t.due)<0).length;
  const dm=all.filter(t=>t.done&&rawOf11(t).DoneOn&&new Date(rawOf11(t).DoneOn).getMonth()===TODAY.getMonth()&&new Date(rawOf11(t).DoneOn).getFullYear()===TODAY.getFullYear()).length;
  const k4=(i,c,t,n,s)=>`<div class="k11"><span class="i" style="background:${c[1]};color:${c[0]}">${ic(i,20)}</span><div><small>${t}</small><b>${n}</b><small>${s}</small></div></div>`;
- const side=kind==='ark'?arkDocs11():extSvc11();
+ const side=kind==='ark'?arkDocs11():kind==='for'?forProcs13():extSvc11();
  return `<div class="ph"><div><h1>${C[3]}</h1><p>${C[4]} · يشوفه رشيد وخالد بس</p></div><div class="acts">${btn('تذكير','bell','',`ws11new:${kind}:rem`)}${btn('متابعة','clock','',`ws11new:${kind}:fol`)}${btn('مهمة جديدة','plus','pri',`ws11new:${kind}:task`)}</div></div>
  <div class="k411">${k4(C[2],[C[0],C[1]],'مفتوحة',open.length,`رشيد ${open.filter(t=>t.who==='r').length} · خالد ${open.filter(t=>t.who==='k').length}`)}${k4('bell',['#6650C2','#F0EDFB'],'خلال 7 أيام',wk,'مواعيد قريبة')}${k4('alert',['#CF3F35','#FDEDEB'],'متأخرة',lt,lt?'تحتاج متابعة':'ما فيه تأخير')}${k4('ok',['#12705E','#E4F2EE'],'خلصت هالشهر',dm,'')}</div>
  <div class="g211"><section class="v7c" style="min-width:0"><div class="chips" style="margin-bottom:10px">${Object.entries(F).map(([k,v])=>`<button class="chip ${f===k?'on':''}" data-act="ws11f:${kind}:${k}">${v[0]} <span class="c">${all.filter(v[1]).filter(t=>!cf||t.co===cf).length}</span></button>`).join('')}</div>
@@ -2432,11 +2432,11 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form=
  act(async()=>{for(const t of T){await addMsg(t.id,txt,'');const p=peer(t);await notify(PEOPLE[p].name,`رد من ${PEOPLE[S.me].name} على «${t.title.slice(0,50)}»`,txt.slice(0,100),'task-'+t.id,'inbox')}if(w)w.location.href=waUrl12(p0,`${T.length>1?'بخصوص: '+T.map(t=>t.title).join('، '):'بخصوص «'+T[0].title+'»'}\n${txt}\n— من منصة رشيد`);ui.mv12ids=[];closeModal()},'انرسل الرد ✓')},true);
 
 /* v13.1 — شريط الإجراءات فوق، تحت الإجماليات، بشكل مرتب */
-const tb13=()=>{const n=(ui.mv12ids||[]).length;const other=S.me==='k'?'r':'k';const dis=n?'':'disabled';
+const tb13=()=>{const n=(ui.mv12ids||[]).length;const other=S.me==='k'?'r':'k';const third=view.route==='fortasks'?'s':'';const dis=n?'':'disabled';
  const B=(t,i,a,c='')=>`<button class="btn sm ${c}" data-act="${a}" ${dis}>${ic(i,15)}${t}</button>`;
  return `<div class="tb13" id="bar13"><label class="sa13"><input type="checkbox" id="sa13" aria-label="تحديد الكل"><span></span>تحديد الكل</label><b class="cnt13" id="bar13n">${n?'محدد '+n:'حدد شغلة أو أكثر من القائمة'}</b>
  <span class="sep13"></span><div class="grp13"><small>انقل</small>${B('لشركة أو عميل','repeat','mv12go')}</div>
- <span class="sep13"></span><div class="grp13"><small>حوّل</small>${B(PEOPLE[other].name,'send','as13:'+other)}${B('لي','users','as13:'+S.me)}</div>
+ <span class="sep13"></span><div class="grp13"><small>حوّل</small>${B(PEOPLE[other].name,'send','as13:'+other)}${third?B(PEOPLE[third].name,'send','as13:'+third):''}${B('لي','users','as13:'+S.me)}</div>
  <span class="sep13"></span><div class="grp13"><small>رد وإنجاز</small>${B('رد','inbox','rp13')}${B('تمّت ✓','tick','dn13','pri')}</div>
  ${n?`<button class="btn sm ghost13" data-act="mv12off">${ic('x',14)}إلغاء التحديد</button>`:''}</div>`};
 const pg131=o=>()=>{let h=o();if(!canWs11())return h;const i=h.indexOf('<div class="g211">');return i>0?h.slice(0,i)+tb13()+h.slice(i):h+tb13()};
@@ -2446,6 +2446,19 @@ const sync13=()=>{const n=(ui.mv12ids||[]).length;const bar=document.getElementB
  const all=[...document.querySelectorAll('#main [data-mv12]')];const sa=document.getElementById('sa13');if(sa){sa.checked=all.length&&all.every(x=>x.checked);sa.indeterminate=!sa.checked&&all.some(x=>x.checked)}};
 document.addEventListener('change',e=>{if(e.target.id==='sa13'){const on=e.target.checked;const all=[...document.querySelectorAll('#main [data-mv12]')];ui.mv12ids=on?[...new Set([...(ui.mv12ids||[]),...all.map(x=>x.dataset.mv12)])]:[];all.forEach(x=>{x.checked=on;const r=x.closest('.wr11');if(r)r.classList.toggle('on13',on)});sync13();return}
  if(e.target.closest('[data-mv12]'))setTimeout(sync13,0)});
+
+/* v13.2 — صفحة «مهام فوريستا» (للشغلات العادية اللي على فوريستا) */
+function forProcs13(){const L=S.procs.filter(p=>p.done<p.steps.length&&isFor(p.co)&&!p.rec).slice(0,8);
+ return `<section class="v7c" style="min-width:0">${head7('layers','إجراءات فوريستا الجارية','الإجراءات بخطواتها (تجديد إقامة، عقود…)',lnk7('الكل','procs'))}${L.map(p=>`<button class="fl11" data-go="proc-${p.id}">${ic('layers',18,'#A9690A')}<span class="tx"><b>${esc(p.title)}</b><small>الخطوة ${p.done+1} من ${p.steps.length} · عند ${PEOPLE[p.task.curWho]?PEOPLE[p.task.curWho].name:''}</small></span></button>`).join('')||'<div class="empty" style="padding:20px">ما فيه إجراءات جارية</div>'}</section>`}
+PAGES.fortasks=pg131(()=>{if(!(S.me==='r'||(S.me==='k'&&grants8('k').foresta)))return noAccess();return wsPage11('for').replace(/data-act="ws11new:for:/g,'data-act="ws13new:').replace(' · يشوفه رشيد وخالد بس','')});
+CR.fortasks=['فوريستا','مهام فوريستا'];
+(function(){const R=NAV.r;if(!R.some(n=>Array.isArray(n)&&n[2]==='fortasks')){const i=R.findIndex(n=>Array.isArray(n)&&n[2]==='employees');R.splice(i>=0?i:R.length,0,['check','مهام فوريستا','fortasks',()=>{try{return wsTasks11('for').filter(t=>!t.done&&t.due&&days(t.due)<=0).length}catch(e){return 0}},1])}
+ const j=NAV8.k.findIndex(n=>Array.isArray(n)&&n[2]==='procs');if(!NAV8.k.some(n=>Array.isArray(n)&&n[2]==='fortasks'))NAV8.k.splice(j+1,0,['check','مهام فوريستا','fortasks'])})();
+/* toolbar on the Foresta page also offers شيخة */
+const _tbV132=tb13;
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act^="ws13new:"]');if(!el)return;e.stopPropagation();e.preventDefault();const ty=el.dataset.act.split(':')[1]||'task';wsNew11('ext',ty);setTimeout(()=>{const f=document.querySelector('form[data-form="ws11:ext"]');if(!f)return;f.dataset.form='ws11:for';const c=f.querySelector('#ws-c');if(c){c.value='فوريستا';c.closest('.field').style.display='none'}const h=document.querySelector('.ov .mh b');if(h)h.textContent=h.textContent.replace('أعمال العملاء','مهام فوريستا')},0)},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="ws11:for"]');if(!f)return;e.preventDefault();e.stopPropagation();const V=id=>(f.querySelector('#'+id)||{}).value||'';const R=n=>(f.querySelector(`input[name=${n}]:checked`)||{}).value||'';
+ const o={t:V('ws-t').trim(),co:'فوريستا',who:R('wh')||S.me,d:V('ws-d'),rp:R('rp'),ty:R('ty')||'task',n:V('ws-n').trim()};if(!o.t){toast('اكتب العنوان');return}act(async()=>{await wsCreate11('ext',o);closeModal()},'انحفظت ✓')},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
