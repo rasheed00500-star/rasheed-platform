@@ -692,6 +692,11 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .cp15{width:26px!important;height:26px!important;border-radius:8px}
 .dn15{color:var(--ink2);font-weight:600;letter-spacing:.02em}
 .id15s{display:block;text-align:right;letter-spacing:.03em;color:#8C9993}
+/* v16 — يومي: اختيار الشركة */
+.co16{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:-4px}
+.co16 .l{display:inline-flex;align-items:center;gap:6px;color:var(--mute);font-size:13px;font-weight:600;margin-inline-end:2px}
+.co16 .chip{height:34px}
+@media (max-width:600px){.co16{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.co16 .chip,.co16 .l{flex:none}}
 
 </style>
 </head>
@@ -2729,6 +2734,47 @@ const _empsV15=PAGES.employees;PAGES.employees=prm=>{let h=_empsV15(prm);visEmp(
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="cp15:"]');if(!b)return;e.stopPropagation();e.preventDefault();const v=b.dataset.act.slice(5);
  const ok=()=>toast('انتسخ '+v);try{navigator.clipboard.writeText(v).then(ok,()=>{fallback()})}catch(x){fallback()}
  function fallback(){const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(y){toast(v)}t.remove()}},true);
+
+/* ===================== v16 · يومي: نفس الشكل، مرتب حسب الأولوية + اختيار الشركة/القسم ===================== */
+const CO16={'':'الكل',for:'فوريستا',ark:'أركان',ext:'العملاء الخارجيين'};
+const coOpts16=()=>S.me==='s'?[]:S.me==='k'?['','ark','ext'].concat(grants8('k').foresta?['for']:[]):['','for','ark','ext'];
+const coGet16=()=>{let v='';try{v=localStorage.getItem('co16:'+S.me)||''}catch(e){}return coOpts16().includes(v)?v:''};
+const coSet16=v=>{try{localStorage.setItem('co16:'+S.me,v)}catch(e){}};
+const coTask16=(c,co)=>c==='for'?isFor(co||''):c==='ark'?(co||'')===ARK11:c==='ext'?!!co&&co!==ARK11&&!isFor(co):true;
+const _homeV16=PAGES.home;
+PAGES.home=prm=>{const c=coGet16();const keep={tasks:S.tasks,procs:S.procs,employees:S.employees,vehicles:S.vehicles,clients:S.clients,services:S.services,leaves:S.leaves};const adv=typeof advRows==='function'?advRows:null;let h;
+ try{if(c){S.tasks=S.tasks.filter(t=>coTask16(c,t.co));S.procs=S.procs.filter(p=>coTask16(c,p.co));if(c!=='for'){S.employees=[];S.vehicles=[];S.leaves=[];if(adv)advRows=()=>[]}if(c!=='ext'){S.clients=[];S.services=[]}}h=_homeV16(prm)}
+ finally{Object.assign(S,keep);if(adv)advRows=adv}
+ try{return order16(h,c)}catch(e){console.warn('order16',e);return h}};
+function order16(h,c){const tp=document.createElement('template');tp.innerHTML=h;const K=[...tp.content.children];if(!K.length)return h;
+ const H3=el=>[...el.querySelectorAll('h3')].map(x=>x.textContent.trim());const has=(el,t)=>H3(el).includes(t);const used=new Set();const take=f=>{const r=K.filter(x=>!used.has(x)&&f(x));r.forEach(x=>used.add(x));return r};
+ const ph=take(x=>x.matches('.ph'));
+ const appr=take(x=>x.matches('.v7appr'));
+ const daySec=take(x=>x.matches('.v7sec'));
+ const tr=take(x=>x.matches('.card')&&!x.matches('.miss-card,.ag-top')&&/محوّلة لك/.test(x.textContent));
+ const team=take(x=>x.matches('.ag-team')),top=take(x=>x.matches('.ag-top')),board=take(x=>x.matches('.ag-board')),next=take(x=>x.matches('.row')&&(has(x,'الجاي')||/الجاي/.test(x.textContent.slice(0,200))));
+ const exp=take(x=>has(x,'الاستحقاقات القادمة')),procs=take(x=>has(x,'الإجراءات الجارية')),req=take(x=>has(x,'طلبات العملاء')),ws=take(x=>x.matches('.ws11g'));
+ const strip=take(x=>x.matches('.v7strip')),miss=take(x=>x.matches('.miss-card')),ram=take(x=>x.matches('.ram10'));
+ const kpi=take(x=>x.matches('.v7k')),g3=take(x=>x.matches('.v7g3')),rest=K.filter(x=>!used.has(x));
+ /* اللي ما له دخل بالشركة المختارة يختفي بدل ما يطلع فاضي */
+ const drop=(arr)=>{arr.length=0};
+ if(c==='ark'||c==='ext'){if(S.me!=='k')drop(kpi);drop(exp);drop(strip);drop(ram);g3.forEach(g=>[...g.children].forEach(ch=>{if(has(ch,'الالتزام مع الجهات الحكومية'))ch.remove()}))}
+ if(c==='for'){drop(ws);drop(req)}
+ if(c==='ark'){drop(req);if(S.me==='k')drop(kpi);ws.forEach(g=>{[...g.children].forEach(ch=>{if(has(ch,'أعمال العملاء'))ch.remove()});g.style.gridTemplateColumns='1fr'})}
+ if(c==='ext'){ws.forEach(g=>{[...g.children].forEach(ch=>{if(has(ch,'أركان'))ch.remove()});g.style.gridTemplateColumns='1fr'})}
+ if(c==='ark'||c==='ext')drop(tr);
+ g3.forEach(g=>{const n=g.children.length;if(n===2)g.style.gridTemplateColumns='repeat(2,minmax(0,1fr))'});
+ const dv=(t,i)=>{const d=document.createElement('div');d.className='v7sec';d.innerHTML=ic(i,20,'var(--br)')+t;return d};
+ const bar=coOpts16().length?(()=>{const d=document.createElement('div');d.className='co16';d.innerHTML=`<span class="l">${ic('bldg',15)}عرض:</span>${coOpts16().map(k=>`<button class="chip ${k===c?'on':''}" data-act="co16:${k}">${CO16[k]}</button>`).join('')}`;return d})():null;
+ const today=[...appr,...daySec,...tr,...team,...top,...board,...next];
+ const soon=[...exp,...procs,...req,...ws,...strip,...miss,...ram];
+ const stats=[...kpi,...g3,...rest];
+ const out=[...ph];if(bar)out.push(bar);
+ if(!daySec.length&&today.length)out.push(dv('يومي','cal'));out.push(...today);
+ if(soon.length)out.push(dv('قريب ولازم نتابعه','clock'),...soon);
+ if(stats.length)out.push(dv('الإحصائيات','chart'),...stats);
+ return out.map(x=>x.outerHTML).join('')}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="co16:"]');if(!b)return;e.stopPropagation();e.preventDefault();coSet16(b.dataset.act.slice(5));render()},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
