@@ -619,6 +619,15 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .mvo12 span small{color:var(--mute);font-size:11.5px}
 .mvo12 input:checked+span{border-color:var(--br);background:var(--brT);color:var(--br);font-weight:700}
 .mvo12 input:focus-visible+span{outline:2px solid var(--br)}
+/* v13 */
+.bar13{position:sticky;bottom:12px}
+.bar13.off{display:none}
+.acts13{margin-inline-start:auto;display:flex;gap:6px;flex-wrap:wrap}
+.acts13 .btn:not(.pri){background:#22312A;border-color:#3A4A43;color:#fff}
+.acts13 .btn:not(.pri) svg{stroke:#fff}
+.wr11.on13{background:#F1F8F5;border-radius:10px}
+.dot13{width:10px;height:10px;border-radius:50%;background:#C8D3CE;flex:none;margin-inline:5px}
+.dot13.ok{background:var(--br)}
 
 </style>
 </head>
@@ -2372,6 +2381,38 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^
 },true);
 document.addEventListener('focusin',e=>{if(e.target&&e.target.id==='mv12n'){const r=document.querySelector('input[name=to][value="__new"]');if(r)r.checked=true}});
 const _renderV12=render;render=function(){_renderV12();const b=document.getElementById('dm12bd');if(b)b.scrollTop=b.scrollHeight};
+
+
+/* ===================== v13 · المربعات للتحديد (مو للإنجاز) + شريط إجراءات ===================== */
+let wsHome13=false;
+const _wsCardV13=wsCard11;wsCard11=function(k){wsHome13=true;try{return _wsCardV13(k)}finally{wsHome13=false}};
+wsRow11=function(t,kind){const ty=TYP11[typ11(t)];const rp=rpt11(t);const sel=(ui.mv12ids||[]).includes(String(t.id));
+ const co=kind==='ext'?`<span class="tag11" style="--c:#12705E;--t:#E4F2EE">${esc(t.co)}</span>`:'';
+ const lead=wsHome13?`<span class="dot13 ${t.done?'ok':''}"></span>`:`<label class="pk12" title="تحديد"><input type="checkbox" data-mv12="${t.id}" ${sel?'checked':''} aria-label="تحديد «${esc(t.title)}»"><span></span></label>`;
+ const st=t.done?pill('خلصت','ok'):due11(t);
+ return `<div class="wr11 ${t.done?'dn':''} ${sel?'on13':''}">${lead}<button class="tx" data-go="task-${t.id}"><b>${esc(t.title)}</b><small><span class="tag11" style="--c:${ty[2]};--t:${ty[3]}">${ic(ty[1],12)}${ty[0]}</span>${co}${rp?`<span class="mini">${ic('repeat',12)} ${rp==='w'?'كل أسبوع':'كل شهر'}</span>`:''}${t.sub&&t.sub!==rawOf11(t).ReqType?`<span class="mini">${esc(t.sub.slice(0,60))}</span>`:''}</small></button>${st}<span class="who11">${av(t.who)}<span>${PEOPLE[t.who].name}</span></span></div>`};
+/* page: remove old select-mode button, add the action bar whenever something is selected */
+const bar13=()=>{const ids=(ui.mv12ids||[]);const n=ids.length;const other=S.me==='k'?'r':'k';
+ return `<div class="bar12 bar13 ${n?'':'off'}" id="bar13">${ic('check',18,'#fff')}<b id="bar13n">محدد ${n}</b><span class="acts13">${btn('نقل لشركة أو عميل','repeat','','mv12go')}${btn('حوّل لـ'+PEOPLE[other].name,'send','',`as13:${other}`)}${btn('حوّل لي','users','',`as13:${S.me}`)}${btn('رد','inbox','','rp13')}${btn('تمّت ✓','tick','pri','dn13')}${btn('إلغاء التحديد','x','','mv12off')}</span></div>`};
+const pg13=o=>()=>{let h=o();if(!canWs11())return h;h=h.replace(/<button class="btn[^"]*"[^>]*data-act="mv12(on|off)"[^>]*>[\s\S]*?<\/button>/,'').replace(/<div class="bar12">[\s\S]*$/,'');return h+bar13()};
+PAGES.arkan=pg13(_arkV12);PAGES.external=pg13(_extV12);
+document.addEventListener('change',e=>{const el=e.target.closest('[data-mv12]');if(!el)return;setTimeout(()=>{const n=(ui.mv12ids||[]).length;const b=document.getElementById('bar13');if(b){b.classList.toggle('off',!n);const c=document.getElementById('bar13n');if(c)c.textContent='محدد '+n}const row=el.closest('.wr11');if(row)row.classList.toggle('on13',el.checked)},0)});
+const selTasks13=()=>(ui.mv12ids||[]).map(id=>S.tasks.find(t=>t.id==id)).filter(Boolean);
+function rpModal13(){const T=selTasks13();if(!T.length){toast('حدّد شغلة');return}
+ modal(`<div class="mh"><div><b>رد على ${T.length>1?T.length+' شغلات':'«'+esc(T[0].title)+'»'}</b><div class="mini" style="margin-top:2px">الرد ينحفظ في محادثة الشغلة ويوصل جرس للطرف الثاني</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="rp13"><div class="mb"><div class="chips" style="margin-bottom:8px">${['تم ✓','شغال عليها','أحتاج وقت','أحتاج معلومات من العميل','ننتظر رد الجهة'].map(q=>`<button type="button" class="chip" data-act="rq13:${q}">${q}</button>`).join('')}</div><div class="field"><label for="rp13t">الرد</label><textarea id="rp13t" class="inp" rows="3" style="height:auto;padding:10px 12px" required></textarea></div>
+ <label class="tg12" style="margin-top:6px"><input type="checkbox" id="rp13wa" ${localStorage12('dm12wa')!=='0'?'checked':''}><i></i>وأرسله بالواتساب</label></div><div class="mf"><button class="btn pri" type="submit">${ic('send',16,'#fff')}إرسال الرد</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+async function doneTask13(t){const r=rawOf11(t);const f={Status:'منجزة',DoneOn:new Date().toISOString()};await spPatch('Tasks',t.id,f);Object.assign(r,f);
+ if(rpt11(t)){const nx=new Date(t.due?D(t.due):TODAY);if(rpt11(t)==='w')nx.setDate(nx.getDate()+7);else nx.setMonth(nx.getMonth()+1);const it=await spCreate('Tasks',{Title:r.Title,AssignedTo:r.AssignedTo,AssignedBy:r.AssignedBy||PEOPLE[S.me].name,DueDate:toIso(nx),Company:r.Company,Status:'مفتوحة',ReqType:r.ReqType||'مهمة',Chain:r.Chain||'r,k',Notes:r.Notes||null,LinkRef:r.LinkRef});RAW.Tasks.push(it)}}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const parts=el.dataset.act.split(':');const a=parts[0],x=parts.slice(1).join(':');const H={as13:1,rp13:1,dn13:1,rq13:1};if(!H[a])return;e.stopPropagation();e.preventDefault();
+ if(a==='rq13'){const t=document.getElementById('rp13t');if(t){t.value=t.value?t.value+' '+x:x;t.focus()}return}
+ const T=selTasks13();if(!T.length){toast('حدّد شغلة وحدة على الأقل');return}
+ if(a==='rp13'){rpModal13();return}
+ if(a==='as13'){const L=T.filter(t=>t.who!==x);if(!L.length){toast('المحدد كله عند '+PEOPLE[x].name+' أصلاً');return}act(async()=>{for(const t of L){const f={AssignedTo:PEOPLE[x].name,AssignedBy:PEOPLE[S.me].name};await spPatch('Tasks',t.id,f);Object.assign(rawOf11(t),f)}if(x!==S.me)await notify(PEOPLE[x].name,`${PEOPLE[S.me].name} حوّل لك ${L.length>1?L.length+' شغلات':'شغلة'}`,L.map(t=>t.title).join('، ').slice(0,120),L.length===1?'task-'+L[0].id:(L.some(isArk11)?'arkan':'external'),'send');ui.mv12ids=[]},`انحوّلت ${L.length>1?L.length+' شغلات ':''}لـ${x===S.me?'ك':PEOPLE[x].name} ✓`);return}
+ if(a==='dn13'){const L=T.filter(t=>!t.done);act(async()=>{for(const t of L)await doneTask13(t);ui.mv12ids=[]},`تمّت ${L.length>1?L.length+' شغلات ':''}✓`);return}
+},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="rp13"]');if(!f)return;e.preventDefault();e.stopPropagation();const txt=(document.getElementById('rp13t').value||'').trim();if(!txt){toast('اكتب الرد');return}const wa=document.getElementById('rp13wa').checked;localStorage12('dm12wa',wa?'1':'0');const T=selTasks13();
+ const peer=t=>{const by=KEY[rawOf11(t).AssignedBy];return t.who!==S.me?t.who:(by&&by!==S.me?by:(S.me==='k'?'r':'k'))};const p0=peer(T[0]);const w=wa?window.open('about:blank','_blank'):null;
+ act(async()=>{for(const t of T){await addMsg(t.id,txt,'');const p=peer(t);await notify(PEOPLE[p].name,`رد من ${PEOPLE[S.me].name} على «${t.title.slice(0,50)}»`,txt.slice(0,100),'task-'+t.id,'inbox')}if(w)w.location.href=waUrl12(p0,`${T.length>1?'بخصوص: '+T.map(t=>t.title).join('، '):'بخصوص «'+T[0].title+'»'}\n${txt}\n— من منصة رشيد`);ui.mv12ids=[];closeModal()},'انرسل الرد ✓')},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
