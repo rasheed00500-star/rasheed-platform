@@ -545,6 +545,35 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .ib .bd{top:-8px;left:-8px;height:20px;min-width:20px;padding:0 5px;box-sizing:border-box;line-height:16px;font-size:10.5px;z-index:2}
 .med10{margin:0}
 .med10 .inp{background:#fff}
+/* ===================== v11 ===================== */
+.k411{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@container (min-width:860px){.k411{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.k11{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;min-width:0}
+.k11 .i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}
+.k11 b{display:block;font-size:24px;line-height:1.15}.k11 small{display:block;font-size:12px;color:var(--mute)}
+.g211{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+@container (max-width:900px){.g211{grid-template-columns:1fr}}
+.wr11{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line2)}
+.wr11:last-child{border-bottom:0}
+.wr11 .cb{flex:none;cursor:pointer}
+.wr11 .tx{flex:1;min-width:0;background:none;border:0;padding:0;text-align:right;cursor:pointer;color:inherit;font:inherit}
+.wr11 .tx b{display:block;font-size:14px;font-weight:600}
+.wr11 .tx small{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:3px}
+.wr11.dn .tx b{text-decoration:line-through;color:var(--mute)}
+.wr11 .tx:hover b{color:var(--br)}
+.tag11{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:99px;font-size:11.5px;font-weight:700;background:var(--t);color:var(--c)}
+.who11{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);flex:none;min-width:76px}
+.who11 .av{width:26px;height:26px;font-size:12px}
+.fl11{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff;text-align:right;cursor:pointer;font:inherit;color:inherit}
+.fl11:hover{border-color:#A8D2C6;background:#F7FBFA}
+.fl11 .tx{flex:1;min-width:0}.fl11 b{display:block;font-size:13.5px;font-weight:600}.fl11 small{font-size:12px;color:var(--mute)}
+.sg11{flex:1;cursor:pointer}.sg11 input{position:absolute;opacity:0;pointer-events:none}
+.sg11 span{display:flex;align-items:center;justify-content:center;gap:6px;height:34px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink2)}
+.sg11 input:checked+span{background:#fff;color:var(--br);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.sg11 input:focus-visible+span{outline:2px solid var(--br)}
+.ws11c{border-top:4px solid var(--c)}
+.ws11c .v7h .ci{background:var(--t);color:var(--c)}
+@media (max-width:640px){.who11 span{display:none}.who11{min-width:0}}
 
 </style>
 </head>
@@ -2100,6 +2129,93 @@ const _missV102=PAGES.missing;PAGES.missing=()=>{const h=_missV102();if(S.me==='
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act="medp10"]');if(!el)return;e.stopPropagation();e.preventDefault();modal(`<div class="mh"><b>بوليصة التأمين الطبي</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb">${medBox10()}</div>`)},true);
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="medp10"]');if(!f)return;e.preventDefault();e.stopPropagation();const d=(f.querySelector('#med10d')||{}).value||'';const ins=((f.querySelector('#med10i')||{}).value||'').trim();if(!d){toast('اختر تاريخ انتهاء البوليصة');return}
  act(async()=>{await updSet10(s=>{s.medCompany=true;s.medEnd=d;s.medIns=ins});if(document.querySelector('.ov'))closeModal()},'انحفظت بوليصة التأمين ✓')},true);
+
+
+/* ===================== v11 · أركان + أعمال العملاء (رشيد وخالد) ===================== */
+const ARK11='أركان';
+const isArk11=t=>(t.co||'')===ARK11;
+const isExt11=t=>!t.steps&&t.co&&t.co!==ARK11&&!isFor(t.co);
+const wsTasks11=k=>S.tasks.filter(t=>!t.steps&&(k==='ark'?isArk11(t):isExt11(t))&&(S.me!=='s'));
+const rawOf11=t=>RAW.Tasks.find(r=>r.id===t.id)||{};
+const typ11=t=>{const r=rawOf11(t);return r.ReqType==='تذكير'?'rem':r.ReqType==='متابعة'?'fol':'task'};
+const rpt11=t=>{const m=/^RPT:([wm])/.exec(rawOf11(t).LinkRef||'');return m?m[1]:''};
+const TYP11={task:['مهمة','check','#12705E','#E4F2EE'],rem:['تذكير','bell','#6650C2','#F0EDFB'],fol:['متابعة','clock','#B4700F','#FDF5E5']};
+const WSC11={ark:['#2D69B0','#E9F1FA','bldg','أركان','شغل شركة أركان بينك وبين خالد'],ext:['#12705E','#E4F2EE','brief','أعمال العملاء','الشغل الخارجي للعملاء والشركات الثانية']};
+const due11=t=>t.due?(days(t.due)<0?pill('متأخرة '+(-days(t.due))+' يوم','exp'):days(t.due)===0?pill('اليوم','soon'):days(t.due)===1?pill('بكرة','soon'):pill(t.due.slice(0,5),days(t.due)<=7?'soon':'info')):'<span class="mini">بدون موعد</span>';
+const canWs11=()=>S.me==='r'||S.me==='k';
+
+function wsRow11(t,kind){const ty=TYP11[typ11(t)];const rp=rpt11(t);const co=kind==='ext'?`<span class="tag11" style="--c:#12705E;--t:#E4F2EE">${esc(t.co)}</span>`:'';
+ return `<div class="wr11 ${t.done?'dn':''}"><button class="cb ${t.done?'ok':''}" data-act="done:${t.id}" aria-label="${t.done?'رجّعها مفتوحة':'تمّت'}">${t.done?ic('tick',12,'#fff',3):''}</button><button class="tx" data-go="task-${t.id}"><b>${esc(t.title)}</b><small><span class="tag11" style="--c:${ty[2]};--t:${ty[3]}">${ic(ty[1],12)}${ty[0]}</span>${co}${rp?`<span class="mini">${ic('repeat',12)} ${rp==='w'?'كل أسبوع':'كل شهر'}</span>`:''}${t.sub&&t.sub!==rawOf11(t).ReqType?`<span class="mini">${esc(t.sub.slice(0,60))}</span>`:''}</small></button>${t.done?'<span class="mini">خلصت</span>':due11(t)}<span class="who11">${av(t.who)}<span>${PEOPLE[t.who].name}</span></span></div>`}
+
+function wsPage11(kind){if(!canWs11())return noAccess();const C=WSC11[kind];const all=wsTasks11(kind);const open=all.filter(t=>!t.done);
+ const f=(ui.ws11f||{})[kind]||'open';const cli=kind==='ext'?[...new Set(open.map(t=>t.co))].sort():[];const cf=(ui.ws11c||{})[kind]||'';
+ const F={open:['المفتوحة',t=>!t.done],mine:['عندي',t=>!t.done&&t.who===S.me],other:[S.me==='k'?'عند رشيد':'عند خالد',t=>!t.done&&t.who!==S.me],rem:['التذكيرات',t=>!t.done&&typ11(t)==='rem'],fol:['المتابعات',t=>!t.done&&typ11(t)==='fol'],late:['المتأخرة',t=>!t.done&&t.due&&days(t.due)<0],done:['المنجزة',t=>t.done]};
+ const L=all.filter(F[f]?F[f][1]:F.open[1]).filter(t=>!cf||t.co===cf).sort((a,b)=>f==='done'?(D(b.due)||0)-(D(a.due)||0):(D(a.due)||9e15)-(D(b.due)||9e15));
+ const wk=open.filter(t=>t.due&&days(t.due)>=0&&days(t.due)<=7).length,lt=open.filter(t=>t.due&&days(t.due)<0).length;
+ const dm=all.filter(t=>t.done&&rawOf11(t).DoneOn&&new Date(rawOf11(t).DoneOn).getMonth()===TODAY.getMonth()&&new Date(rawOf11(t).DoneOn).getFullYear()===TODAY.getFullYear()).length;
+ const k4=(i,c,t,n,s)=>`<div class="k11"><span class="i" style="background:${c[1]};color:${c[0]}">${ic(i,20)}</span><div><small>${t}</small><b>${n}</b><small>${s}</small></div></div>`;
+ const side=kind==='ark'?arkDocs11():extSvc11();
+ return `<div class="ph"><div><h1>${C[3]}</h1><p>${C[4]} · يشوفه رشيد وخالد بس</p></div><div class="acts">${btn('تذكير','bell','',`ws11new:${kind}:rem`)}${btn('متابعة','clock','',`ws11new:${kind}:fol`)}${btn('مهمة جديدة','plus','pri',`ws11new:${kind}:task`)}</div></div>
+ <div class="k411">${k4(C[2],[C[0],C[1]],'مفتوحة',open.length,`رشيد ${open.filter(t=>t.who==='r').length} · خالد ${open.filter(t=>t.who==='k').length}`)}${k4('bell',['#6650C2','#F0EDFB'],'خلال 7 أيام',wk,'مواعيد قريبة')}${k4('alert',['#CF3F35','#FDEDEB'],'متأخرة',lt,lt?'تحتاج متابعة':'ما فيه تأخير')}${k4('ok',['#12705E','#E4F2EE'],'خلصت هالشهر',dm,'')}</div>
+ <div class="g211"><section class="v7c" style="min-width:0"><div class="chips" style="margin-bottom:10px">${Object.entries(F).map(([k,v])=>`<button class="chip ${f===k?'on':''}" data-act="ws11f:${kind}:${k}">${v[0]} <span class="c">${all.filter(v[1]).filter(t=>!cf||t.co===cf).length}</span></button>`).join('')}</div>
+ ${cli.length>1?`<div class="chips" style="margin-bottom:8px"><button class="chip ${!cf?'on':''}" data-act="ws11c:${kind}:">كل العملاء</button>${cli.map(c=>`<button class="chip ${cf===c?'on':''}" data-act="ws11c:${kind}:${encodeURIComponent(c)}">${esc(c)}</button>`).join('')}</div>`:''}
+ <div>${L.map(t=>wsRow11(t,kind)).join('')||`<div class="empty" style="padding:30px">${ic('ok',22,'var(--br)')}<div style="margin-top:6px">ما فيه شي هنا</div></div>`}</div></section>${side}</div>`}
+
+/* ---- Arkan documents file (dates only, in settings json) ---- */
+function arkDocs11(){const L=(SET10.arkDocs||[]).slice().sort((a,b)=>(a.end||'9')>(b.end||'9')?1:-1);
+ return `<section class="v7c" style="min-width:0">${head7('file','ملف أركان','المستندات الأساسية وتواريخ انتهائها',`<button class="btn sm" data-act="ark11doc:">${ic('plus',14)}إضافة</button>`)}
+ ${L.map(d=>{const dd=d.end?d.end.split('-').reverse().join('/'):'';const n=dd?days(dd):null;return `<button class="fl11" data-act="ark11doc:${d.id}">${ic('file',18,'#2D69B0')}<span class="tx"><b>${esc(d.n)}</b><small>${dd?'ينتهي '+dd:'بدون تاريخ'}${d.note?' · '+esc(d.note):''}</small></span>${dd?(n<0?pill('منتهي','exp'):n<=30?pill('باقي '+n+' يوم','soon'):pill('ساري','ok')):pill('—','gray')}</button>`}).join('')||`<div class="empty" style="padding:20px">أضف مستندات أركان (السجل التجاري، الغرفة، السعودة، عقد المكتب…) وتنبّهكم قبل انتهائها</div>`}</section>`}
+function arkDocModal11(id){const d=(SET10.arkDocs||[]).find(x=>x.id===id)||{n:'',end:'',note:''};
+ modal(`<div class="mh"><b>${id?'تعديل مستند':'مستند جديد'} · أركان</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="ark11doc:${id||''}"><div class="mb"><div class="field"><label for="ak-n">المستند</label><input id="ak-n" class="inp" list="ak-l" value="${esc(d.n)}" required placeholder="مثلاً: السجل التجاري"><datalist id="ak-l">${['السجل التجاري','عضوية الغرفة التجارية','شهادة السعودة','شهادة الزكاة','شهادة التأمينات','عقد إيجار المكتب','رخصة البلدية','العنوان الوطني'].map(x=>`<option value="${x}">`).join('')}</datalist></div>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"><div class="field"><label for="ak-d">تاريخ الانتهاء</label><input id="ak-d" type="date" class="inp" value="${esc(d.end||'')}"></div><div class="field"><label for="ak-o">ملاحظة (اختياري)</label><input id="ak-o" class="inp" value="${esc(d.note||'')}"></div></div></div>
+ <div class="mf"><button class="btn pri" type="submit">${ic('tick',16)}حفظ</button>${id?`<button class="btn" type="button" data-act="ark11del:${id}" style="color:var(--red)">${ic('x',15)}حذف</button>`:''}<button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+const arkDocAlerts11=()=>(SET10.arkDocs||[]).filter(d=>d.end).map(d=>({...d,dd:d.end.split('-').reverse().join('/')})).map(d=>({...d,n2:days(d.dd)})).filter(d=>d.n2<=30);
+
+/* ---- external: open client services summary ---- */
+function extSvc11(){const L=S.services.filter(s=>!['منجزة','ملغي'].includes(s.status)).slice(0,8);
+ return `<section class="v7c" style="min-width:0">${head7('inbox','طلبات الخدمات الجارية','مراحل طلبات العملاء',lnk7('الكل','services'))}${L.map(s=>`<button class="fl11" data-go="client-${s.client}">${ic('brief',18,'#12705E')}<span class="tx"><b>${esc(s.svc.split(' · ')[0])}</b><small>${esc(s.clientName||'')} · ${s.done}/${s.steps.length||'—'}</small></span>${pill(s.status,svcStatusK(s.status))}</button>`).join('')||'<div class="empty" style="padding:20px">ما فيه طلبات جارية</div>'}</section>`}
+
+/* ---- new item modal ---- */
+function wsNew11(kind,typ){const C=WSC11[kind];const cl=S.clients.map(c=>c.name);const other=S.me==='k'?'r':'k';
+ modal(`<div class="mh"><div><b>${typ==='rem'?'تذكير':typ==='fol'?'متابعة':'مهمة'} جديدة · ${C[3]}</b><div class="mini" style="margin-top:2px">تطلع لك ولـ${PEOPLE[other].name} في «${C[3]}» وفي «يومي» يوم موعدها</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="ws11:${kind}"><div class="mb">
+ <div class="field"><label>النوع</label><div class="seg" style="display:flex">${Object.entries(TYP11).map(([k,v])=>`<label class="sg11"><input type="radio" name="ty" value="${k}" ${k===typ?'checked':''}><span>${ic(v[1],15)}${v[0]}</span></label>`).join('')}</div></div>
+ <div class="field"><label for="ws-t">العنوان</label><input id="ws-t" class="inp" required placeholder="${kind==='ark'?'مثلاً: تجديد عضوية الغرفة التجارية':'مثلاً: متابعة عقد التأسيس'}"></div>
+ ${kind==='ext'?`<div class="field"><label for="ws-c">العميل أو الجهة</label><input id="ws-c" class="inp" list="ws-cl" required placeholder="اختر أو اكتب اسم جديد"><datalist id="ws-cl">${cl.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>`:''}
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"><div class="field"><label>عند مين؟</label><div class="seg" style="display:flex">${[S.me,other].map((p,i)=>`<label class="sg11"><input type="radio" name="wh" value="${p}" ${i===0?'checked':''}><span>${i===0?'أنا':PEOPLE[p].name}</span></label>`).join('')}</div></div><div class="field"><label for="ws-d">الموعد</label><input id="ws-d" type="date" class="inp" value="${ymd(new Date(TODAY.getTime()+(typ==='rem'?864e5:3*864e5)))}"></div></div>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"><div class="field"><label>يتكرر؟</label><div class="seg" style="display:flex">${[['','مرة وحدة'],['w','كل أسبوع'],['m','كل شهر']].map((x,i)=>`<label class="sg11"><input type="radio" name="rp" value="${x[0]}" ${i===0?'checked':''}><span>${x[1]}</span></label>`).join('')}</div></div><div class="field"><label for="ws-n">ملاحظة (اختياري)</label><input id="ws-n" class="inp" placeholder="مثلاً: نحتاج صورة السجل"></div></div></div>
+ <div class="mf"><button class="btn pri" type="submit">${ic('tick',16)}حفظ</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+async function wsCreate11(kind,o){const f={Title:o.t,AssignedTo:PEOPLE[o.who].name,AssignedBy:PEOPLE[S.me].name,DueDate:o.d?o.d+'T12:00:00Z':null,Company:kind==='ark'?ARK11:o.co,Status:'مفتوحة',ReqType:o.ty==='rem'?'تذكير':o.ty==='fol'?'متابعة':'مهمة',Chain:'r,k'};if(o.n)f.Notes=o.n;if(o.rp)f.LinkRef='RPT:'+o.rp;
+ const it=await spCreate('Tasks',f);RAW.Tasks.push(it);if(o.who!==S.me)await notify(PEOPLE[o.who].name,`${f.ReqType==='تذكير'?'تذكير جديد':f.ReqType+' جديدة'} من ${PEOPLE[S.me].name} · ${kind==='ark'?'أركان':o.co}`,o.t+(o.d?' · '+o.d.split('-').reverse().join('/'):''),'task-'+it.id,kind==='ark'?'bldg':'brief');return it}
+
+/* ---- pages + nav + home ---- */
+PAGES.arkan=()=>wsPage11('ark');PAGES.external=()=>wsPage11('ext');
+Object.assign(CR,{arkan:['أركان'],external:['العملاء الخارجيين','أعمال العملاء']});
+const wsCnt11=k=>()=>{try{return wsTasks11(k).filter(t=>!t.done&&(t.who===S.me||S.me==='r')&&t.due&&days(t.due)<=0).length+(k==='ark'?arkDocAlerts11().filter(d=>d.n2<0).length:0)}catch(e){return 0}};
+(function(){const R=NAV.r;if(!R.some(n=>Array.isArray(n)&&n[2]==='arkan')){const i=R.indexOf('العملاء الخارجيين');R.splice(i>=0?i:R.length,0,'أركان (رشيد وخالد)',['bldg','أركان','arkan',wsCnt11('ark'),1]);const j=R.indexOf('العملاء الخارجيين');R.splice(j+1,0,['check','أعمال العملاء','external',wsCnt11('ext'),1])}
+ const K=NAV.k;if(!K.some(n=>Array.isArray(n)&&n[2]==='arkan')){const i=K.indexOf('أعمالنا');K.splice(i>=0?i:K.length,0,'أركان',['bldg','أركان','arkan',wsCnt11('ark'),1]);const j=K.indexOf('أعمالنا');K[j]='العملاء الخارجيين';K.splice(j+1,0,['check','أعمال العملاء','external',wsCnt11('ext'),1])}})();
+function wsCard11(kind){const C=WSC11[kind];const open=wsTasks11(kind).filter(t=>!t.done).sort((a,b)=>(D(a.due)||9e15)-(D(b.due)||9e15));const lt=open.filter(t=>t.due&&days(t.due)<0).length;const docs=kind==='ark'?arkDocAlerts11():[];
+ return `<div class="v7c ws11c" style="--c:${C[0]};--t:${C[1]}">${head7(C[2],C[3],`${open.length} مفتوحة${lt?' · '+lt+' متأخرة':''} · رشيد ${open.filter(t=>t.who==='r').length} · خالد ${open.filter(t=>t.who==='k').length}`,lnk7('افتح',kind==='ark'?'arkan':'external'))}
+ ${docs.map(d=>`<button class="fl11" data-go="arkan">${ic('file',17,'#2D69B0')}<span class="tx"><b>${esc(d.n)}</b><small>ينتهي ${d.dd}</small></span>${d.n2<0?pill('منتهي','exp'):pill('باقي '+d.n2+' يوم','soon')}</button>`).join('')}
+ ${open.slice(0,4).map(t=>wsRow11(t,kind)).join('')||'<div class="empty" style="padding:16px">ما فيه شي مفتوح</div>'}</div>`}
+const _homeV11=PAGES.home;PAGES.home=()=>{const h=_homeV11();if(!canWs11())return h;const cards=`<div class="v7g2 ws11g">${wsCard11('ark')}${wsCard11('ext')}</div>`;const i=h.indexOf('<div class="v7sec">');return i>0?h.slice(0,i)+cards+h.slice(i):h+cards};
+
+/* ---- handlers ---- */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const parts=el.dataset.act.split(':');const [a,x,y]=parts;
+ if(a==='done'){const t=S.tasks.find(q=>q.id==x);if(t&&!t.done&&rpt11(t)&&(isArk11(t)||isExt11(t))){const r=rawOf11(t);const base=t.due?D(t.due):new Date(TODAY);const nx=new Date(base);if(rpt11(t)==='w')nx.setDate(nx.getDate()+7);else nx.setMonth(nx.getMonth()+1);
+   setTimeout(async()=>{try{const it=await spCreate('Tasks',{Title:r.Title,AssignedTo:r.AssignedTo,AssignedBy:r.AssignedBy||PEOPLE[S.me].name,DueDate:toIso(nx),Company:r.Company,Status:'مفتوحة',ReqType:r.ReqType||'مهمة',Chain:r.Chain||'r,k',Notes:r.Notes||null,LinkRef:r.LinkRef});RAW.Tasks.push(it);build();render();toast('انضافت المرة الجاية: '+fmt(nx))}catch(err){console.warn(err)}},1200)}return}
+ const H={ws11new:1,ws11f:1,ws11c:1,ark11doc:1,ark11del:1};if(!H[a])return;e.stopPropagation();e.preventDefault();
+ if(a==='ws11new'){wsNew11(x,y||'task');return}
+ if(a==='ws11f'){ui.ws11f=ui.ws11f||{};ui.ws11f[x]=y;render();return}
+ if(a==='ws11c'){ui.ws11c=ui.ws11c||{};ui.ws11c[x]=decodeURIComponent(parts.slice(2).join(':'));render();return}
+ if(a==='ark11doc'){arkDocModal11(x||'');return}
+ if(a==='ark11del'){act(async()=>{await updSet10(s=>{s.arkDocs=(s.arkDocs||[]).filter(d=>d.id!==x)});closeModal()},'انحذف المستند');return}
+},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="ws11:"],form[data-form^="ark11doc:"]');if(!f)return;e.preventDefault();e.stopPropagation();const [a,x]=f.dataset.form.split(':');const V=id=>(f.querySelector('#'+id)||{}).value||'';const R=n=>(f.querySelector(`input[name=${n}]:checked`)||{}).value||'';
+ if(a==='ws11'){const o={t:V('ws-t').trim(),co:V('ws-c').trim(),who:R('wh')||S.me,d:V('ws-d'),rp:R('rp'),ty:R('ty')||'task',n:V('ws-n').trim()};if(!o.t){toast('اكتب العنوان');return}if(x==='ext'&&!o.co){toast('اكتب اسم العميل');return}if(x==='ext'&&(isFor(o.co)||o.co===ARK11)){toast('هذي خانة العملاء الخارجيين بس');return}
+  act(async()=>{await wsCreate11(x,o);closeModal()},'انحفظت ✓');return}
+ if(a==='ark11doc'){const n=V('ak-n').trim();if(!n){toast('اكتب اسم المستند');return}const d={id:x||('d'+Date.now()),n,end:V('ak-d'),note:V('ak-o').trim()};
+  act(async()=>{await updSet10(s=>{s.arkDocs=(s.arkDocs||[]).filter(q=>q.id!==d.id).concat([d])});closeModal()},'انحفظ في ملف أركان ✓');return}
+},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
