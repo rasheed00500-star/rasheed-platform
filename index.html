@@ -574,6 +574,51 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .ws11c{border-top:4px solid var(--c)}
 .ws11c .v7h .ci{background:var(--t);color:var(--c)}
 @media (max-width:640px){.who11 span{display:none}.who11{min-width:0}}
+/* ===================== v12 ===================== */
+.th12{display:grid;grid-template-columns:280px minmax(0,1fr);background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;height:calc(100vh - 210px);min-height:520px}
+@container (max-width:760px){.th12{grid-template-columns:1fr;height:auto}.tl12{display:flex;overflow:auto;border-inline-start:0!important;border-bottom:1px solid var(--line)}.tl12 .it12{min-width:200px}}
+.tl12{border-inline-start:1px solid var(--line);overflow:auto;background:#FBFCFC}
+.it12{display:flex;align-items:center;gap:10px;width:100%;padding:13px 14px;border:0;border-bottom:1px solid var(--line2);background:none;text-align:right;font:inherit;color:inherit;cursor:pointer}
+.it12:hover{background:#F4F8F6}.it12.on{background:#E9F4F0}
+.it12 .tx{flex:1;min-width:0}.it12 b{display:block;font-size:14px}.it12 small{display:block;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c12{min-width:20px;height:20px;border-radius:99px;background:var(--red);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.cv12{display:flex;flex-direction:column;min-height:0}
+.cv12 .top{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line2)}
+.lnk12{background:none;border:0;padding:0;color:var(--br);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+.bd12{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#FAFCFB;min-height:200px}
+.bb12{max-width:72%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.7;word-break:break-word}
+.bb12.me{align-self:flex-start;background:#E4F2EE;border-top-right-radius:4px}
+.bb12.ot{align-self:flex-end;background:#fff;border:1px solid var(--line);border-top-left-radius:4px}
+.bb12 small,.cd12 small{display:block;font-size:11px;color:var(--mute);margin-top:4px}
+.cd12{max-width:74%;background:#fff;border:1px solid var(--line);border-inline-start:4px solid var(--c);border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;gap:4px}
+.cd12.me{align-self:flex-start}.cd12.ot{align-self:flex-end}
+.cd12 .h{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cd12 b{font-size:14px}
+.cd12 .qa{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.cmp12{border-top:1px solid var(--line2);padding:10px 14px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.row12{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row12 select.inp,.row12 input[type=date]{height:36px;max-width:190px;font-size:13px}
+.row12 textarea{flex:1;min-width:220px;height:auto;min-height:44px;padding:10px 12px;resize:vertical}
+.tg12{display:inline-flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;white-space:nowrap}
+.tg12 input{position:absolute;opacity:0;pointer-events:none}
+.tg12 i{width:38px;height:22px;border-radius:99px;background:#CBD5D1;position:relative;transition:background .15s}
+.tg12 i::after{content:"";position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:right .15s}
+.tg12 input:checked+i{background:#25D366}.tg12 input:checked+i::after{right:19px}
+.tg12 input:focus-visible+i{outline:2px solid var(--br);outline-offset:2px}
+/* move */
+.ib.mv12{width:32px;height:32px;flex:none;opacity:.55}.wr11:hover .ib.mv12{opacity:1}
+.pk12{flex:none;cursor:pointer}.pk12 input{position:absolute;opacity:0}
+.pk12 span{display:block;width:20px;height:20px;border-radius:6px;border:2px solid #9DB2A9;background:#fff}
+.pk12 input:checked+span{background:var(--br);border-color:var(--br);box-shadow:inset 0 0 0 3px #fff}
+.pk12 input:focus-visible+span{outline:2px solid var(--br);outline-offset:2px}
+.wr11.sel12{cursor:pointer}
+.bar12{position:sticky;bottom:12px;z-index:5;margin-top:12px;background:#14201A;color:#fff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 14px 30px -12px rgba(0,0,0,.4)}
+.mvl12{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.mvo12{cursor:pointer}.mvo12 input{position:absolute;opacity:0}
+.mvo12 span{display:flex;align-items:center;gap:8px;min-height:42px;padding:6px 12px;border:1.5px solid var(--line);border-radius:11px;font-size:13.5px;background:#fff}
+.mvo12 span small{color:var(--mute);font-size:11.5px}
+.mvo12 input:checked+span{border-color:var(--br);background:var(--brT);color:var(--br);font-weight:700}
+.mvo12 input:focus-visible+span{outline:2px solid var(--br)}
 
 </style>
 </head>
@@ -2216,6 +2261,117 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^
  if(a==='ark11doc'){const n=V('ak-n').trim();if(!n){toast('اكتب اسم المستند');return}const d={id:x||('d'+Date.now()),n,end:V('ak-d'),note:V('ak-o').trim()};
   act(async()=>{await updSet10(s=>{s.arkDocs=(s.arkDocs||[]).filter(q=>q.id!==d.id).concat([d])});closeModal()},'انحفظ في ملف أركان ✓');return}
 },true);
+
+
+/* ===================== v12 · الرسائل + نقل الشغلات + صلاحية خالد على فوريستا ===================== */
+
+/* ---------- 1) الرسائل بين رشيد وشيخة وخالد ---------- */
+const DMK12=(a,b)=>'DM:'+[a,b].sort().join('-');
+const dmMeta12=m=>{const p=String(m.Title||'').split('|');const o={key:p[0]};p.slice(1).forEach(x=>{const i=x.indexOf('=');if(i>0)o[x.slice(0,i)]=x.slice(i+1)});return o};
+const dmAll12=()=>(RAW.Messages||[]).filter(m=>/^DM:/.test(m.Title||''));
+const dmWith12=p=>{const k=DMK12(S.me,p);return dmAll12().filter(m=>dmMeta12(m).key===k).sort((a,b)=>new Date(a.Created||0)-new Date(b.Created||0))};
+const dmNotif12=m=>(RAW.Notifications||[]).find(n=>n.Link==='msg-'+m.id);
+const dmUnread12=p=>(RAW.Notifications||[]).filter(n=>KEY[n.ToUser]===S.me&&!n.IsRead&&/^msg-\d+$/.test(n.Link||'')).filter(n=>{const m=(RAW.Messages||[]).find(x=>'msg-'+x.id===n.Link);return m&&(!p||KEY[m.ByUser]===p)});
+const dmOthers12=()=>['r','s','k'].filter(p=>p!==S.me);
+const tm12=s=>{if(!s)return '';const d=new Date(s);const t=d.toLocaleTimeString('ar-SA-u-nu-latn',{hour:'numeric',minute:'2-digit'});return (ymd(d)===ymd(new Date())?'':fmt(d).slice(0,5)+' · ')+t};
+const phone12=p=>((SET10.phones||{})[p])||'';
+const waUrl12=(p,txt)=>{const n=waNum10(phone12(p));return n?`https://wa.me/${n}?text=${encodeURIComponent(txt)}`:`https://wa.me/?text=${encodeURIComponent(txt)}`};
+const KIND12={'رسالة':['send','#12705E','#E4F2EE'],'تذكير':['bell','#6650C2','#F0EDFB'],'طلب':['check','#B4700F','#FDF3E1']};
+const dmCos12=()=>{const L=[];if(S.me!=='s')L.push('أركان');if(S.me!=='s')S.clients.forEach(c=>L.push(c.name));if(S.me!=='k'||grants8('k').foresta)L.push('فوريستا');return [...new Set(L)]};
+
+function dmBubble12(m,p){const mine=KEY[m.ByUser]===S.me;const md=dmMeta12(m);const k=m.Kind&&KIND12[m.Kind]?m.Kind:'رسالة';const t=md.t?(RAW.Tasks.find(x=>x.id==md.t)):null;const done=t&&t.Status==='منجزة';
+ const n=mine?dmNotif12(m):null;const seen=mine?(n&&n.IsRead?'<span style="color:var(--br)">شافها ✓✓</span>':'وصلت ✓'):'';
+ const co=md.co?`<span class="tag11" style="--c:${md.co==='أركان'?'#2D69B0':md.co==='فوريستا'?'#A9690A':'#12705E'};--t:${md.co==='أركان'?'#E9F1FA':md.co==='فوريستا'?'#FDF3E1':'#E4F2EE'}">${esc(md.co)}</span>`:'';
+ const meta=`<small>${esc(m.ByUser||'')} · ${tm12(m.Created)}${seen?' · '+seen:''}</small>`;
+ if(k==='رسالة')return `<div class="bb12 ${mine?'me':'ot'}">${co?`<div style="margin-bottom:4px">${co}</div>`:''}${esc(m.Body||'').replace(/\n/g,'<br>')}${meta}</div>`;
+ const K=KIND12[k];const due=md.due?md.due.split('-').reverse().join('/'):'';
+ return `<div class="cd12 ${mine?'me':'ot'}" style="--c:${K[1]};--t:${K[2]}"><div class="h"><span class="tag11" style="--c:${K[1]};--t:${K[2]}">${ic(K[0],12)}${k}</span>${co}${due?`<span class="mini">الموعد ${due}</span>`:''}</div><b>${esc(m.Body||'')}</b>
+ ${t?`<div class="mini" style="margin-top:4px">${done?'<span style="color:var(--br);font-weight:700">خلصت ✓</span>':`انضافت لمهام ${esc(t.AssignedTo||'')}`}</div>`:''}
+ ${!mine&&t&&!done?`<div class="qa">${btn('تم ✓','tick','sm pri',`dm12done:${t.id}:${p}`)}${btn('أحتاج وقت','clock','sm',`dm12q:${p}:أحتاج وقت على «${esc((m.Body||'').slice(0,40))}»`)}${btn('افتح','left','sm',`go:task-${t.id}`)}</div>`:''}
+ ${!mine&&!t&&k==='تذكير'?`<div class="qa">${btn('تمام ✓','tick','sm pri',`dm12q:${p}:تمام ✓`)}</div>`:''}${meta}</div>`}
+
+PAGES.msgs=()=>{const O=dmOthers12();const p=O.includes(ui.dm)?ui.dm:(O.find(x=>dmUnread12(x).length)||O[0]);ui.dm=p;const L=dmWith12(p);
+ setTimeout(()=>dmMarkRead12(p),300);
+ const list=O.map(x=>{const M=dmWith12(x);const last=M[M.length-1];const u=dmUnread12(x).length;return `<button class="it12 ${x===p?'on':''}" data-act="dm12p:${x}">${av(x)}<span class="tx"><b>${PEOPLE[x].name}</b><small>${last?esc((last.Kind&&last.Kind!=='رسالة'?last.Kind+': ':'')+(last.Body||'')).slice(0,60):'ما فيه رسائل'}</small></span>${u?`<span class="c12">${u}</span>`:''}</button>`}).join('');
+ const wa=localStorage12('dm12wa')!=='0';const ty=ui.dm12ty||'رسالة';
+ return `<div class="ph"><div><h1>الرسائل</h1><p>رسائل وتذكيرات وطلبات بينك وبين الفريق · ترد عليها من هنا</p></div></div>
+ <div class="th12"><aside class="tl12">${list}</aside><section class="cv12"><div class="top">${av(p)}<div style="flex:1"><b style="font-size:15px">${PEOPLE[p].name}</b><div class="mini">${phone12(p)?'واتساب: '+esc(phone12(p)):`<button class="lnk12" data-act="dm12ph:${p}">حط رقم واتساب ${PEOPLE[p].name}</button>`}</div></div><a class="btn sm wag" target="_blank" rel="noopener" href="${waUrl12(p,'')}">${ic('wa',15,'#fff')}افتح بالواتساب</a></div>
+ <div class="bd12" id="dm12bd">${L.map(m=>dmBubble12(m,p)).join('')||`<div class="empty" style="margin:auto">ما فيه رسائل مع ${PEOPLE[p].name} للحين · اكتب أول رسالة تحت</div>`}</div>
+ <form class="cmp12" data-form="dm12:${p}"><div class="row12"><div class="seg">${Object.keys(KIND12).map(k=>`<button type="button" class="${ty===k?'on':''}" data-act="dm12ty:${k}">${ic(KIND12[k][0],14)} ${k==='طلب'?'طلب شغلة':k}</button>`).join('')}</div>
+ <select id="dm12co" class="inp" aria-label="مربوطة بـ"><option value="">بدون ربط</option>${dmCos12().map(c=>`<option ${ui.dm12co===c?'selected':''}>${esc(c)}</option>`).join('')}</select>${ty!=='رسالة'?`<input id="dm12d" type="date" class="inp" aria-label="الموعد" value="${esc(ui.dm12d||'')}">`:''}</div>
+ <div class="row12"><textarea id="dm12t" class="inp" rows="2" placeholder="${ty==='طلب'?'وش الشغلة اللي تطلبها؟ (تنضاف لمهامه)':ty==='تذكير'?'وش تبي تذكّره فيه؟':'اكتب رسالتك…'}" required></textarea>
+ <label class="tg12"><input type="checkbox" id="dm12wa" ${wa?'checked':''}><i></i>وبالواتساب</label><button class="btn pri" type="submit">${ic('send',16,'#fff')}إرسال</button></div>
+ ${ty!=='رسالة'?`<div class="mini">${ty==='طلب'?'الطلب ينضاف لمهام '+PEOPLE[p].name+' ويطلع له في «يومي» يوم موعده':'إذا حطيت موعد، التذكير يطلع له في «يومي» ذاك اليوم'}</div>`:''}</form></section></div>`};
+PAGES.msg=({id})=>{const m=(RAW.Messages||[]).find(x=>x.id==id);if(m){const k=dmMeta12(m).key.slice(3).split('-');const o=k.find(x=>x!==S.me);if(o)ui.dm=o}view.route='msgs';return PAGES.msgs()};
+Object.assign(CR,{msgs:['الرسائل'],msg:['الرسائل']});
+function localStorage12(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+let dmMarking12=false;
+async function dmMarkRead12(p){if(dmMarking12||view.route!=='msgs'&&view.route!=='msg')return;const U=dmUnread12(p);if(!U.length)return;dmMarking12=true;try{for(const n of U){await spPatch('Notifications',n.id,{IsRead:true});n.IsRead=true}build();render()}catch(e){console.warn(e)}finally{dmMarking12=false}}
+async function dmSend12(to,o){let tid=null;const co=o.co||((to==='s'||S.me==='s')&&o.ty!=='رسالة'?'فوريستا':'');
+ if(o.ty==='طلب'||(o.ty==='تذكير'&&o.d)){const f={Title:o.t.slice(0,200),AssignedTo:PEOPLE[to].name,AssignedBy:PEOPLE[S.me].name,DueDate:o.d?o.d+'T12:00:00Z':null,Company:co,Status:'مفتوحة',ReqType:o.ty==='طلب'?'طلب':'تذكير',Chain:[S.me,to].join(',')};const it=await spCreate('Tasks',f);RAW.Tasks.push(it);tid=it.id}
+ const title=[DMK12(S.me,to),co?'co='+co:'',o.d&&o.ty!=='رسالة'?'due='+o.d:'',tid?'t='+tid:''].filter(Boolean).join('|');
+ const f={Title:title,Body:o.t,ByUser:PEOPLE[S.me].name,Kind:o.ty};if(tid)f.TaskId=tid;const m=await spCreate('Messages',f);m.Created=m.Created||new Date().toISOString();RAW.Messages.push(m);
+ const n={Title:`${o.ty==='رسالة'?'رسالة':o.ty==='طلب'?'طلب شغلة':'تذكير'} من ${PEOPLE[S.me].name}`,ToUser:PEOPLE[to].name,Sub:o.t.slice(0,100),Link:'msg-'+m.id,Icon:o.ty==='تذكير'?'bell':'inbox',IsRead:false};
+ try{const it=await spCreate('Notifications',n);(RAW.Notifications=RAW.Notifications||[]).push(it)}catch(e){console.warn(e)}return m}
+const waText12=(o)=>`${o.ty==='رسالة'?'':o.ty==='طلب'?'طلب: ':'تذكير: '}${o.t}${o.co?` (${o.co})`:''}${o.d&&o.ty!=='رسالة'?` · الموعد ${o.d.split('-').reverse().join('/')}`:''}\n— من منصة رشيد`;
+function phModal12(p){modal(`<div class="mh"><b>رقم واتساب ${PEOPLE[p].name}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="dm12ph:${p}"><div class="mb"><div class="field"><label for="dm12pn">رقم الجوال</label><input id="dm12pn" class="inp" dir="ltr" inputmode="tel" placeholder="05xxxxxxxx" value="${esc(phone12(p))}" required></div><div class="mini">يستخدم بس عشان زر «وبالواتساب» يفتح محادثته مباشرة</div></div><div class="mf"><button class="btn pri" type="submit">${ic('tick',16)}حفظ</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+
+/* ---------- 2) نقل شغلة بين أركان والعملاء ---------- */
+const _wsRowV12=wsRow11;wsRow11=function(t,kind){let h=_wsRowV12(t,kind);if(!canWs11())return h;
+ if(ui.mv12on)h=h.replace('<div class="wr11','<div class="wr11 sel12"').replace(/<button class="cb[^>]*>[\s\S]*?<\/button>/,`<label class="pk12"><input type="checkbox" data-mv12="${t.id}" ${(ui.mv12ids||[]).includes(String(t.id))?'checked':''} aria-label="تحديد"><span></span></label>`);
+ else h=h.replace('<span class="who11">',`<button class="ib mv12" data-act="mv12:${t.id}" title="نقل لملف ثاني" aria-label="نقل">${ic('repeat',15)}</button><span class="who11">`);return h};
+const mvTargets12=()=>{const s=new Set(['أركان']);S.clients.forEach(c=>s.add(c.name));S.tasks.forEach(t=>{if(t.co&&!isFor(t.co))s.add(t.co)});if(S.me==='r')s.add('فوريستا');return [...s]};
+function mvModal12(ids){const ts=ids.map(id=>S.tasks.find(t=>t.id==id)).filter(Boolean);if(!ts.length){toast('حدّد شغلة وحدة على الأقل');return}const cur=[...new Set(ts.map(t=>t.co))];const T=mvTargets12().filter(c=>!(cur.length===1&&cur[0]===c));
+ modal(`<div class="mh"><div><b>نقل ${ts.length>1?ts.length+' شغلات':'«'+esc(ts[0].title)+'»'}</b><div class="mini" style="margin-top:2px">من ${esc(cur.join('، '))} · تنتقل بكل تفاصيلها ومواعيدها</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="mv12:${ids.join(',')}"><div class="mb">
+ <div class="field"><label>انقلها إلى</label><div class="mvl12">${T.map((c,i)=>`<label class="mvo12"><input type="radio" name="to" value="${esc(c)}" ${i===0?'checked':''}><span>${ic(c==='أركان'?'bldg':c==='فوريستا'?'users':'brief',16)}${esc(c)}${c==='أركان'?' <small>شركتنا</small>':''}</span></label>`).join('')}<label class="mvo12"><input type="radio" name="to" value="__new"><span>${ic('plus',16)}عميل جديد</span></label></div></div>
+ <div class="field" id="mv12nw"><label for="mv12n">اسم العميل الجديد</label><input id="mv12n" class="inp" placeholder="مثلاً: شركة سافيمو"><label style="display:flex;gap:8px;align-items:center;margin-top:8px;font-weight:400"><input type="checkbox" id="mv12c" checked> أضفه كمان في صفحة «العملاء»</label></div></div>
+ <div class="mf"><button class="btn pri" type="submit">${ic('repeat',16,'#fff')}نقل</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+async function mvApply12(ids,to,addCli){if(addCli&&!S.clients.some(c=>c.name===to)){const it=await spCreate('Clients',{Title:to});(RAW.Clients=RAW.Clients||[]).push(it)}
+ for(const id of ids){const r=RAW.Tasks.find(x=>x.id==id);if(!r||r.Company===to)continue;const f={Company:to};if(to!=='فوريستا'&&!/r/.test(r.Chain||''))f.Chain='r,k';await spPatch('Tasks',id,f);Object.assign(r,f)}}
+const _arkV12=PAGES.arkan,_extV12=PAGES.external;
+const mvWrap12=o=>()=>{let h=o();if(!canWs11())return h;const n=(ui.mv12ids||[]).length;
+ h=h.replace('<div class="acts">',`<div class="acts">${ui.mv12on?btn('إلغاء التحديد','x','','mv12off'):btn('تحديد ونقل','repeat','','mv12on')}`);
+ if(ui.mv12on)h+=`<div class="bar12">${ic('repeat',18,'#fff')}<b>محدد ${n}</b><span class="mini" style="color:#C8D3CE">حدّد الشغلات اللي انكتبت بالغلط وانقلها لمكانها</span><span style="margin-inline-start:auto;display:flex;gap:8px">${btn('انقل المحدد إلى…','left','pri','mv12go')}${btn('إلغاء','x','','mv12off')}</span></div>`;return h};
+PAGES.arkan=mvWrap12(_arkV12);PAGES.external=mvWrap12(_extV12);
+const _taskV12=PAGES.task;PAGES.task=prm=>{let h=_taskV12(prm);const t=S.tasks.find(x=>x.id==prm.id);if(!t||t.steps||!canWs11()||!(isArk11(t)||isExt11(t)))return h;const i=h.indexOf('<div class="acts">');return i>=0?h.slice(0,i+18)+btn('نقل لملف ثاني','repeat','',`mv12:${t.id}`)+h.slice(i+18):h};
+
+/* ---------- 3) صلاحية خالد على فوريستا: «المحوّل له بس» / «يشوف بس» / «يشوف ويشتغل زي شيخة» ---------- */
+NAV8.k.splice(0,NAV8.k.length,'فوريستا (صلاحية من رشيد)',['layers','إجراءات فوريستا','procs'],['users','الموظفين','employees'],['alert','الانتهاءات','expiry'],['cal','تحديث التواريخ','fixdates'],['car','السيارات','vehicles'],['plane','الإجازات والسفر','leaves'],['print','النماذج والخطابات','forms'],['chart','مركز التقارير','reports'],['print','التقرير الشهري','mreport']);
+['procs','fixdates','reports','mreport','docs','ramadan'].forEach(r=>{const o=PAGES[r];if(!o)return;PAGES[r]=prm=>S.me==='k'&&grants8('k').foresta?asMe8('s',o,prm):o(prm)});
+{const o=PAGES.proc;PAGES.proc=prm=>{const p=S.procs.find(x=>x.id==prm.id);return S.me==='k'&&grants8('k').foresta&&p&&isFor(p.co)&&!p.task.steps.some(s=>KEY[s.w]==='k')?asMe8('s',o,prm):o(prm)}}
+RO9.push('procs','proc','fixdates','docs');
+const _permsV12=PAGES.perms;PAGES.perms=()=>{let h=_permsV12();return h.replace('الموظفين، الانتهاءات، السيارات، الإجازات، النماذج','اختر: يشوف بس اللي يتحول له، أو يشوف فوريستا كلها، أو يشوف ويشتغل زي شيخة (الإجراءات، الموظفين، الانتهاءات، السيارات، النماذج، مركز التقارير)')
+ .replace(/(data-act="pm8lvl:k:foresta:0">)مقفل/,'$1اللي يتحول له بس').replace(/(data-act="pm8lvl:k:foresta:v">)عرض فقط/,'$1يشوف بس').replace(/(data-act="pm8lvl:k:foresta:1">)كامل/,'$1يشوف ويشتغل زي شيخة')};
+
+/* ---------- nav ---------- */
+(function(){['r','s','k'].forEach(p=>{const a=NAV[p];if(a.some(n=>Array.isArray(n)&&n[2]==='msgs'))return;const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='tasks');a.splice(i>=0?i+1:1,0,['inbox','الرسائل','msgs',()=>{try{return dmUnread12().length}catch(e){return 0}},1])})})();
+
+/* ---------- handlers ---------- */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const parts=el.dataset.act.split(':');const a=parts[0],x=parts[1],y=parts.slice(2).join(':');
+ const H={dm12p:1,dm12ty:1,dm12ph:1,dm12q:1,dm12done:1,mv12:1,mv12on:1,mv12off:1,mv12go:1};if(!H[a])return;e.stopPropagation();e.preventDefault();
+ if(a==='dm12p'){ui.dm=x;render();return}
+ if(a==='dm12ty'){const co=document.getElementById('dm12co'),t=document.getElementById('dm12t'),d=document.getElementById('dm12d');ui.dm12co=co?co.value:'';ui.dm12txt=t?t.value:'';ui.dm12d=d?d.value:'';ui.dm12ty=x;render();const t2=document.getElementById('dm12t');if(t2){t2.value=ui.dm12txt||'';t2.focus()}return}
+ if(a==='dm12ph'){phModal12(x);return}
+ if(a==='dm12q'){const wa=(document.getElementById('dm12wa')||{}).checked;const o={ty:'رسالة',t:y,co:'',d:''};const w=wa?window.open('about:blank','_blank'):null;act(async()=>{await dmSend12(x,o);if(w)w.location.href=waUrl12(x,waText12(o))},'انرسلت ✓');return}
+ if(a==='dm12done'){const r=RAW.Tasks.find(q=>q.id==x);act(async()=>{const f={Status:'منجزة',DoneOn:new Date().toISOString()};await spPatch('Tasks',x,f);Object.assign(r,f);await dmSend12(y,{ty:'رسالة',t:`تم ✓ «${(r.Title||'').slice(0,60)}»`,co:'',d:''})},'تم ✓');return}
+ if(a==='mv12'){mvModal12([x]);return}
+ if(a==='mv12on'){ui.mv12on=true;ui.mv12ids=[];render();return}
+ if(a==='mv12off'){ui.mv12on=false;ui.mv12ids=[];render();return}
+ if(a==='mv12go'){mvModal12(ui.mv12ids||[]);return}
+},true);
+document.addEventListener('change',e=>{const el=e.target.closest('[data-mv12]');if(el){ui.mv12ids=ui.mv12ids||[];const id=el.dataset.mv12;ui.mv12ids=el.checked?[...new Set([...ui.mv12ids,id])]:ui.mv12ids.filter(q=>q!==id);const b=document.querySelector('.bar12 b');if(b)b.textContent='محدد '+ui.mv12ids.length;return}
+ if(e.target.id==='dm12wa')localStorage12('dm12wa',e.target.checked?'1':'0');if(e.target.id==='dm12co')ui.dm12co=e.target.value;if(e.target.id==='dm12d')ui.dm12d=e.target.value},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="dm12:"],form[data-form^="dm12ph:"],form[data-form^="mv12:"]');if(!f)return;e.preventDefault();e.stopPropagation();const [a,x]=f.dataset.form.split(':');
+ if(a==='dm12'){const o={ty:ui.dm12ty||'رسالة',t:(document.getElementById('dm12t').value||'').trim(),co:(document.getElementById('dm12co')||{}).value||'',d:(document.getElementById('dm12d')||{}).value||''};if(!o.t){toast('اكتب الرسالة');return}
+  if(o.ty==='طلب'&&!o.d){const d=new Date(TODAY);d.setDate(d.getDate()+1);o.d=ymd(d)}
+  const wa=(document.getElementById('dm12wa')||{}).checked;const w=wa?window.open('about:blank','_blank'):null;
+  act(async()=>{await dmSend12(x,o);ui.dm12txt='';ui.dm12d='';if(w)w.location.href=waUrl12(x,waText12(o))},o.ty==='طلب'?'انرسل الطلب وانضاف لمهامه ✓':'انرسلت ✓').then(()=>{const b=document.getElementById('dm12bd');if(b)b.scrollTop=b.scrollHeight});return}
+ if(a==='dm12ph'){const v=(document.getElementById('dm12pn').value||'').replace(/\D/g,'');if(v.length<9){toast('رقم غير صحيح');return}act(async()=>{await updSet10(s=>{s.phones=Object.assign({},s.phones||{},{[x]:v})});closeModal()},'انحفظ الرقم ✓');return}
+ if(a==='mv12'){const ids=x.split(',');const sel=(f.querySelector('input[name=to]:checked')||{}).value;let to=sel;const add=(f.querySelector('#mv12c')||{}).checked;if(sel==='__new'){to=(f.querySelector('#mv12n').value||'').trim();if(!to){toast('اكتب اسم العميل');return}}if(!to)return;
+  act(async()=>{await mvApply12(ids,to,sel==='__new'&&add);ui.mv12on=false;ui.mv12ids=[];closeModal()},`انتقلت ${ids.length>1?ids.length+' شغلات':''} إلى ${to} ✓`);return}
+},true);
+document.addEventListener('focusin',e=>{if(e.target&&e.target.id==='mv12n'){const r=document.querySelector('input[name=to][value="__new"]');if(r)r.checked=true}});
+const _renderV12=render;render=function(){_renderV12();const b=document.getElementById('dm12bd');if(b)b.scrollTop=b.scrollHeight};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
