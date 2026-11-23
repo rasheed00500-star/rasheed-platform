@@ -2386,7 +2386,7 @@ async function dmSend12(to,o){let tid=null;const co=o.co||((to==='s'||S.me==='s'
  const f={Title:title,Body:o.t,ByUser:PEOPLE[S.me].name,Kind:o.ty};if(tid)f.TaskId=tid;const m=await spCreate('Messages',f);m.Created=m.Created||new Date().toISOString();RAW.Messages.push(m);
  const n={Title:`${o.ty==='رسالة'?'رسالة':o.ty==='طلب'?'طلب شغلة':'تذكير'} من ${PEOPLE[S.me].name}`,ToUser:PEOPLE[to].name,Sub:o.t.slice(0,100),Link:'msg-'+m.id,Icon:o.ty==='تذكير'?'bell':'inbox',IsRead:false};
  try{const it=await spCreate('Notifications',n);(RAW.Notifications=RAW.Notifications||[]).push(it)}catch(e){console.warn(e)}return m}
-const waText12=(o)=>`${o.ty==='رسالة'?'':o.ty==='طلب'?'طلب: ':'تذكير: '}${o.t}${o.co?` (${o.co})`:''}${o.d&&o.ty!=='رسالة'?` · الموعد ${o.d.split('-').reverse().join('/')}`:''}\n— من منصة رشيد`;
+const waText12=(o)=>`*من ${PEOPLE[S.me].name}* · منصة رشيد\n${o.ty==='رسالة'?'':o.ty==='طلب'?'طلب: ':'تذكير: '}${o.t}${o.co?` (${o.co})`:''}${o.d&&o.ty!=='رسالة'?` · الموعد ${o.d.split('-').reverse().join('/')}`:''}`;
 function phModal12(p){modal(`<div class="mh"><b>رقم واتساب ${PEOPLE[p].name}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="dm12ph:${p}"><div class="mb"><div class="field"><label for="dm12pn">رقم الجوال</label><input id="dm12pn" class="inp" dir="ltr" inputmode="tel" placeholder="05xxxxxxxx" value="${esc(phone12(p))}" required></div><div class="mini">يستخدم بس عشان زر «وبالواتساب» يفتح محادثته مباشرة</div></div><div class="mf"><button class="btn pri" type="submit">${ic('tick',16)}حفظ</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
 
 /* ---------- 2) نقل شغلة بين أركان والعملاء ---------- */
@@ -2476,7 +2476,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
 },true);
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="rp13"]');if(!f)return;e.preventDefault();e.stopPropagation();const txt=(document.getElementById('rp13t').value||'').trim();if(!txt){toast('اكتب الرد');return}const wa=document.getElementById('rp13wa').checked;localStorage12('dm12wa',wa?'1':'0');const T=selTasks13();
  const peer=t=>{const by=KEY[rawOf11(t).AssignedBy];return t.who!==S.me?t.who:(by&&by!==S.me?by:(S.me==='k'?'r':'k'))};const p0=peer(T[0]);const w=wa?window.open('about:blank','_blank'):null;
- act(async()=>{for(const t of T){await addMsg(t.id,txt,'');const p=peer(t);await notify(PEOPLE[p].name,`رد من ${PEOPLE[S.me].name} على «${t.title.slice(0,50)}»`,txt.slice(0,100),'task-'+t.id,'inbox')}if(w)w.location.href=waUrl12(p0,`${T.length>1?'بخصوص: '+T.map(t=>t.title).join('، '):'بخصوص «'+T[0].title+'»'}\n${txt}\n— من منصة رشيد`);ui.mv12ids=[];closeModal()},'انرسل الرد ✓')},true);
+ act(async()=>{for(const t of T){await addMsg(t.id,txt,'');const p=peer(t);await notify(PEOPLE[p].name,`رد من ${PEOPLE[S.me].name} على «${t.title.slice(0,50)}»`,txt.slice(0,100),'task-'+t.id,'inbox')}if(w)w.location.href=waUrl12(p0,`*رد من ${PEOPLE[S.me].name}* · منصة رشيد\n${T.length>1?'بخصوص: '+T.map(t=>t.title).join('، '):'بخصوص «'+T[0].title+'»'}\n${txt}`);ui.mv12ids=[];closeModal()},'انرسل الرد ✓')},true);
 
 /* v13.1 — شريط الإجراءات فوق، تحت الإجماليات، بشكل مرتب */
 const tb13=()=>{const n=(ui.mv12ids||[]).length;const other=S.me==='k'?'r':'k';const third=view.route==='fortasks'?'s':'';const dis=n?'':'disabled';
