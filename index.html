@@ -927,6 +927,18 @@ tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
 .nc23 button{border:0;background:none;font:inherit;font-size:12.5px;font-weight:700;color:var(--mute);padding:5px 10px;border-radius:99px;cursor:pointer;white-space:nowrap}
 .nc23 button.on{background:var(--brT);color:var(--br)}.nc23 span{background:#CF3F35;color:#fff;border-radius:99px;padding:0 6px;font-size:11px}
 .sy23{display:flex;align-items:center;gap:12px;background:#F2F9F6;border:1px solid #CFE6DD;border-radius:14px;padding:12px 14px;flex-wrap:wrap}.sy23 span{flex:1;min-width:180px;font-weight:600}
+/* v24 */
+.we24{display:flex;gap:12px;align-items:center;background:#F3F7FD;border:1px solid #D7E3F4;border-radius:14px;padding:12px 14px;color:#2D5E9C}
+.we24.ag{background:#FFFAF0;border-color:#F1E0BE;color:#9A5D08}.we24 b{display:block;font-size:15px}.we24 small{color:var(--ink2);font-size:12.5px;line-height:1.7}
+.rb24{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}.rb24 .chip{padding:5px 10px;font-size:12.5px}
+.fu24{margin-bottom:14px}
+.py22 .tx small+small{margin-top:2px}.py22 .tx small b{font-weight:700}.py22 .tx small b.r{color:#CF3F35}
+.py22.du24{background:linear-gradient(90deg,transparent,#FFFBF2)}
+.pr24{display:flex;align-items:center;gap:8px;padding:12px 2px;border-top:1px solid var(--line2);flex-wrap:wrap}.pr24:first-of-type{border-top:0}
+.pr24 .tx{flex:1;min-width:220px}.pr24 b{display:block;font-size:14.5px}.pr24 small{color:var(--mute);font-size:12.5px}.pr24 select.inp{height:38px;width:auto;min-width:110px}
+.pr24.nw{background:var(--bg);border-radius:12px;padding:10px;margin-top:6px;border-top:0}
+.am24{display:flex;gap:12px;align-items:flex-start;background:#FFFAF0;border:1px solid #F1E0BE;border-radius:14px;padding:14px 16px;margin-bottom:16px;color:#7A4A06}
+.am24 b{font-size:15px}.am24 .ls{display:flex;flex-direction:column;gap:4px;margin:6px 0;font-size:13px}.am24 .ls b{font-size:13px}.am24 small{color:var(--ink2);font-size:12.5px}
 
 </style>
 </head>
@@ -3189,7 +3201,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261124002449';
+const APPV18='20261124004031';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3392,7 +3404,7 @@ const BT21=[
  ['exit','emp','إصدار خروج وعودة','plane','مقيم',[['تسجيل الطلب في «خروج وعودة» (المدة وتاريخ السفر)','شيخة',0],['إرسال طلب سداد الرسوم لأيهم','شيخة',0],['التأكد إن أيهم سدد','شيخة',1],['إصدار التأشيرة من مقيم','شيخة',2],['إرسال التأشيرة للموظف','شيخة',2]]],
  ['ce','emp','تجديد عقد','brief','قوى',[['قرار تجديد العقد أو عدم تجديده','رشيد',0],['تحديث العقد في منصة قوى','شيخة',2],['موافقة الموظف على العقد في قوى','شيخة',5],['تحديث تاريخ نهاية العقد في المنصة','شيخة',6]]],
  ['end','emp','إنهاء خدمة','userx','قوى + التأمينات + مقيم',[['حساب المخالصة ومستحقات نهاية الخدمة','شيخة',0],['اعتماد المخالصة','رشيد',1],['إرسال المخالصة لأيهم للسداد','شيخة',1],['التأكد إن أيهم سدد','شيخة',3],['إنهاء العقد في منصة قوى','شيخة',4],['استبعاد الموظف من التأمينات الاجتماعية','شيخة',4],['خروج نهائي أو نقل خدمات من مقيم','شيخة',6],['تحديث حالة الموظف في المنصة (انتهت خدمته)','شيخة',7]]],
- ['pp','emp','تجديد جواز','pass','السفارة + مقيم',[['تقديم طلب تجديد الجواز في السفارة','شيخة',0],['استلام الجواز الجديد','شيخة',14],['تحديث بيانات الجواز في مقيم','شيخة',15],['تحديث تاريخ الجواز في المنصة','شيخة',15]]],
+ ['pp','emp','تجديد جواز','pass','الموظف + مقيم',[['بانتظار الموظف: يجدد جوازه ويرسل صورة الجواز الجديد','شيخة',0],['تحديث بيانات الجواز في مقيم','شيخة',14],['تحديث تاريخ الجواز في المنصة','شيخة',14]]],
  ['reg','veh','تجديد استمارة','idc','منصة تم',[['التأكد إن الفحص الدوري والتأمين ساريين','شيخة',0],['إرسال طلب سداد رسوم الاستمارة لأيهم','شيخة',0],['التأكد إن أيهم سدد','شيخة',2],['تجديد الاستمارة من منصة تم','شيخة',3],['تحديث تاريخ الاستمارة في المنصة','شيخة',3]]],
  ['auth','veh','تفويض قيادة','shield','منصة تم',[['اختيار السائق والتأكد من رخصة قيادته','شيخة',0],['إصدار التفويض من منصة تم','شيخة',1],['إرسال التفويض للسائق','شيخة',1],['تحديث المستخدم وتاريخ التفويض في المنصة','شيخة',1]]],
  ['op','veh','كرت تشغيل','truck','منصة تم + هيئة النقل',[['طلب كرت التشغيل من منصة هيئة النقل','شيخة',0],['إرسال طلب سداد الرسوم لأيهم','شيخة',0],['التأكد إن أيهم سدد','شيخة',2],['إصدار الكرت وتحميله','شيخة',3],['تحديث تاريخ كرت التشغيل في المنصة','شيخة',3]]],
@@ -3687,17 +3699,13 @@ async function engine23(){if(!['r','s'].includes(S.realMe))return 0;await new Pr
    const key=`AUTO:${k}:${kind==='veh'?'V':'E'}${o.id}-${dt.split('/').reverse().join('')}`;if(has(key))continue;
    if(S.procs.some(p=>(kind==='veh'?p.veh===o.id:p.emp===o.id)&&p.task&&p.task.curStep&&kwA23[k].test(p.title)))continue;
    try{await mk23(t,{emp:kind==='emp'?o:null,veh:kind==='veh'?o:null,link:key,title:`${t.title} · ${kind==='veh'?o.title:o.name}`});made++}catch(e){console.warn('auto23',e)}}}
- const mon=`${TODAY.getFullYear()}-${String(TODAY.getMonth()+1).padStart(2,'0')}`;const mname=`${MONN[TODAY.getMonth()]} ${TODAY.getFullYear()}`;
- for(const [k,title,note] of SYNC23){if(!auOn23('sync_'+k))continue;const key=`SYNC:${k}:${mon}`;if(has(key))continue;const due=new Date(TODAY.getFullYear(),TODAY.getMonth(),3);
-  try{const it=await spCreate('Tasks',{Title:`${title} · ${mname}`,AssignedTo:'شيخة',AssignedBy:'المنصة',DueDate:toIso(due<TODAY?TODAY:due),Company:'فوريستا',LinkRef:key,Status:'مفتوحة',Notes:note,ReqType:'مهمة'},{label:title});RAW.Tasks.push(it);made++;await notify('شيخة',`${title} · ${mname}`,note.slice(0,90),'task-'+it.id,'repeat')}catch(e){console.warn('sync23',e)}}
  return made}
 const _aeV23=autoEngine;autoEngine=async function(){let n=0;try{n+=await _aeV23()||0}catch(e){console.warn(e)}try{const c=await engine23();if(c){n+=c;build();render();toast(`بدأت ${c} إجراءات/تذكيرات تلقائياً`)}}catch(e){console.warn('engine23',e)}return n};
 /* صفحة المهمة: زر الاستيراد لمهمة تم */
 const _taskV23=PAGES.task;PAGES.task=prm=>{let h=_taskV23(prm);const r=rawTask(prm.id);if(!r||!/^SYNC:/.test(r.LinkRef||''))return h;const k=(r.LinkRef.split(':')[1]);const b=k==='tam'?btn('افتح «تحديث من منصة تم»','xls','pri','go:tamimport'):btn('افتح «حدّث التواريخ»','cal','pri','go:fixdates');const box=`<div class="sy23">${ic(k==='tam'?'xls':'cal',20,'var(--br)')}<span>${k==='tam'?'افتح صفحة الاستيراد وارفع ملف منصة تم':'افتح «حدّث التواريخ» وعدّل أي تاريخ مختلف'}</span>${b}</div>`;const i=h.indexOf('<section class="card"');return i>=0?h.slice(0,i)+box+h.slice(i):box+h};
 /* صفحة «التلقائي»: مفاتيح التشغيل */
 const _autoV23=PAGES.auto;PAGES.auto=prm=>{const h=_autoV23(prm);const sw=k=>`<button class="sw23 ${auOn23(k)?'':'off'}" data-act="au23:${k}" role="switch" aria-checked="${auOn23(k)}" aria-label="تشغيل"></button>`;
- const c=`<div class="cd18" style="margin-top:16px"><div class="h18">${ic('repeat',18,'var(--br)')}<b>لما يقرب ينتهي… يبدأ الإجراء لحاله</b></div>${AUTO23.map(a=>`<div class="rl23"><div class="tx"><b>${a[2]} · قبل ${a[3]} يوم</b><small>يبدأ «${(BT21.find(b=>b[0]===a[1])||[])[2]||a[2]}» ويوصل لشيخة</small></div>${S.me==='r'?sw(a[0]):pill(auOn23(a[0])?'شغّال':'موقف',auOn23(a[0])?'ok':'gray')}</div>`).join('')}</div>
- <div class="cd18" style="margin-top:16px"><div class="h18">${ic('cal',18,'var(--br)')}<b>كل أول شهر · تحديث البيانات من المنصات</b></div>${SYNC23.map(s=>`<div class="rl23"><div class="tx"><b>${s[1]}</b><small>${s[2]}</small></div>${S.me==='r'?sw('sync_'+s[0]):pill(auOn23('sync_'+s[0])?'شغّال':'موقف',auOn23('sync_'+s[0])?'ok':'gray')}</div>`).join('')}</div>`;
+ const c=`<div class="cd18" style="margin-top:16px"><div class="h18">${ic('repeat',18,'var(--br)')}<b>لما يقرب ينتهي… يبدأ الإجراء لحاله</b></div>${AUTO23.map(a=>`<div class="rl23"><div class="tx"><b>${a[2]} · قبل ${a[3]} يوم</b><small>يبدأ «${(BT21.find(b=>b[0]===a[1])||[])[2]||a[2]}» ويوصل لشيخة</small></div>${S.me==='r'?sw(a[0]):pill(auOn23(a[0])?'شغّال':'موقف',auOn23(a[0])?'ok':'gray')}</div>`).join('')}</div>`;
  return h+c};
 document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="au23:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const k=b.dataset.act.slice(5);const v=!auOn23(k);act(async()=>{await updSet10(s=>{s.auto23=s.auto23||{};s.auto23[k]=v})},v?'اشتغل ✓':'وقف')},true);
 
@@ -3711,11 +3719,132 @@ const _npV23=notifPop;notifPop=function(){const c=ui.nc23||'all';const all=S.not
 document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="nc23:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();ui.nc23=b.dataset.act.slice(5);render()},true);
 
 /* لوحة التحكم: تنبيه المتأخر والأرقام الناقصة */
-const _alertsV23=alerts18;alerts18=function(X){let h=_alertsV23(X);if(S.me==='k')return h;const A=[];const n=late23().length;if(n)A.push(['s','alert',`${n} ${n<=10&&n>2?'مهام متأخرة':'مهمة متأخرة'} · رتّبها بضغطة`,'go:late']);
+const _alertsV23=alerts18;alerts18=function(X){let h=_alertsV23(X);if(S.me==='k')return h;const A=[];const n=late23().length;if(n)A.push(['s','alert',`${n===1?'مهمة متأخرة':n===2?'مهمتين متأخرة':n+' '+(n<=10?'مهام متأخرة':'مهمة متأخرة')} · رتّبها بضغطة`,'go:late']);
  const m=waMiss23();if(m.length&&S.me==='r')A.push(['v','wa',`أرقام الواتساب ناقصة: ${m.join('، ')}`,'go:wanum']);else if(!SET10.ayham)A.push(['v','wa','رقم واتساب أيهم ناقص · حطه مرة وحدة','go:wanum']);
  if(!A.length)return h;h=h.replace(/<div class="al18"><div class="empty"[\s\S]*?<\/div><\/div><\/div>/,'<div class="al18"></div>');
  const add=A.map(a=>`<button class="${a[0]}" data-act="${a[3]}">${ic(a[1],17)}<span>${a[2]}</span>${ic('left',15)}</button>`).join('');
  return h.replace(/(<div class="al18">(?:<button class="[es]" data-act="go:proc-\d+">[\s\S]*?<\/button>)*)/,`$1${add}`)};
+
+/* ===================== v24 · «المتابعات»: السداد + الموظفين + الجهات · متابعة موظف · المتابعات الدورية · الحسابات الناقصة ===================== */
+const EMPW24=/بانتظار الموظف|السفارة|استلام الجواز|موافقة الموظف على العقد|توقيع الموظف/;
+const remsK24=(pid,k)=>(RAW.Messages||[]).filter(m=>m.TaskId==pid&&m.Kind===k).sort((a,b)=>new Date(b.Created)-new Date(a.Created));
+const remLine24=(L,verb)=>{if(!L.length)return `ما ${verb} للحين`;const d=x=>{const t=new Date(x.Created);return ymd(t)===ymd(new Date())?'اليوم':ymd(t)===ymd(new Date(Date.now()-864e5))?'أمس':fmt(t).slice(0,5)};return `${verb} ${L.length===1?'مرة':L.length===2?'مرتين':L.length+' مرات'} · آخر مرة ${d(L[0])}${L.length>1?` · (${L.slice(0,5).map(d).reverse().join('، ')})`:''}`};
+const nextTxt24=d=>{if(!d)return '';const n=days(d);return n<0?`التذكير متأخر ${-n===1?'يوم':-n+' أيام'}`:n===0?'ذكّره اليوم':n===1?'التذكير الجاي بكرة':`التذكير الجاي ${d.slice(0,5)}`};
+const empOf24=p=>p.emp?S.employees.find(e=>e.id===p.emp):S.employees.find(e=>e.name===(rawTask(p.id)||{}).EmpName);
+function empMsg24(p,e){const t=p.task.curStep?p.task.curStep.t:'';const nm=e?e.name.split(' ')[0]:'';const sig=`\n— ${PEOPLE[S.me].name} · الموارد البشرية`;const note=(rawTask(p.id)||{}).Notes||'';
+ if(/جواز|السفارة/.test(p.title+t))return `السلام عليكم ${nm}،\nنذكّرك بتجديد جواز سفرك${e&&e.pp?` (ينتهي ${e.pp})`:''} في أقرب وقت، وإرسال صورة الجواز الجديد عشان نحدّثه في مقيم والنظام.\nوشكراً لك.${sig}`;
+ if(/عقد/.test(p.title+t))return `السلام عليكم ${nm}،\nنذكّرك بالموافقة على عقدك في منصة قوى في أقرب وقت.\nوشكراً لك.${sig}`;
+ if(note)return `السلام عليكم ${nm}،\n${note}\nوشكراً لك.${sig}`;
+ return `السلام عليكم ${nm}،\nنذكّرك بـ «${t.replace(/^بانتظار الموظف:\s*/,'')}» في أقرب وقت.\nوشكراً لك.${sig}`}
+function empWaits24(){return S.procs.filter(p=>p.task&&p.task.curStep&&canSeeTask(p.task)&&EMPW24.test(p.task.curStep.t)).map(p=>({p,e:empOf24(p),R:remsK24(p.id,'تذكير موظف'),due:p.task.curDue})).sort((a,b)=>(D(a.due)||0)-(D(b.due)||0))}
+function agWaits24(){return S.procs.filter(p=>p.task&&p.task.curStep&&canSeeTask(p.task)&&!AYW20(p.task.curStep.t)&&!EMPW24.test(p.task.curStep.t)).map(p=>{const t=p.task;const prev=t.steps[t.cur-1];const since=prev&&prev.on?new Date(prev.on+'T00:00:00'):new Date(rawTask(p.id)?.Created||0);
+  const R=(RAW.Messages||[]).filter(m=>m.TaskId==p.id&&(m.Kind==='تذكير جهة'||/^بانتظار الجهة/.test(m.Body||''))&&new Date(m.Created)>=since).sort((a,b)=>new Date(b.Created)-new Date(a.Created));return R.length?{p,R,due:t.curDue}:null}).filter(Boolean)}
+async function remindK24(p,kind,n,who){const r=rawTask(p.id);const st=JSON.parse(r.Steps);const i=st.findIndex(s=>!s.ok);const d=new Date(TODAY.getTime()+n*864e5);if(i>=0)st[i].d=ymd(d);const f={Steps:JSON.stringify(st),DueDate:toIso(d)};await spPatch('Tasks',p.id,f);Object.assign(r,f);
+ await addMsg(p.id,`${kind==='تذكير موظف'?'ذكّرت الموظف':'تابعت مع الجهة'}${who?' ('+who+')':''} · التذكير الجاي ${n===1?'بكرة':fmt(d)}`,kind)}
+const remBtns24=(pid,k)=>`<span class="rb24"><span class="mini">${k==='e'?'ذكّرته':'تابعت'} · رجّعها:</span><button class="chip" data-act="rk24:${k}:${pid}:1">بكرة</button><button class="chip" data-act="rk24:${k}:${pid}:3">بعد 3 أيام</button><button class="chip" data-act="rk24:${k}:${pid}:7">الأسبوع الجاي</button></span>`;
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="rk24:"],[data-act^="ce24:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,k,id,n]=b.dataset.act.split(':');
+ if(a==='ce24'){const p=S.procs.find(q=>q.id==k);const e=p&&empOf24(p);if(!p)return;const t=empMsg24(p,e);try{navigator.clipboard.writeText(t).then(()=>toast('انسخت الرسالة')).catch(()=>copyText(t))}catch(x){copyText(t)}return}
+ const p=S.procs.find(q=>q.id==id);if(!p)return;const e=k==='e'?empOf24(p):null;act(()=>remindK24(p,k==='e'?'تذكير موظف':'تذكير جهة',+n,e?e.name.split(' ').slice(0,2).join(' '):''),+n===1?'تمام · يرجع لك بكرة':+n===3?'تمام · يرجع لك بعد 3 أيام':'تمام · يرجع لك الأسبوع الجاي')},true);
+
+/* صفحة الإجراء: خطوة «بانتظار الموظف» */
+const _procV24=PAGES.proc;PAGES.proc=prm=>{let h=_procV24(prm);const p=S.procs.find(x=>x.id==prm.id);if(!p||!p.task||!p.task.curStep)return h;const cur=p.task.curStep;const canAct=S.me==='r'||p.task.curWho===S.me;
+ const anchor='<div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">';const i=h.indexOf(anchor);if(i<0)return h;
+ if(EMPW24.test(cur.t)){const e=empOf24(p);const R=remsK24(p.id,'تذكير موظف');const msg=empMsg24(p,e);
+  const box=`<div class="we24">${ic('user',22,'#2D69B0')}<div style="flex:1;min-width:200px"><b>بانتظار الموظف${e?' · '+esc(e.name):''}</b><small>${remLine24(R,'ذكّرته')}${p.task.curDue?' · '+nextTxt24(p.task.curDue):''}</small></div></div>
+  <div class="msgbox"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">${ic('send',15,'var(--br)')}<b style="font-size:13.5px">رسالة جاهزة للموظف</b><span style="margin-inline-start:auto;display:flex;gap:6px;flex-wrap:wrap">${e&&e.phone?`<a class="btn sm wa10 wag" target="_blank" rel="noopener" href="${waHref10(e.phone,msg)}">${ic('wa',15,'#fff')}أرسل لـ${esc(e.name.split(' ')[0])} بالواتساب</a>`:''}<button class="btn sm" data-act="ce24:${p.id}">${ic('copy',15)}نسخ</button></span></div><div class="msgtxt">${esc(msg)}</div></div>
+  ${canAct?`<div>${remBtns24(p.id,'e')}</div>`:''}`;
+  h=h.slice(0,i+anchor.length)+box+h.slice(i+anchor.length)}
+ else if(canAct&&!AYW20(cur.t)){const A=agWaits24().find(x=>x.p.id===p.id);if(A){const box=`<div class="we24 ag">${ic('bldg',22,'#B4700F')}<div style="flex:1"><b>بانتظار الجهة</b><small>${remLine24(A.R,'تابعت')}${p.task.curDue?' · '+nextTxt24(p.task.curDue):''}</small></div></div><div>${remBtns24(p.id,'a')}</div>`;h=h.slice(0,i+anchor.length)+box+h.slice(i+anchor.length)}}
+ return h};
+
+/* «المتابعات»: تبويبات السداد / الموظفين / الجهات */
+ui.fu24=ui.fu24||'pay';
+const fuCount24=()=>{try{return payList22().length+empWaits24().length+agWaits24().length}catch(x){return 0}};
+const _payV24=PAGES.pay;PAGES.pay=prm=>{if(S.me==='k'&&ui.fu24==='pay')ui.fu24='ag';const tab=ui.fu24;const P=(()=>{try{return payList22()}catch(x){return []}})(),E=empWaits24(),A=agWaits24();
+ const tabs=`<div class="tb18 fu24">${[['pay','wallet','السداد (أيهم)',P.length],['emp','user','الموظفين',E.length],['ag','bldg','الجهات',A.length]].map(t=>`<button class="${tab===t[0]?'on':''}" data-act="fu24:${t[0]}">${ic(t[1],17)}${t[2]}<span class="c">${t[3]}</span></button>`).join('')}</div>`;
+ const head=`<div class="ph"><div><h1>المتابعات</h1><p>كل شي ننتظره من غيرنا · ما يطلع من هنا إلا لما يخلص · وكل تذكير ينسجل</p></div></div>`;
+ if(tab==='pay'&&S.me!=='k'){let h=_payV24(prm);h=h.replace(/<div class="ph">[\s\S]*?<\/div><\/div>/,'');return head+tabs+h}
+ if(tab==='pay')return head+tabs+`<div class="cd18 empty" style="padding:30px">السداد يتابعه رشيد وشيخة</div>`;
+ const L=tab==='emp'?E:A;const ico=tab==='emp'?'user':'bldg';
+ const row=x=>{const p=x.p,t=p.task;const e=tab==='emp'?x.e:null;const R=tab==='emp'?x.R:x.R;const late=x.due&&days(x.due)<=0;const can=S.me==='r'||t.curWho===S.me;
+  return `<div class="py22 ${late?'du24':''}"><span class="i" style="background:${tab==='emp'?'#E6EEF8':'#FFFAF0'};color:${tab==='emp'?'#2D69B0':'#B4700F'}">${ic(ico,20)}</span><div class="tx"><button class="lnk" data-go="proc-${p.id}"><b>${esc(p.title)}</b></button><small>${esc(t.curStep.t)} · عند ${PEOPLE[t.curWho]?PEOPLE[t.curWho].name:''}</small><small>${remLine24(R,tab==='emp'?'ذكّرته':'تابعت')}${x.due?` · <b class="${late?'r':''}">${nextTxt24(x.due)}</b>`:''}</small></div>
+  ${tab==='emp'&&e&&e.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waHref10(e.phone,empMsg24(p,e))}">${ic('wa',15)}واتساب</a><button class="btn sm" data-act="ce24:${p.id}" title="انسخ الرسالة" aria-label="انسخ الرسالة">${ic('copy',15)}</button>`:''}
+  ${can?remBtns24(p.id,tab==='emp'?'e':'a'):''}<button class="btn sm pri" data-go="proc-${p.id}">${ic('ok',15,'#fff')}${tab==='emp'?'وصل · كمّل':'خلص · كمّل'}</button></div>`};
+ return head+tabs+`<div class="cd18">${L.length?L.map(row).join(''):`<div class="empty" style="padding:30px">${ic('ok',24,'var(--br)')}<div style="margin-top:8px">${tab==='emp'?'ما فيه شي ننتظره من الموظفين':'ما فيه شي ننتظره من الجهات'}</div></div>`}</div>
+ <div class="mini" style="margin-top:10px">${tab==='emp'?'تبدأ متابعة موظف من ملفه: زر «تابع مع الموظف» · أو تطلع لحالها في خطوات مثل تجديد الجواز':'تطلع هنا الخطوات اللي ضغطتوا فيها «بانتظار الجهة»'}</div>`};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="fu24:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();ui.fu24=b.dataset.act.slice(5);render()},true);
+(function(){['r','s','k'].forEach(p=>{const a=NAV[p];if(!a)return;let it=a.find(n=>Array.isArray(n)&&n[2]==='pay');if(!it){const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='msgs');it=['wallet','المتابعات','pay',null];a.splice(i>=0?i+1:3,0,it)}it[1]='المتابعات';it[0]='repeat';it[3]=fuCount24});
+ try{CR.pay=['المتابعات']}catch(x){}})();
+const _bnV24=PAGES.dash;
+/* لوحة التحكم: الكرت يوديك للتبويب الصح */
+document.addEventListener('click',ev=>{const b=ev.target.closest('.kc18[data-act="go:pay"]');if(b)ui.fu24='pay'},true);
+
+/* «تابع مع الموظف» من ملفه */
+const FT24=[['pp','تجديد الجواز وإرسال صورته','جواز'],['iqimg','صورة الإقامة الجديدة','إقامة'],['ce','الموافقة على العقد في قوى','عقد'],['doc','إرسال مستند ناقص','مستند'],['oth','موضوع ثاني','']];
+function fupModal24(eid){const e=S.employees.find(x=>x.id==eid);if(!e)return;ui.fu24m={eid:e.id,k:'pp',txt:''};const draw=()=>{const s=ui.fu24m;const T=FT24.find(x=>x[0]===s.k);const what=s.k==='oth'?(s.txt||'…'):T[1];
+  const msg=s.k==='pp'?`السلام عليكم ${e.name.split(' ')[0]}،\nنذكّرك بتجديد جواز سفرك${e.pp?` (ينتهي ${e.pp})`:''} في أقرب وقت، وإرسال صورة الجواز الجديد عشان نحدّثه في مقيم والنظام.\nوشكراً لك.\n— ${PEOPLE[S.me].name} · الموارد البشرية`:`السلام عليكم ${e.name.split(' ')[0]}،\nنرجو ${what} في أقرب وقت.\nوشكراً لك.\n— ${PEOPLE[S.me].name} · الموارد البشرية`;s.msg=msg;s.what=what;
+  modal(`<div class="mh"><div><b>تابع مع الموظف · ${esc(e.name)}</b><div class="mini" style="margin-top:2px">ترسل له الرسالة، والمنصة تذكّرك لين يرد · وكل تذكير ينسجل</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div>
+  <div class="mb" style="display:flex;flex-direction:column;gap:12px"><div class="ch20"><span class="l">الموضوع:</span>${FT24.map(x=>`<button type="button" class="chip ${s.k===x[0]?'on':''}" data-act="fk24:${x[0]}">${x[1]}</button>`).join('')}</div>
+  ${s.k==='oth'?`<input class="inp" id="fu24t" placeholder="مثلاً: إرسال صورة رخصة القيادة" value="${esc(s.txt)}">`:''}
+  <div class="msgbox"><div class="msgtxt">${esc(msg)}</div></div>
+  <div class="ch20"><span class="l">ذكّرني:</span>${[[1,'بكرة'],[3,'بعد 3 أيام'],[7,'الأسبوع الجاي']].map(x=>`<button type="button" class="chip ${(s.n||3)===x[0]?'on':''}" data-act="fn24:${x[0]}">${x[1]}</button>`).join('')}</div></div>
+  <div class="mf">${e.phone?`<a class="btn pri" data-act="fs24" target="_blank" rel="noopener" href="${waHref10(e.phone,msg)}">${ic('wa',16,'#fff')}أرسل واتساب وتابع</a>`:''}<button class="btn ${e.phone?'':'pri'}" data-act="fs24n">${ic('tick',16)}بلّغته بطريقة ثانية · تابع</button></div>`)};ui.fu24draw=draw;draw()}
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="fk24:"],[data-act^="fn24:"],[data-act="fs24"],[data-act="fs24n"],[data-act^="fo24:"]');if(!b)return;const a=b.dataset.act;
+ if(a.startsWith('fo24:')){ev.stopPropagation();ev.preventDefault();fupModal24(a.slice(5));return}
+ const s=ui.fu24m;if(!s)return;
+ if(a.startsWith('fk24:')){ev.stopPropagation();ev.preventDefault();s.k=a.slice(5);ui.fu24draw();return}
+ if(a.startsWith('fn24:')){ev.stopPropagation();ev.preventDefault();s.n=+a.slice(5);ui.fu24draw();return}
+ if(s.k==='oth'){s.txt=(document.getElementById('fu24t')?.value||'').trim();if(!s.txt){ev.preventDefault();ev.stopPropagation();toast('اكتب الموضوع');return}}
+ if(a==='fs24n'){ev.stopPropagation();ev.preventDefault()}else ev.stopPropagation();
+ const e=S.employees.find(x=>x.id==s.eid);const n=s.n||3;const d=new Date(TODAY.getTime()+n*864e5);const what=s.k==='oth'?s.txt:s.what;
+ act(async()=>{const steps=[{n:1,t:`بانتظار الموظف: ${what}`,w:PEOPLE[S.me].name,g:'',d:ymd(d),ok:false,by:'',on:''}];
+  const it=await spCreate('Tasks',{Title:`متابعة · ${e.name}`,AssignedTo:PEOPLE[S.me].name,AssignedBy:PEOPLE[S.me].name,DueDate:toIso(d),Company:e.co||'فوريستا',LinkRef:`FUP:E${e.id}:${Date.now()}`,Status:'مفتوحة',Steps:JSON.stringify(steps),EmpName:e.name,Notes:`نرجو ${what}`},{label:'متابعة · '+e.name});RAW.Tasks.push(it);
+  await addMsg(it.id,`بلّغت الموظف: ${what}${a==='fs24'?' (واتساب)':''} · التذكير الجاي ${fmt(d)}`,'تذكير موظف');closeModal();ui.fu24m=null},'تمام · بنذكّرك تتابع معه')},true);
+document.addEventListener('input',ev=>{if(ev.target.id==='fu24t'&&ui.fu24m)ui.fu24m.txt=ev.target.value},true);
+const _empV24=PAGES.emp;PAGES.emp=prm=>{let h=_empV24(prm);const e=S.employees.find(x=>x.id==prm.id);if(!e||h.includes('ما عندك صلاحية'))return h;const b=btn('تابع مع الموظف','repeat','',`fo24:${e.id}`);
+ const t=document.createElement('template');t.innerHTML=h;const c=t.content.querySelector('section.card');if(!c)return h;c.insertAdjacentHTML('beforeend',`<div style="margin-inline-start:auto">${b}</div>`);return t.innerHTML};
+
+/* المتابعات الدورية: شهري / كل 3 شهور / كل 6 شهور / سنوي */
+const FREQ24={m1:['شهري',1],m3:['كل 3 شهور',3],m6:['كل 6 شهور',6],y1:['سنوي',12]};
+const PER24D=[{k:'tam',t:'تحديث السيارات من ملف منصة تم',f:'m1',w:'شيخة',n:'صدّر ملف «المركبات» من منصة تم وارفعه في «تحديث من منصة تم» · المنصة تحدّث التواريخ والمستخدمين لحالها',go:'tamimport'},
+ {k:'tamauth',t:'مراجعة التفاويض والمستخدمين في منصة تم',f:'m1',w:'شيخة',n:'تأكد إن كل سيارة لها مستخدم فعلي وتفويض ساري، وحدّث أي فرق في صفحة السيارات',go:'vehicles'},
+ {k:'muqeem',t:'مراجعة الإقامات والجوازات مع مقيم',f:'m1',w:'شيخة',n:'قارن تواريخ الإقامات والجوازات في مقيم مع المنصة، وحدّث أي تاريخ مختلف',go:'fixdates'},
+ {k:'qiwa',t:'مراجعة العقود ورخص العمل مع قوى',f:'m1',w:'شيخة',n:'قارن العقود ورخص العمل في قوى مع المنصة، وحدّث أي تاريخ مختلف',go:'fixdates'},
+ {k:'cr',t:'مراجعة السجل التجاري والاشتراكات (الغرفة · البلدية)',f:'m3',w:'رشيد',n:'تأكد من تاريخ السجل التجاري واشتراك الغرفة ورخصة البلدية، وابدأ التجديد إذا قرب',go:''},
+ {k:'acc',t:'مراجعة حسابات المنصات (اليوزرات والباسوردات)',f:'m3',w:'رشيد',n:'كمّل أي حساب ناقص فيه رابط أو اسم مستخدم أو كلمة مرور، وحدّث اللي تغيّر',go:'accounts'}];
+function per24(){const S0=SET10.per23||SET10.per24;let L=Array.isArray(SET10.per24)?SET10.per24.slice():PER24D.map(x=>({...x,on:x.k==='tam'||x.k==='muqeem'||x.k==='qiwa'?((SET10.auto23||{})['sync_'+x.k]!==false):true}));
+ PER24D.forEach(d=>{if(!L.some(x=>x.k===d.k))L.push({...d,on:true})});return L}
+const perKey24=(x)=>{const y=TODAY.getFullYear(),m=TODAY.getMonth()+1;const f=x.f||'m1';return f==='m1'?`${y}-${String(m).padStart(2,'0')}`:f==='m3'?`${y}-Q${Math.ceil(m/3)}`:f==='m6'?`${y}-H${m<=6?1:2}`:`${y}`};
+const perName24=x=>{const f=x.f||'m1';const y=TODAY.getFullYear(),m=TODAY.getMonth();return f==='m1'?`${MONN[m]} ${y}`:f==='m3'?`الربع ${['الأول','الثاني','الثالث','الرابع'][Math.floor(m/3)]} ${y}`:f==='m6'?`${m<6?'النصف الأول':'النصف الثاني'} ${y}`:`${y}`};
+async function perEngine24(){if(!['r','s'].includes(S.realMe))return 0;await new Promise(r=>setTimeout(r,3500));let made=0;const has=lr=>RAW.Tasks.some(t=>(t.LinkRef||'')===lr);
+ for(const x of per24()){if(x.on===false)continue;const key=`SYNC:${x.k}:${perKey24(x)}`;if(has(key))continue;const due=new Date(TODAY.getFullYear(),TODAY.getMonth(),3);
+  try{const it=await spCreate('Tasks',{Title:`${x.t} · ${perName24(x)}`,AssignedTo:x.w||'شيخة',AssignedBy:'المنصة',DueDate:toIso(due<TODAY?TODAY:due),Company:'فوريستا',LinkRef:key,Status:'مفتوحة',Notes:x.n||'',ReqType:'مهمة'},{label:x.t});RAW.Tasks.push(it);made++;if(KEY[x.w||'شيخة'])await notify(x.w||'شيخة',`${x.t} · ${perName24(x)}`,(x.n||'').slice(0,90),'task-'+it.id,'repeat')}catch(e){console.warn('per24',e)}}
+ return made}
+const _aeV24=autoEngine;autoEngine=async function(){let n=0;try{n+=await _aeV24()||0}catch(e){console.warn(e)}try{const c=await perEngine24();if(c){n+=c;build();render();toast(`نزلت ${c} متابعات دورية`)}}catch(e){console.warn('per24',e)}return n};
+/* صفحة المهمة الدورية: زر يوديك للمكان الصح */
+const _taskV24=PAGES.task;PAGES.task=prm=>{const r=rawTask(prm.id);if(!r||!/^SYNC:/.test(r.LinkRef||''))return _taskV24(prm);const k=r.LinkRef.split(':')[1];const x=per24().find(q=>q.k===k);let h=_taskV24(prm);
+ if(!x)return h;h=h.replace(/<div class="sy23">[\s\S]*?<\/div>/,'');const go=x.go;if(!go)return h;const lab={tamimport:'افتح «تحديث من منصة تم»',vehicles:'افتح صفحة السيارات',fixdates:'افتح «حدّث التواريخ»',accounts:'افتح حسابات المنصات'}[go]||'افتح';
+ const box=`<div class="sy23">${ic('repeat',20,'var(--br)')}<span>${esc(x.n||'')}</span>${btn(lab,'left','pri','go:'+go)}</div>`;const i=h.indexOf('<section class="card"');return i>=0?h.slice(0,i)+box+h.slice(i):box+h};
+/* صفحة «التلقائي»: إعداد المتابعات الدورية */
+const _autoV24=PAGES.auto;PAGES.auto=prm=>{const h=_autoV24(prm);const L=per24();const ed=S.me==='r';const who=['شيخة','رشيد','خالد'];
+ const row=(x,i)=>`<div class="pr24"><div class="tx"><b>${esc(x.t)}</b><small>${esc(x.n||'')}</small></div>${ed?`<select class="inp" data-pr24="${i}:f">${Object.entries(FREQ24).map(([k,v])=>`<option value="${k}" ${x.f===k?'selected':''}>${v[0]}</option>`).join('')}</select><select class="inp" data-pr24="${i}:w">${who.map(w=>`<option ${x.w===w?'selected':''}>${w}</option>`).join('')}</select><button class="sw23 ${x.on===false?'off':''}" data-act="pr24on:${i}" role="switch" aria-checked="${x.on!==false}" aria-label="تشغيل"></button>${x.c?`<button class="ib" data-act="pr24rm:${i}" aria-label="حذف">${ic('x',15)}</button>`:''}`:`<span class="mini">${FREQ24[x.f||'m1'][0]} · ${esc(x.w||'')}</span>${pill(x.on===false?'موقف':'شغّال',x.on===false?'gray':'ok')}`}</div>`;
+ const add=ed?`<div class="pr24 nw"><input class="inp" id="pr24t" placeholder="متابعة جديدة · مثلاً: تجديد اشتراك الغرفة التجارية" style="flex:1;min-width:200px"><select class="inp" id="pr24f">${Object.entries(FREQ24).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('')}</select><select class="inp" id="pr24w">${who.map(w=>`<option>${w}</option>`).join('')}</select>${btn('أضف','plus','pri','pr24add')}</div>`:'';
+ return h+`<div class="cd18" style="margin-top:16px"><div class="h18">${ic('cal',18,'var(--br)')}<b>المتابعات الدورية</b><small>تنزل مهمة لحالها كل فترة · عشان ما يسقط شي</small></div>${L.map(row).join('')}${add}</div>`};
+async function savePer24(fn,msg){act(async()=>{await updSet10(s=>{const L=Array.isArray(s.per24)?s.per24:per24();fn(L);s.per24=L})},msg)}
+document.addEventListener('change',ev=>{const el=ev.target.closest&&ev.target.closest('[data-pr24]');if(!el)return;const [i,f]=el.dataset.pr24.split(':');savePer24(L=>{L[+i][f]=el.value},'انحفظ ✓')},true);
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="pr24"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,i]=b.dataset.act.split(':');
+ if(a==='pr24on'){savePer24(L=>{L[+i].on=L[+i].on===false},'تمام');return}
+ if(a==='pr24rm'){savePer24(L=>{L.splice(+i,1)},'انحذفت');return}
+ if(a==='pr24add'){const t=(document.getElementById('pr24t')?.value||'').trim();if(!t){toast('اكتب اسم المتابعة');return}const f=document.getElementById('pr24f').value,w=document.getElementById('pr24w').value;savePer24(L=>{L.push({k:'c'+Date.now().toString(36),t,f,w,n:'',on:true,c:1})},'انضافت ✓ · تنزل أول مرة الحين')}},true);
+
+/* حسابات المنصات: الناقص يطلع */
+const ACCF24=[['Url','رابط الدخول'],['Username','اسم المستخدم'],['Password','كلمة المرور'],['Owner','صاحب الحساب']];
+const accMiss24=()=>(RAW.Accounts||[]).filter(a=>typeof accCanView!=='function'||accCanView(a)).map(a=>({a,m:ACCF24.filter(f=>!String(a[f[0]]||'').trim()).map(f=>f[1])})).filter(x=>x.m.length);
+const _accV24=PAGES.accounts;PAGES.accounts=prm=>{let h=_accV24(prm);const M=accMiss24();if(!M.length)return h;
+ const box=`<div class="am24">${ic('alert',20,'#B4700F')}<div style="flex:1;min-width:220px"><b>${M.length===1?'حساب واحد ناقص فيه بيانات':M.length===2?'حسابين ناقص فيهم بيانات':M.length+' '+(M.length<=10?'حسابات':'حساب')+' ناقص فيها بيانات'}</b><div class="ls">${M.map(x=>`<span><b>${esc(x.a.Title||'')}</b>${x.a.Company?' · '+esc(x.a.Company):''}: ناقص ${x.m.join(' و')}</span>`).join('')}</div><small>أول ما تكمّلونها تختفي من هنا · وكل تعديل ينسجل باسم اللي عدّله</small></div></div>`;
+ const t=document.createElement('template');t.innerHTML=h;const ph=t.content.querySelector('.ph');if(!ph)return box+h;ph.insertAdjacentHTML('afterend',box);return t.innerHTML};
+const _alertsV24=alerts18;alerts18=function(X){let h=_alertsV24(X);const M=accMiss24();if(!M.length)return h;h=h.replace(/<div class="al18"><div class="empty"[\s\S]*?<\/div><\/div><\/div>/,'<div class="al18"></div>');
+ const b=`<button class="v" data-act="go:accounts">${ic('key',17)}<span>حسابات المنصات: ${M.length===1?'حساب ناقص فيه بيانات':M.length+' ناقص فيها بيانات'}</span>${ic('left',15)}</button>`;return h.replace(/(<div class="al18">(?:<button[\s\S]*?<\/button>)*)/,`$1${b}`)};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
