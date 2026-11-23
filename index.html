@@ -692,11 +692,19 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .cp15{width:26px!important;height:26px!important;border-radius:8px}
 .dn15{color:var(--ink2);font-weight:600;letter-spacing:.02em}
 .id15s{display:block;text-align:right;letter-spacing:.03em;color:#8C9993}
-/* v16 — يومي: اختيار الشركة */
-.co16{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:-4px}
-.co16 .l{display:inline-flex;align-items:center;gap:6px;color:var(--mute);font-size:13px;font-weight:600;margin-inline-end:2px}
-.co16 .chip{height:34px}
-@media (max-width:600px){.co16{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.co16 .chip,.co16 .l{flex:none}}
+/* v16 — اختيار الشركة + رابط لوحة التحكم + رسم الإنجاز */
+.co16{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.co16 .l{display:inline-flex;align-items:center;gap:6px;color:var(--mute);font-size:13px;font-weight:600}
+.co16 .seg{background:#fff;border:1px solid var(--line)}
+@media (max-width:600px){.co16{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.co16 .seg{flex:none}.co16 .l{flex:none}}
+.v7sub16{font-size:12px;font-weight:500;color:var(--mute);margin-inline-start:8px}
+.dl16{display:flex;align-items:center;gap:14px;width:100%;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 18px;text-align:right;font:inherit;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.dl16:hover{border-color:#BFDCD2;box-shadow:0 6px 18px -12px rgba(18,112,94,.45)}
+.dl16 .tx{flex:1;min-width:0}.dl16 .tx b{display:block;font-size:15px}.dl16 .tx small{color:var(--mute);font-size:12.5px}
+.dl16 .nums{display:flex;gap:18px;flex-wrap:wrap}.dl16 .nums span{display:flex;flex-direction:column;align-items:center;font-size:11.5px;color:var(--mute)}.dl16 .nums b{font-size:18px;color:var(--ink)}
+@media (max-width:600px){.dl16{flex-wrap:wrap}.dl16 .nums{width:100%;justify-content:space-around}}
+.ch16{padding:4px 2px 0}.ch16 svg{display:block;max-width:100%;height:auto;font-family:'IBM Plex Sans Arabic',Tahoma,sans-serif}
+.lg16{display:flex;gap:16px;justify-content:center;font-size:12.5px;color:var(--mute);margin-top:6px}.lg16 i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:6px;vertical-align:-1px}
 
 </style>
 </head>
@@ -2735,46 +2743,86 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="cp15
  const ok=()=>toast('انتسخ '+v);try{navigator.clipboard.writeText(v).then(ok,()=>{fallback()})}catch(x){fallback()}
  function fallback(){const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(y){toast(v)}t.remove()}},true);
 
-/* ===================== v16 · يومي: نفس الشكل، مرتب حسب الأولوية + اختيار الشركة/القسم ===================== */
+/* ===================== v16 · «يومي» للشغل + «لوحة التحكم» للأرقام، مع اختيار الشركة/القسم ===================== */
 const CO16={'':'الكل',for:'فوريستا',ark:'أركان',ext:'العملاء الخارجيين'};
 const coOpts16=()=>S.me==='s'?[]:S.me==='k'?['','ark','ext'].concat(grants8('k').foresta?['for']:[]):['','for','ark','ext'];
 const coGet16=()=>{let v='';try{v=localStorage.getItem('co16:'+S.me)||''}catch(e){}return coOpts16().includes(v)?v:''};
 const coSet16=v=>{try{localStorage.setItem('co16:'+S.me,v)}catch(e){}};
 const coTask16=(c,co)=>c==='for'?isFor(co||''):c==='ark'?(co||'')===ARK11:c==='ext'?!!co&&co!==ARK11&&!isFor(co):true;
-const _homeV16=PAGES.home;
-PAGES.home=prm=>{const c=coGet16();const keep={tasks:S.tasks,procs:S.procs,employees:S.employees,vehicles:S.vehicles,clients:S.clients,services:S.services,leaves:S.leaves};const adv=typeof advRows==='function'?advRows:null;let h;
- try{if(c){S.tasks=S.tasks.filter(t=>coTask16(c,t.co));S.procs=S.procs.filter(p=>coTask16(c,p.co));if(c!=='for'){S.employees=[];S.vehicles=[];S.leaves=[];if(adv)advRows=()=>[]}if(c!=='ext'){S.clients=[];S.services=[]}}h=_homeV16(prm)}
- finally{Object.assign(S,keep);if(adv)advRows=adv}
- try{return order16(h,c)}catch(e){console.warn('order16',e);return h}};
-function order16(h,c){const tp=document.createElement('template');tp.innerHTML=h;const K=[...tp.content.children];if(!K.length)return h;
- const H3=el=>[...el.querySelectorAll('h3')].map(x=>x.textContent.trim());const has=(el,t)=>H3(el).includes(t);const used=new Set();const take=f=>{const r=K.filter(x=>!used.has(x)&&f(x));r.forEach(x=>used.add(x));return r};
- const ph=take(x=>x.matches('.ph'));
- const appr=take(x=>x.matches('.v7appr'));
- const daySec=take(x=>x.matches('.v7sec'));
- const tr=take(x=>x.matches('.card')&&!x.matches('.miss-card,.ag-top')&&/محوّلة لك/.test(x.textContent));
- const team=take(x=>x.matches('.ag-team')),top=take(x=>x.matches('.ag-top')),board=take(x=>x.matches('.ag-board')),next=take(x=>x.matches('.row')&&(has(x,'الجاي')||/الجاي/.test(x.textContent.slice(0,200))));
- const exp=take(x=>has(x,'الاستحقاقات القادمة')),procs=take(x=>has(x,'الإجراءات الجارية')),req=take(x=>has(x,'طلبات العملاء')),ws=take(x=>x.matches('.ws11g'));
- const strip=take(x=>x.matches('.v7strip')),miss=take(x=>x.matches('.miss-card')),ram=take(x=>x.matches('.ram10'));
- const kpi=take(x=>x.matches('.v7k')),g3=take(x=>x.matches('.v7g3')),rest=K.filter(x=>!used.has(x));
- /* اللي ما له دخل بالشركة المختارة يختفي بدل ما يطلع فاضي */
- const drop=(arr)=>{arr.length=0};
- if(c==='ark'||c==='ext'){if(S.me!=='k')drop(kpi);drop(exp);drop(strip);drop(ram);g3.forEach(g=>[...g.children].forEach(ch=>{if(has(ch,'الالتزام مع الجهات الحكومية'))ch.remove()}))}
- if(c==='for'){drop(ws);drop(req)}
- if(c==='ark'){drop(req);if(S.me==='k')drop(kpi);ws.forEach(g=>{[...g.children].forEach(ch=>{if(has(ch,'أعمال العملاء'))ch.remove()});g.style.gridTemplateColumns='1fr'})}
- if(c==='ext'){ws.forEach(g=>{[...g.children].forEach(ch=>{if(has(ch,'أركان'))ch.remove()});g.style.gridTemplateColumns='1fr'})}
- if(c==='ark'||c==='ext')drop(tr);
- g3.forEach(g=>{const n=g.children.length;if(n===2)g.style.gridTemplateColumns='repeat(2,minmax(0,1fr))'});
- const dv=(t,i)=>{const d=document.createElement('div');d.className='v7sec';d.innerHTML=ic(i,20,'var(--br)')+t;return d};
- const bar=coOpts16().length?(()=>{const d=document.createElement('div');d.className='co16';d.innerHTML=`<span class="l">${ic('bldg',15)}عرض:</span>${coOpts16().map(k=>`<button class="chip ${k===c?'on':''}" data-act="co16:${k}">${CO16[k]}</button>`).join('')}`;return d})():null;
- const today=[...appr,...daySec,...tr,...team,...top,...board,...next];
- const soon=[...exp,...procs,...req,...ws,...strip,...miss,...ram];
- const stats=[...kpi,...g3,...rest];
- const out=[...ph];if(bar)out.push(bar);
- if(!daySec.length&&today.length)out.push(dv('يومي','cal'));out.push(...today);
- if(soon.length)out.push(dv('قريب ولازم نتابعه','clock'),...soon);
- if(stats.length)out.push(dv('الإحصائيات','chart'),...stats);
- return out.map(x=>x.outerHTML).join('')}
+/* يشغّل أي رسم على بيانات الشركة المختارة بس، وبعدين يرجّع البيانات كاملة */
+function withCo16(c,fn){if(!c)return fn();const keep={tasks:S.tasks,procs:S.procs,employees:S.employees,vehicles:S.vehicles,clients:S.clients,services:S.services,leaves:S.leaves,travel:S.travel};const adv=typeof advRows==='function'?advRows:null;
+ try{S.tasks=S.tasks.filter(t=>coTask16(c,t.co));S.procs=S.procs.filter(p=>coTask16(c,p.co));if(c!=='for'){S.employees=[];S.vehicles=[];S.leaves=[];S.travel=[];if(adv)advRows=()=>[]}if(c!=='ext'){S.clients=[];S.services=[]}return fn()}
+ finally{Object.assign(S,keep);if(adv)advRows=adv}}
+const coBar16=()=>{const o=coOpts16();if(!o.length)return '';const c=coGet16();return `<div class="co16" role="group" aria-label="عرض بيانات"><span class="l">${ic('bldg',15)}عرض:</span><div class="seg">${o.map(k=>`<button class="${k===c?'on':''}" data-act="co16:${k}">${CO16[k]}</button>`).join('')}</div></div>`};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="co16:"]');if(!b)return;e.stopPropagation();e.preventDefault();coSet16(b.dataset.act.slice(5));render()},true);
+
+/* ---------- يومي: الشغل بس (القرارات، مهام اليوم وبكرة، اللي لازم نتصرف فيه قريب) ---------- */
+const _homeV16=PAGES.home;
+PAGES.home=prm=>{const c=coGet16();const h=withCo16(c,()=>_homeV16(prm));try{return day16(h,c)}catch(e){console.warn('day16',e);return h}};
+function day16(h,c){const tp=document.createElement('template');tp.innerHTML=h;const K=[...tp.content.children];if(!K.length)return h;
+ const H3=el=>[...el.querySelectorAll('h3')].map(x=>x.textContent.trim());const has=(el,t)=>H3(el).includes(t);const used=new Set();const take=f=>{const r=K.filter(x=>!used.has(x)&&f(x));r.forEach(x=>used.add(x));return r};
+ const kid=(arr,t)=>{for(const g of arr)for(const ch of [...g.children])if(has(ch,t))return ch;return null};
+ const ph=take(x=>x.matches('.ph')),appr=take(x=>x.matches('.v7appr')),daySec=take(x=>x.matches('.v7sec'));
+ const tr=take(x=>x.matches('.card')&&!x.matches('.miss-card,.ag-top')&&/محوّلة لك/.test(x.textContent));
+ const team=take(x=>x.matches('.ag-team')),top=take(x=>x.matches('.ag-top')),board=take(x=>x.matches('.ag-board')),next=take(x=>x.matches('.row')&&/الجاي/.test(x.textContent.slice(0,300)));
+ const expG=take(x=>has(x,'الاستحقاقات القادمة')),procG=take(x=>has(x,'الإجراءات الجارية')),req=take(x=>has(x,'طلبات العملاء')),ws=take(x=>x.matches('.ws11g'));
+ const strip=take(x=>x.matches('.v7strip')),miss=take(x=>x.matches('.miss-card')),ram=take(x=>x.matches('.ram10'));
+ take(x=>x.matches('.v7k')||x.matches('.v7g3')||has(x,'اختصارات سريعة')||has(x,'آخر النشاطات'));/* تروح للوحة التحكم */
+ const rest=K.filter(x=>!used.has(x));
+ const up=kid(expG,'الاستحقاقات القادمة'),pr=kid(procG,'الإجراءات الجارية'),aw=kid(procG,'الإجازات والسفر');
+ if(c==='ark'||c==='ext'){strip.length=0;ram.length=0;tr.length=0}
+ if(c==='ark')req.length=0;
+ if(c==='for'){ws.length=0;req.length=0}
+ const keepWs=g=>{if(c==='ark')[...g.children].forEach(ch=>{if(has(ch,'أعمال العملاء'))ch.remove()});if(c==='ext')[...g.children].forEach(ch=>{if(has(ch,'أركان'))ch.remove()});if(g.children.length===1)g.style.gridTemplateColumns='1fr';return g};
+ const pair=(a,b)=>{const L=[a,b].filter(Boolean);if(!L.length)return null;const d=document.createElement('div');d.className='v7g2';if(L.length===1)d.style.gridTemplateColumns='1fr';L.forEach(x=>d.appendChild(x));return d};
+ const dv=(t,i,sub)=>{const d=document.createElement('div');d.className='v7sec';d.innerHTML=ic(i,20,'var(--br)')+t+(sub?`<small class="v7sub16">${sub}</small>`:'');return d};
+ const bar=coBar16();const barEl=bar?(()=>{const t=document.createElement('template');t.innerHTML=bar;return t.content.firstElementChild})():null;
+ const out=[...ph];if(barEl)out.push(barEl);out.push(...appr);
+ out.push(...(daySec.length?daySec:[dv('يومي','cal')]),...team,...tr,...top,...board,...next);
+ const upX=(c==='ark'||c==='ext')?null:up;const prX=pr&&pr.querySelector('tr.cl')?pr:null;
+ const soon=[upX?pair(upX,null):null,(prX||aw)?pair(prX,aw):null,...req,...ws.map(keepWs)].filter(Boolean);
+ if(soon.length)out.push(dv('لازم نتصرف فيه قريب','clock','الوثائق والإجراءات والشغل الجاري'),...soon);
+ const rem=[...strip,...miss,...ram,...rest];if(rem.length)out.push(...rem);
+ const lk=document.createElement('template');lk.innerHTML=dashLink16(c);out.push(lk.content.firstElementChild);
+ return out.map(x=>x.outerHTML).join('')}
+function dashLink16(c){const n=withCo16(c,()=>{const T=S.tasks.filter(t=>canSeeTask(t));return{o:T.filter(t=>!t.done).length,d:doneIn16(T,30),e:S.me==='k'?0:visEmp().length}});
+ return `<button class="dl16" data-go="dash">${ti7('chart','#12705E','#E4F2EE')}<div class="tx"><b>لوحة التحكم</b><small>الأرقام والرسوم والإحصائيات${c?' · '+CO16[c]:''}</small></div><div class="nums">${n.e?`<span><b>${n.e}</b>موظف</span>`:''}<span><b>${n.o}</b>مهمة مفتوحة</span><span><b>${n.d}</b>خلصت آخر 30 يوم</span></div>${ic('left',18)}</button>`}
+
+/* ---------- لوحة التحكم: الأرقام بس، وتتغير مع الشركة ---------- */
+const doneOn16=t=>{const r=t.raw||{};return r.DoneOn?new Date(r.DoneOn):null};
+const doneIn16=(T,d)=>T.filter(t=>t.done&&doneOn16(t)&&(Date.now()-doneOn16(t))<d*864e5).length;
+function weekChart16(T){const W=8;const s0=new Date(TODAY);s0.setDate(s0.getDate()-s0.getDay()-7*(W-1));const wk=[];for(let i=0;i<W;i++){const a=new Date(s0);a.setDate(a.getDate()+7*i);const b=new Date(a);b.setDate(b.getDate()+7);wk.push({a,b,done:0,add:0})}
+ T.forEach(t=>{const d=doneOn16(t);const cr=t.created?new Date(t.created):null;wk.forEach(w=>{if(t.done&&d&&d>=w.a&&d<w.b)w.done++;if(cr&&cr>=w.a&&cr<w.b)w.add++})});
+ const mx=Math.max(4,...wk.map(w=>Math.max(w.done,w.add)));const Wd=640,Hh=220,pl=8,pb=34,pt=16,cw=(Wd-pl*2)/W,bw=Math.min(18,cw/3.2),sc=v=>(Hh-pb-pt)*v/mx;
+ const grid=[0,.5,1].map(f=>{const y=Hh-pb-(Hh-pb-pt)*f;return `<line x1="${pl}" x2="${Wd-pl}" y1="${y}" y2="${y}" stroke="#EEF2F0"/>`}).join('');
+ const bars=wk.map((w,i)=>{const x=Wd-pl-cw*(i+.5);const y1=Hh-pb-sc(w.done),y2=Hh-pb-sc(w.add);const lab=`${w.a.getDate()}/${w.a.getMonth()+1}`;
+  return `<g><rect x="${x-bw-1}" y="${y2}" width="${bw}" height="${Math.max(sc(w.add),1.5)}" rx="4" fill="#C9E3DA"><title>انضافت ${w.add}</title></rect><rect x="${x+1}" y="${y1}" width="${bw}" height="${Math.max(sc(w.done),1.5)}" rx="4" fill="#12705E"><title>خلصت ${w.done}</title></rect>${w.done?`<text x="${x+1+bw/2}" y="${y1-5}" text-anchor="middle" font-size="11" font-weight="700" fill="#12705E">${w.done}</text>`:''}<text x="${x}" y="${Hh-12}" text-anchor="middle" font-size="11" fill="#8C9993">${i===W-1?'هالأسبوع':lab}</text></g>`}).join('');
+ const tot=wk.reduce((a,w)=>a+w.done,0);
+ return `<div class="v7c">${head7('chart','الإنجاز الأسبوعي',`آخر 8 أسابيع · خلص ${tot}`)}<div class="ch16"><svg viewBox="0 0 ${Wd} ${Hh}" width="100%" role="img" aria-label="الإنجاز الأسبوعي">${grid}${bars}</svg></div><div class="lg16"><span><i style="background:#12705E"></i>خلصت</span><span><i style="background:#C9E3DA"></i>انضافت</span></div></div>`}
+function taskDonut16(T){const O=T.filter(t=>!t.done);const late=O.filter(t=>t.due&&days(t.due)<0).length,td=O.filter(t=>t.due&&days(t.due)===0).length,wk=O.filter(t=>t.due&&days(t.due)>0&&days(t.due)<=7).length,lt=O.length-late-td-wk;const tot=O.length||1;
+ const S2=176,sw=24,r=(S2-sw)/2,C=2*Math.PI*r;let off=0;const seg=(v,c)=>{if(!v)return '';const l=C*v/tot;const s=`<circle cx="${S2/2}" cy="${S2/2}" r="${r}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-dasharray="${Math.max(l-2,0)} ${C}" stroke-dashoffset="${-off}" transform="rotate(-90 ${S2/2} ${S2/2})"/>`;off+=l;return s};
+ const L=[['متأخرة',late,'#E0574C'],['موعدها اليوم',td,'#E3A63B'],['خلال أسبوع',wk,'#6650C2'],['بعدين أو بدون موعد',lt,'#9FB3AA']];
+ return `<div class="v7c">${head7('check','حالة المهام المفتوحة','كل المهام والإجراءات اللي ما خلصت',lnk7('المهام','tasks'))}<div class="v7don"><svg width="${S2}" height="${S2}" viewBox="0 0 ${S2} ${S2}"><circle cx="${S2/2}" cy="${S2/2}" r="${r}" fill="none" stroke="#EEF2F0" stroke-width="${sw}"/>${L.map(x=>seg(x[1],x[2])).join('')}<text x="50%" y="47%" text-anchor="middle" font-size="34" font-weight="700" fill="#14201A" font-family="IBM Plex Sans Arabic,Tahoma">${O.length}</text><text x="50%" y="62%" text-anchor="middle" font-size="12.5" fill="#66746E" font-family="IBM Plex Sans Arabic,Tahoma">مفتوحة</text></svg>
+ <div class="v7leg">${L.map(x=>`<div><i style="background:${x[2]}"></i><span><b>${x[0]}</b><small>${x[1]} (${(x[1]/tot*100).toFixed(0)}%)</small></span></div>`).join('')}</div></div></div>`}
+function kpis16(c){const T=S.tasks.filter(t=>canSeeTask(t));const O=T.filter(t=>!t.done);const late=O.filter(t=>t.due&&days(t.due)<0).length;const dm=doneIn16(T,30);
+ if(c==='for'||S.me==='s'||(S.me==='k'&&!c))return kpis7();
+ if(c==='ark'){const ad=(SET10.arkDocs||[]).filter(d=>d.end&&days(d.end.split('-').reverse().join('/'))<=60).length;
+  return `<div class="v7k">${kpi('check','ok','مهام أركان المفتوحة',O.length,`${O.filter(t=>t.who==='r').length} عند رشيد · ${O.filter(t=>t.who==='k').length} عند خالد`,'arkan')}${kpi('alert','exp','متأخرة',late,late?'تحتاج متابعة':'ما فيه تأخير','arkan')}${kpi('tick','info','خلصت آخر 30 يوم',dm,'مهمة وتذكير','arkan')}${kpi('file','soon','مستندات أركان',(SET10.arkDocs||[]).length,ad?`${ad} تنتهي خلال 60 يوم`:'كلها سارية','arkan')}</div>`}
+ if(c==='ext'){const sv=S.services.filter(s=>s.status!=='منجزة');const stale=S.clients.filter(x=>-days(x.lastTouch)>x.every).length;
+  return `<div class="v7k">${kpi('brief','ok','طلبات عملاء جارية',sv.length,`${S.clients.length} عملاء`,'services')}${kpi('bldg','soon','عند الجهة الحكومية',sv.filter(s=>s.status==='عند الجهة').length,`${sv.filter(s=>s.status==='عند العميل').length} بانتظار العميل`,'services')}${kpi('phone','exp','عملاء يحتاجون تواصل',stale,'فات موعد تحديثهم','clients')}${kpi('check','info','مهام العملاء المفتوحة',O.length,late?`${late} متأخرة`:'ما فيه تأخير','external')}</div>`}
+ const X=expRows();const sv=S.services.filter(s=>s.status!=='منجزة');
+ return `<div class="v7k">${kpi('users','ok','إجمالي الموظفين',visEmp().length,`${visVeh().length} سيارة`,'employees')}${kpi('check','info','المهام المفتوحة',O.length,`${dm} خلصت آخر 30 يوم`,'tasks')}${kpi('alert','exp','متأخر',late+X.filter(r=>r.n<0).length,`${late} مهام · ${X.filter(r=>r.n<0).length} وثائق`,'expiry')}${kpi('brief','soon','طلبات العملاء الجارية',sv.length,`${S.clients.length} عملاء`,'services')}</div>`}
+PAGES.dash=()=>{const c=coGet16();return withCo16(c,()=>{const T=S.tasks.filter(t=>canSeeTask(t));const showFor=S.me!=='k'?(c===''||c==='for'):c==='for';
+ const g=(a,b)=>`<div class="v7g2" ${!b?'style="grid-template-columns:1fr"':''}>${a}${b||''}</div>`;
+ const R=[];R.push(kpis16(c));R.push(g(weekChart16(T),taskDonut16(T)));
+ if(showFor)R.push(g(donut7(),S.me==='r'?team7():away7()));
+ else if(c==='ark')R.push(g(arkDocs11(),S.me==='r'?team7():''));
+ else if(c==='ext'||S.me==='k')R.push(g(svc7(),clients7()));
+ if(showFor)R.push(g(gov7(),feed7()));else R.push(g(procs7(),feed7()));
+ const acts=S.me!=='k'?`${btn('التقرير الشهري','file','','go:mreport')}${btn('الانتهاءات','alert','','go:expiry')}`:btn('أعمال العملاء','brief','','go:external');
+ return `<div class="ph"><div><h1>لوحة التحكم</h1><p>الأرقام والإحصائيات${c?' · '+CO16[c]:S.me==='s'?' · فوريستا':' · كل الشركات'}</p></div><div class="acts">${acts}</div></div>${coBar16()}${R.join('')}`})};
+CR.dash=['لوحة التحكم'];
+(function(){['r','s','k'].forEach(p=>{const a=NAV[p];if(a.some(n=>Array.isArray(n)&&n[2]==='dash'))return;const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='home');a.splice(i>=0?i+1:1,0,['chart','لوحة التحكم','dash'])})})();
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
