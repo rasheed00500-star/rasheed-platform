@@ -687,6 +687,11 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .sg15 small{font-weight:500;font-size:11px;color:#9AA7A1}
 .hit15{margin-top:3px;font-size:12.5px;color:var(--br);font-weight:600}
 #qr mark{background:#FDF0C8;color:inherit;border-radius:3px;padding:0 1px}
+.id15{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:13.5px;color:var(--mute)}
+.id15 b{color:var(--ink);font-size:15px;letter-spacing:.03em}
+.cp15{width:26px!important;height:26px!important;border-radius:8px}
+.dn15{color:var(--ink2);font-weight:600;letter-spacing:.02em}
+.id15s{display:block;text-align:right;letter-spacing:.03em;color:#8C9993}
 
 </style>
 </head>
@@ -2705,6 +2710,25 @@ if(ui.ex)ui.ex.types=[];else ui.ex={types:[],st:'both',win:30};
 window.addEventListener('click',e=>{const b=e.target.closest('[data-go="expiry"]');if(!b||!b.closest('.side,.bnav,.mnav,nav'))return;ui.ex={types:[],st:(ui.ex&&ui.ex.st)||'both',win:(ui.ex&&ui.ex.win)||30}},true);
 const _expiryV15=PAGES.expiry;PAGES.expiry=prm=>{const h=_expiryV15(prm);if(!ui.ex||(ui.ex.types||[]).length)return h;
  return h.replace(/<tr><td colspan="6" class="empty">[\s\S]*?<\/td><\/tr>/,`<tr><td colspan="6" class="empty" style="padding:36px 16px">${ic('filter',22,'var(--br)')}<div style="margin-top:8px;font-weight:600">اختر من فوق وش تبي يبان</div><div class="mini" style="margin-top:4px">مثلاً: إقامة، أو جواز سفر، أو استمارة · تقدر تختار أكثر من وحدة</div></td></tr>`)};
+
+/* ---- رقم الهوية/الإقامة يبان في ملف الموظف وفي قائمة الموظفين ---- */
+const empRaw15=e=>(RAW.Employees||[]).find(x=>x.id===e.id)||{};
+const idL15=e=>/سعود/.test(e.nat||'')||e.saudi?'رقم الهوية':'رقم الإقامة';
+const idNo15=e=>{const r=empRaw15(e);return String(r.IdNo||(e._d&&e._d.iq&&e._d.iq.DocNo)||'').trim()};
+const cpB15=v=>`<button class="ib cp15" data-act="cp15:${esc(v)}" title="نسخ" aria-label="نسخ ${esc(v)}">${ic('copy',14)}</button>`;
+const _empV15=PAGES.emp;PAGES.emp=prm=>{let h=_empV15(prm);const e=S.employees.find(x=>x.id==prm.id);if(!e||S.me==='k'&&!grants8('k').foresta||h.includes('ما عندك صلاحية'))return h;const r=empRaw15(e);const id=idNo15(e);
+ /* الهيدر: الرقم تحت الاسم */
+ if(id){const k=`${esc(e.job)} · ${esc(e.co)} · ${esc(e.nat)}</div>`;const i=h.indexOf(k);if(i>=0)h=h.slice(0,i+k.length)+`<div class="id15">${idL15(e)}: <b dir="ltr">${esc(id)}</b>${cpB15(id)}</div>`+h.slice(i+k.length)}
+ /* الوثائق: رقم كل وثيقة */
+ DOCT.forEach(d=>{const doc=e._d&&e._d[d[0]];let no=doc&&doc.DocNo?String(doc.DocNo):'';if(d[0]==='iq'&&!no&&id&&!/سعود/.test(e.nat||''))no=id;if(!no)return;const k=`<b style="font-size:14px;font-weight:600">${d[3]}</b><div class="mini">`;const i=h.indexOf(k);if(i<0)return;const j=i+k.length;h=h.slice(0,j)+`<span dir="ltr" class="dn15">${esc(no)}</span> · `+h.slice(j)});
+ /* البيانات الأساسية: الهوية والجوال وقوى */
+ const F=[[idL15(e),id,1],['الجوال',r.Phone||e.phone,1],['رقم عقد قوى',r.QiwaContractNo,1],['الرقم الوظيفي',r.EmpNo,0]].filter(f=>f[1]);
+ if(F.length){const k='<div><div class="mini">الشركة</div>';const i=h.indexOf(k);if(i>=0)h=h.slice(0,i)+F.map(f=>`<div><div class="mini">${f[0]}</div><b style="font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:4px" dir="ltr">${esc(f[1])}${f[2]?cpB15(f[1]):''}</b></div>`).join('')+h.slice(i)}
+ return h};
+const _empsV15=PAGES.employees;PAGES.employees=prm=>{let h=_empsV15(prm);visEmp().forEach(e=>{const id=idNo15(e);if(!id)return;const k=`data-go="emp-${e.id}"`;const i=h.indexOf(k);if(i<0)return;const s=h.indexOf('<span class="sub">',i);if(s<0)return;const t=h.indexOf('</span>',s);h=h.slice(0,t+7)+`<span class="sub id15s" dir="ltr">${esc(id)}</span>`+h.slice(t+7)});return h};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="cp15:"]');if(!b)return;e.stopPropagation();e.preventDefault();const v=b.dataset.act.slice(5);
+ const ok=()=>toast('انتسخ '+v);try{navigator.clipboard.writeText(v).then(ok,()=>{fallback()})}catch(x){fallback()}
+ function fallback(){const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(y){toast(v)}t.remove()}},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
