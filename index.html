@@ -821,6 +821,33 @@ td:has(.no18){white-space:nowrap}
 .co16 .seg button:hover:not(.on),.tk17bar .seg button:hover:not(.on){background:#F1F6F4}
 .co16 .seg button.on,.tk17bar .seg button.on{background:var(--br)!important;color:#fff!important;box-shadow:0 4px 10px -6px rgba(18,112,94,.7);font-weight:700}
 .tk17bar .seg button.on .c{color:#DDF1EA}
+/* v19 */
+.al18 .v{background:#F6F3FE;border-color:#DCD3F7;color:#5B44B5}
+.tg19{font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px}.tg19.v{background:#F6F3FE;color:#5B44B5}
+.lk19{display:inline-flex;align-items:center;gap:5px;background:#EEF4FB;color:#2D5E9C;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.wb19{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#FFF6F5;border:1px solid #F3C9C4;border-radius:16px;padding:14px 16px;color:#8E2B23;margin-bottom:16px}
+.wb19>div{flex:1;min-width:220px}.wb19 b{display:block;font-size:15px;margin-bottom:2px}.wb19 small{font-size:13px;color:#8E2B23;line-height:1.7}
+.imp19{display:flex;align-items:center;gap:14px;border:2px dashed #BFD9CF;border-radius:16px;padding:18px;background:#F7FBF9;cursor:pointer;margin-bottom:16px;flex-wrap:wrap}
+.imp19:hover{background:#F0F8F4}.imp19 b{font-size:15px}.imp19 small{display:block;color:var(--mute);font-size:13px;line-height:1.7}
+.old19{color:var(--mute);text-decoration:line-through}.new19v{color:#12705E;font-weight:700}
+tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
+.sum19{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.sm19{border-radius:16px;padding:14px 16px;border:1px solid var(--line);background:#fff;min-width:0}
+.sm19 .h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:6px}
+.sm19 .n{font-size:32px;font-weight:700;line-height:1.1}
+.sm19 ul{margin:8px 0 0;padding:0 18px 0 0;font-size:13.5px;color:var(--ink2);line-height:1.9}
+.sm19 ul .lnk{text-align:right;font:inherit;color:inherit}
+.sm19.g{border-color:#BFDCD2;background:#F5FBF8}.sm19.g .h,.sm19.g .n{color:#12705E}
+.sm19.r{border-color:#F3C9C4;background:#FFF8F7}.sm19.r .h,.sm19.r .n{color:#CF3F35}
+.sm19.b{border-color:#D7E3F4;background:#F5F8FD}.sm19.b .h,.sm19.b .n{color:#2D69B0}
+.dr19{display:flex;align-items:center;gap:12px;padding:10px 2px;border-top:1px solid var(--line2)}.dr19:first-of-type{border-top:0}
+.dr19 .tx{flex:1;min-width:0}.dr19 .tx b{display:block;font-size:14.5px}.dr19 .tx small{color:var(--mute);font-size:12.5px}
+.wk19{display:flex;align-items:center;gap:12px;width:100%;border:1px solid #D7E3F4;background:#F5F8FD;color:#2D69B0;border-radius:16px;padding:12px 16px;font:inherit;cursor:pointer;text-align:right}
+.wk19 span{flex:1}.wk19 b{display:block;font-size:15px}.wk19 small{color:var(--ink2);font-size:13px}
+.ee19{margin-bottom:14px}
+@media(max-width:760px){.sum19{grid-template-columns:1fr}}
+.sm19 .lnk,.t18 .lnk,.cd18 .mini .lnk{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:right}
+.t18 .lnk:hover,.sm19 .lnk:hover{color:var(--br)}
 
 </style>
 </head>
@@ -3083,7 +3110,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261123225425';
+const APPV18='20261123232311';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3095,6 +3122,141 @@ function pst18(id){const p=S.procs.find(x=>x.id==id);if(!p)return null;const s=p
 const fixPs18=h=>typeof h!=='string'?h:h.replace(/<button class="tag" data-go="proc-(\d+)"[^>]*>[^<]*<\/button>/g,(m,id)=>pst18(id)||m).replace(/<button class="pill t-ok" data-go="proc-(\d+)"[^>]*>إجراء التجديد جاري[^<]*<\/button>/g,(m,id)=>pst18(id)||m);
 ['expiry','fixdates'].forEach(k=>{const o=PAGES[k];if(o)PAGES[k]=prm=>{let h=fixPs18(o(prm));if(k==='expiry')h=h.replace('<th>الحالة</th><th>الإجراء</th>','<th>الحالة</th><th>حالة الإجراء</th>');return h}});
 const _tbody18v4=tbody18;tbody18=function(){return fixPs18(_tbody18v4())};
+
+/* ===================== v19 · ستة تحسينات: رخصة العمل مع الإقامة · قيد التجديد من زمان · الجواز قبل الإقامة · استيراد منصة تم · ملخص الأسبوع · انتهت خدمتهم ===================== */
+
+/* 1) رخصة العمل مربوطة بالإقامة: إذا ما فيه رخصة مسجلة تاخذ تاريخ الإقامة تلقائياً */
+const _buildV19=build;build=function(){_buildV19();try{S.employees.forEach(e=>{e._wpL=false;if(!e.saudi&&!e.wp&&e.iq){e.wp=e.iq;e._wpL=true}})}catch(x){console.warn(x)}};
+const _expRowsV19=expRows;expRows=function(){return _expRowsV19().filter(r=>!(r.k==='wp'&&r.eid&&(S.employees.find(e=>e.id===r.eid)||{})._wpL))};
+
+/* 2) قيد التجديد من زمان (أكثر من 30 يوم بعد الانتهاء) */
+const STALE19=30;
+function stale19(){const E={},V={};visEmp().forEach(e=>E[e.name]=e);visVeh().forEach(v=>V[v.title]=v);const out=[];
+ RAW.Documents.forEach(d=>{if(d.RenewStatus!=='قيد التجديد'||!d.ExpiryDate)return;const dt=iso2(d.ExpiryDate);const n=days(dt);if(n==null||n>-STALE19)return;
+  const e=E[d.BelongsTo],v=V[d.BelongsTo];if(!e&&!v)return;out.push({doc:d,type:d.DocType||'',owner:e?e.name:v.title,sub:e?e.job:(v.m||''),go:e?'emp-'+e.id:'veh-'+v.id,date:dt,ago:-n,veh:!!v})});
+ return out.sort((a,b)=>b.ago-a.ago)}
+const ago19=n=>n>=365?`${Math.floor(n/365)===1?'سنة':Math.floor(n/365)===2?'سنتين':Math.floor(n/365)+' سنوات'}${n%365>=30?' و'+Math.floor(n%365/30)+' شهر':''}`:n>=60?`${Math.floor(n/30)} شهور`:`${n} يوم`;
+PAGES.stale=()=>{if(S.me==='k')return noAccess();const L=stale19();
+ return `<div class="ph"><div><h1>قيد التجديد من زمان</h1><p>وثائق مكتوب عليها «قيد التجديد» وانتهت من أكثر من ${STALE19} يوم · إما تجددت وما انحدّث تاريخها، أو التجديد واقف</p></div><div class="acts">${btn('رجوع','right','','go:dash')}</div></div>
+ <div class="cd18">${L.length?`<div style="overflow-x:auto"><table class="t18"><thead><tr><th>#</th><th>الوثيقة</th><th>تخص</th><th>انتهت</th><th>من كم</th><th></th></tr></thead><tbody>${L.map((r,i)=>`<tr><td class="sq18">${i+1}</td><td><b style="font-weight:600">${esc(r.type)}</b></td><td><button class="lnk" data-go="${r.go}"><b style="font-weight:600">${esc(r.owner)}</b></button>${r.sub?`<small class="sb">${esc(r.sub)}</small>`:''}</td><td>${r.date}</td><td><span class="tg19 v">${ago19(r.ago)}</span></td><td><button class="btn sm" data-go="${r.go}">${ic('left',14)}افتح وحدّث التاريخ</button></td></tr>`).join('')}</tbody></table></div>
+ <div class="mini" style="margin-top:10px;line-height:1.8">إذا تجددت فعلاً: افتحها وحط التاريخ الجديد وتنشال من هنا · السيارات تقدر تحدّثها كلها مرة وحدة من ${`<button class="lnk" data-go="tamimport"><b>ملف منصة تم</b></button>`}</div>`
+ :`<div class="empty" style="padding:30px">${ic('ok',24,'var(--br)')}<div style="margin-top:8px">ما فيه شي واقف · كل شي محدّث</div></div>`}</div>`};
+
+/* 3) الجواز ينتهي قبل الإقامة */
+const ppFirst19=e=>!!(!e.saudi&&e.pp&&e.iq&&(days(e.pp)<0||D(e.pp)<D(e.iq)));
+const ppList19=()=>visEmp().filter(ppFirst19).sort((a,b)=>days(a.pp)-days(b.pp));
+const ppMsg19=e=>{const n=days(e.pp);return `${n<0?`الجواز منتهي من ${-n} يوم`:`الجواز ينتهي ${e.pp}`} والإقامة تنتهي ${e.iq} · ما تقدر تجدد الإقامة إلا بجواز ساري. جدد الجواز أول.`};
+PAGES.ppfirst=()=>{if(S.me==='k')return noAccess();const L=ppList19();
+ return `<div class="ph"><div><h1>الجواز قبل الإقامة</h1><p>موظفين جوازهم منتهي أو ينتهي قبل الإقامة · لازم يتجدد الجواز أول</p></div><div class="acts">${btn('رجوع','right','','go:dash')}</div></div>
+ <div class="cd18">${L.length?`<div style="overflow-x:auto"><table class="t18"><thead><tr><th>#</th><th>الموظف</th><th>الجواز</th><th>الإقامة</th><th></th></tr></thead><tbody>${L.map((e,i)=>`<tr><td class="sq18">${i+1}</td><td><button class="lnk" data-go="emp-${e.id}"><b style="font-weight:600">${esc(e.name)}</b></button><small class="sb">${esc(e.job||'')}</small></td><td>${e.pp} ${days(e.pp)<0?pill('منتهي','exp'):pill(`باقي ${days(e.pp)} يوم`,'soon')}</td><td>${e.iq} ${pill(...dstat(e.iq))}</td><td><button class="btn sm pri" data-act="pp19:${e.id}">${ic('layers',14,'#fff')}ابدأ تجديد الجواز</button></td></tr>`).join('')}</tbody></table></div>`
+ :`<div class="empty" style="padding:30px">${ic('ok',24,'var(--br)')}<div style="margin-top:8px">كل الجوازات تنتهي بعد الإقامات</div></div>`}</div>`};
+function ppStart19(id){const e=S.employees.find(x=>x.id==id);if(!e)return;const t=(S.allTemplates||[]).find(t=>/جواز/.test(t.title));
+ if(t){newProc2(e.id);setTimeout(()=>{const r=document.querySelector(`input[name=tp][value="${t.id}"]`);if(r)r.checked=true},40);return}
+ const b=document.createElement('button');b.dataset.act='newtask';b.hidden=true;document.body.appendChild(b);b.click();b.remove();
+ setTimeout(()=>{const i=document.getElementById('nt-t');if(i){i.value='تجديد جواز · '+e.name;i.dispatchEvent(new Event('input',{bubbles:true}))}},60)}
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="pp19:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();ppStart19(b.dataset.act.split(':')[1])},true);
+
+/* صفحة الموظف: شريط الجواز + رخصة العمل «مربوطة بالإقامة» */
+const tplIns19=(h,sel,html,where='afterend')=>{const t=document.createElement('template');t.innerHTML=h;const el=t.content.querySelector(sel);if(!el)return h;el.insertAdjacentHTML(where,html);return t.innerHTML};
+const _empV19=PAGES.emp;PAGES.emp=prm=>{let h=_empV19(prm);const e=S.employees.find(x=>x.id==prm.id);if(!e||h.includes('ما عندك صلاحية'))return h;
+ if(e._wpL){h=h.replace(/(رخصة العمل<\/b><div class="mini">)تنتهي ([0-9/]+)(<\/div><\/div>)<span class="pill[^"]*"><i><\/i>[^<]*<\/span>/,(m,a,d,c)=>`${a}تتجدد مع الإقامة في قوى · تنتهي ${d}${c}<span class="lk19">${ic('layers',13)}مربوطة بالإقامة</span>`)}
+ if(ppFirst19(e)&&S.me!=='k')h=tplIns19(h,h.includes('class="ph"')?'.ph':'section.card',`<div class="wb19" style="margin-top:${h.includes('class="ph"')?0:16}px">${ic('alert',22,'#CF3F35')}<div><b>الجواز ينتهي قبل الإقامة</b><small>${ppMsg19(e)}</small></div><button class="btn sm pri" data-act="pp19:${e.id}">${ic('layers',15,'#fff')}ابدأ تجديد الجواز</button></div>`);
+ return h};
+
+/* تنبيهات لوحة التحكم الجديدة */
+const _alertsV19=alerts18;alerts18=function(X){let h=_alertsV19(X);if(S.me==='k')return h;const A=[];
+ const st=stale19();if(st.length){const old=st[0];A.push(['v','hist',`قيد التجديد من زمان: ${st.length} ${st.length===1?'وثيقة':'وثائق'} (أقدمها من ${D(old.date).getFullYear()})`,'go:stale'])}
+ const pp=ppList19();if(pp.length)A.push(['e','pass',`${pp.length===1?'جواز ينتهي':pp.length===2?'جوازين ينتهون':pp.length+' جوازات تنتهي'} قبل الإقامة · جدد الجواز أول`,'go:ppfirst']);
+ if(!A.length)return h;const add=A.map(a=>`<button class="${a[0]}" data-act="${a[3]}">${ic(a[1],17)}<span>${a[2]}</span>${ic('left',15)}</button>`).join('');
+ h=h.replace(/<div class="al18"><div class="empty"[\s\S]*?<\/div><\/div><\/div>/,'<div class="al18"></div>');
+ return h.replace('<div class="al18">','<div class="al18">'+add)};
+
+/* 4) استيراد ملف منصة تم (المركبات) */
+async function unzip19(buf){const v=new DataView(buf);let e=buf.byteLength-22;while(e>=0&&v.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw new Error('الملف مو إكسل (xlsx)');
+ const n=v.getUint16(e+10,true);let p=v.getUint32(e+16,true);const out={};const dec=new TextDecoder();
+ for(let i=0;i<n;i++){if(v.getUint32(p,true)!==0x02014b50)break;const meth=v.getUint16(p+10,true),cs=v.getUint32(p+20,true),fl=v.getUint16(p+28,true),xl=v.getUint16(p+30,true),cl=v.getUint16(p+32,true),lo=v.getUint32(p+42,true);const name=dec.decode(new Uint8Array(buf,p+46,fl));p+=46+fl+xl+cl;
+  if(!/^xl\/(sharedStrings\.xml|worksheets\/sheet\d+\.xml)$/.test(name))continue;
+  const lfl=v.getUint16(lo+26,true),lxl=v.getUint16(lo+28,true);const data=new Uint8Array(buf,lo+30+lfl+lxl,cs);let raw=data;
+  if(meth===8){const s=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));raw=new Uint8Array(await new Response(s).arrayBuffer())}else if(meth!==0)continue;
+  out[name]=dec.decode(raw)}return out}
+const col19=ref=>{const m=String(ref).match(/^([A-Z]+)/);if(!m)return -1;let n=0;for(const ch of m[1])n=n*26+ch.charCodeAt(0)-64;return n-1};
+function rows19(F){const P=new DOMParser();const ss=[];if(F['xl/sharedStrings.xml']){const d=P.parseFromString(F['xl/sharedStrings.xml'],'application/xml');[...d.getElementsByTagName('si')].forEach(si=>ss.push([...si.getElementsByTagName('t')].map(t=>t.textContent).join('')))}
+ const k=Object.keys(F).filter(x=>/worksheets/.test(x)).sort()[0];if(!k)throw new Error('ما لقيت ورقة في الملف');const d=P.parseFromString(F[k],'application/xml');const rows=[];
+ [...d.getElementsByTagName('row')].forEach(r=>{const a=[];let i=0;[...r.getElementsByTagName('c')].forEach(c=>{const ci=c.getAttribute('r')?col19(c.getAttribute('r')):i;i=ci+1;const t=c.getAttribute('t');const vv=c.getElementsByTagName('v')[0];
+  a[ci]=t==='s'?(vv?ss[+vv.textContent]||'':''):t==='inlineStr'?[...c.getElementsByTagName('t')].map(x=>x.textContent).join(''):(vv?vv.textContent:'')});rows.push(a)});return rows}
+const HF19=(()=>{try{return new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{year:'numeric',month:'numeric',day:'numeric',timeZone:'UTC'})}catch(e){return null}})();
+function hij19(s){const m=String(s||'').trim().match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);if(!m)return null;const y=+m[1],mo=+m[2],d=+m[3];if(y>1700)return new Date(y,mo-1,d);if(!HF19)return null;
+ const ap=Date.UTC(622,6,19)+((y-1)*354.36667+(mo-1)*29.5306+(d-1))*864e5;
+ for(let k=0;k<=45;k++)for(const sg of k?[1,-1]:[1]){const t=new Date(ap+sg*k*864e5);const p={};HF19.formatToParts(t).forEach(x=>p[x.type]=x.value);if(parseInt(p.year)===y&&+p.month===mo&&+p.day===d)return new Date(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())}return null}
+const plate19=s=>String(s||'').replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/\s+/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+let TAM19=null;
+function tamParse19(rows){const hi=rows.findIndex(r=>(r||[]).some(c=>String(c||'').trim()==='رقم اللوحة'));if(hi<0)throw new Error('ما لقيت عمود «رقم اللوحة» · تأكد إنه ملف المركبات من منصة تم');
+ const H=rows[hi].map(c=>String(c||'').trim());const ix=n=>H.indexOf(n);const c={pl:ix('رقم اللوحة'),reg:ix('تاريخ انتهاء رخصة السير'),insp:ix('تاريخ انتهاء الفحص'),user:ix('اسم المستخدم الفعلي'),ins:ix('حالة التأمين'),inspS:ix('حالة الفحص')};
+ const V={};visVeh().forEach(v=>V[plate19(v.title)]=v);const out=[],miss=[];
+ rows.slice(hi+1).forEach(r=>{if(!r)return;const pl=String(r[c.pl]||'').trim();if(!pl)return;const v=V[plate19(pl)];
+  const reg=c.reg>=0?hij19(r[c.reg]):null,insp=c.insp>=0?hij19(r[c.insp]):null;let user=c.user>=0?String(r[c.user]||'').trim():'';if(user==='-')user='';const ins=c.ins>=0?String(r[c.ins]||'').trim():'';
+  if(!v){miss.push(pl);return}
+  const ch={v,pl,ins,reg:null,insp:null,user:null,regOld:v.reg,inspOld:v.insp};
+  if(reg&&fmt(reg)!==v.reg)ch.reg=reg;if(insp&&fmt(insp)!==v.insp)ch.insp=insp;if(user&&!v.user)ch.user=user;out.push(ch)});
+ return{all:out,ch:out.filter(x=>x.reg||x.insp||x.user),miss}}
+document.addEventListener('change',async ev=>{const inp=ev.target.closest&&ev.target.closest('input[data-tam19]');if(!inp||!inp.files||!inp.files[0])return;const f=inp.files[0];
+ try{if(typeof DecompressionStream==='undefined')throw new Error('المتصفح قديم · جرّب من كروم');const F=await unzip19(await f.arrayBuffer());TAM19={name:f.name,...tamParse19(rows19(F))};render()}catch(x){console.error(x);toast('ما قدرت أقرأ الملف: '+String(x.message||x).slice(0,90))}},true);
+const insTam19=s=>/ساري/.test(s)?pill('ساري في تم','ok'):/منته/.test(s)?pill('منتهي في تم','exp'):s?pill(s,'gray'):'—';
+PAGES.tamimport=()=>{if(S.me==='k')return noAccess();const T=TAM19;
+ const cell=(o,n)=>n?`<span class="old19">${o||'—'}</span> ${ic('left',12)} <b class="new19v">${fmt(n)}</b>`:`<span class="mini">${o||'—'}</span>`;
+ const head=`<div class="ph"><div><h1>تحديث السيارات من منصة تم</h1><p>نزّل ملف «المركبات» (Excel) من منصة تم وارفعه هنا · المنصة تقارن وتوريك وش بيتغير قبل ما تحفظ</p></div><div class="acts">${btn('رجوع','right','','go:vehicles')}</div></div>`;
+ const up=`<label class="imp19">${ic('xls',30,'#12705E')}<div style="flex:1;min-width:0"><b>${T?'ملف ثاني؟':'اختر ملف منصة تم'}</b><small>${T?esc(T.name):'تواريخ الاستمارة والفحص بالهجري وتتحول تلقائي للميلادي · المستخدم الفعلي ينضاف إذا ما كان مسجل'}</small></div><span class="btn pri">${ic('upload',16,'#fff')}اختر الملف</span><input type="file" accept=".xlsx" data-tam19 hidden></label>`;
+ if(!T)return head+up+`<div class="cd18 mini" style="line-height:2">• منصة تم ← المركبات ← تصدير Excel<br>• التأمين: ملف تم فيه «حالة التأمين» بس بدون تاريخ انتهاء، فتاريخ التأمين يتسجل من وثيقة التأمين نفسها</div>`;
+ const n=T.ch.length;
+ return head+up+`<div class="cd18"><div class="h18">${ic('car',18,'var(--br)')}<b>${n?`${n} ${n<=10&&n>2?'سيارات':'سيارة'} فيها تحديث`:'كل السيارات مطابقة · ما فيه شي يتغير'}</b><small>من ${T.all.length} سيارة في الملف</small></div>
+ <div style="overflow-x:auto"><table class="t18"><thead><tr><th>#</th><th>السيارة</th><th>الاستمارة</th><th>الفحص الدوري</th><th>المستخدم</th><th>التأمين</th></tr></thead><tbody>${T.all.slice().sort((a,b)=>!!(b.reg||b.insp||b.user)-!!(a.reg||a.insp||a.user)).map((r,i)=>`<tr class="${r.reg||r.insp||r.user?'':'same19'}"><td class="sq18">${i+1}</td><td><b style="font-weight:600">${esc(r.pl)}</b><small class="sb">${esc(r.v.m||'')}</small></td><td>${cell(r.regOld,r.reg)}</td><td>${cell(r.inspOld,r.insp)}</td><td>${r.user?`<b class="new19v">${esc(r.user)}</b>`:`<span class="mini">${esc(r.v.user||'—')}</span>`}</td><td>${insTam19(r.ins)}</td></tr>`).join('')}</tbody></table></div>
+ ${T.miss.length?`<div class="mini" style="margin-top:10px">موجودة في تم ومو مسجلة في المنصة: ${T.miss.map(esc).join('، ')}</div>`:''}
+ ${n?`<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap">${btn('إلغاء','x','','tam19x')}${btn(`احفظ التحديث (${n})`,'tick','pri','tam19ok')}</div>`:''}</div>`};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act="tam19ok"],[data-act="tam19x"]');if(!b)return;ev.stopPropagation();ev.preventDefault();
+ if(b.dataset.act==='tam19x'){TAM19=null;render();return}const C=(TAM19||{}).ch||[];if(!C.length)return;
+ act(async()=>{for(const c of C){if(c.reg)await saveDate10('reg','veh',c.v.id,ymd(c.reg));if(c.insp)await saveDate10('insp','veh',c.v.id,ymd(c.insp));if(c.user){const fl={Driver:c.user};await spPatch('Vehicles',c.v.id,fl);syncRaw('Vehicles',c.v.id,fl)}}TAM19=null},`تحدّثت ${C.length} سيارة ✓`)},true);
+const _vehV19=PAGES.vehicles;PAGES.vehicles=prm=>{const h=_vehV19(prm);if(S.me==='k'||h.includes('ما عندك صلاحية'))return h;const b=btn('تحديث من منصة تم','xls','','go:tamimport');
+ const t=document.createElement('template');t.innerHTML=h;const ph=t.content.querySelector('.ph');if(!ph)return h;let a=ph.querySelector('.acts');if(!a){a=document.createElement('div');a.className='acts';ph.appendChild(a)}a.insertAdjacentHTML('afterbegin',b);return t.innerHTML};
+
+/* 5) ملخص الأسبوع (الأحد ← الخميس) */
+function week19(){const ws=new Date(TODAY);ws.setDate(ws.getDate()-ws.getDay());const we=new Date(ws);we.setDate(we.getDate()+4);const ns=new Date(ws);ns.setDate(ns.getDate()+7);const ne=new Date(ws);ne.setDate(ne.getDate()+13);
+ const vis=S.tasks.filter(canSeeTask);const mineOnly=S.me!=='r';const scope=t=>!mineOnly||t.chain.includes(S.me)||t.who===S.me;
+ const done=vis.filter(t=>t.done&&scope(t)&&(doneOn16(t)||0)>=ws).sort((a,b)=>doneOn16(b)-doneOn16(a));
+ const late=vis.filter(t=>!t.done&&scope(t)&&t.due&&days(t.due)<0).sort((a,b)=>D(a.due)-D(b.due));
+ const X=expRows().filter(r=>{const d=D(r.date);return d>=ns&&d<=ne});const byK={};X.forEach(r=>byK[r.k]=(byK[r.k]||0)+1);
+ const nt=vis.filter(t=>!t.done&&scope(t)&&t.due&&D(t.due)>=ns&&D(t.due)<=ne);
+ const exNew=expRows().filter(r=>{const d=D(r.date);return d>=ws&&d<TODAY});
+ const team=['r','s','k'].filter(p=>S.me==='r'||p===S.me).map(p=>({p,done:vis.filter(t=>t.done&&t.who===p&&(doneOn16(t)||0)>=ws).length,open:vis.filter(t=>!t.done&&t.who===p).length,late:vis.filter(t=>!t.done&&t.who===p&&t.due&&days(t.due)<0).length}));
+ return{ws,we,ns,ne,done,late,byK,X,nt,exNew,team}}
+const dm19=d=>`${d.getDate()} ${MONN[d.getMonth()]}`;
+function waWeek19(W){const L=[`*ملخص الأسبوع* · ${dm19(W.ws)} – ${dm19(W.we)}`,`من ${PEOPLE[S.me].name} · منصة رشيد`,'',`✅ خلص: ${W.done.length}`,...W.done.slice(0,5).map(t=>'• '+t.title),'',`⚠️ متأخر: ${W.late.length}`,...W.late.slice(0,5).map(t=>'• '+t.title),'',`📅 الأسبوع الجاي (${dm19(W.ns)} – ${dm19(W.ne)}):`,...Object.entries(W.byK).map(([k,n])=>`• ${PL17[k]||k}: ${n} تنتهي`),W.nt.length?`• ${W.nt.length} مهام موعدها الأسبوع الجاي`:''];return L.filter((x,i)=>x!==''||L[i-1]!=='').join('\n')}
+PAGES.weekly=()=>{const W=week19();const li=(a,f,n=6)=>a.length?`<ul>${a.slice(0,n).map(f).join('')}${a.length>n?`<li class="mini">و ${a.length-n} ثانية</li>`:''}</ul>`:'<div class="mini" style="margin-top:6px">ما فيه</div>';
+ const tl=t=>`<li><button class="lnk" data-go="${t.steps?'proc':'task'}-${t.id}">${esc(t.title)}</button></li>`;
+ const nx=[...Object.entries(W.byK).map(([k,n])=>`<li><button class="lnk" data-act="dx17:${k}:soon">${PL17[k]||k}: ${n} تنتهي</button></li>`),...W.nt.slice(0,4).map(tl)];
+ const ready=TODAY.getDay()===4&&new Date().getHours()>=16||TODAY.getDay()>4;
+ return `<div class="ph"><div><h1>ملخص الأسبوع</h1><p>${dm19(W.ws)} – ${dm19(W.we)} · ${ready?'جاهز':'يكتمل الخميس الساعة 4 العصر · هذا اللي صار لين الحين'}</p></div><div class="acts"><a class="btn" href="https://wa.me/?text=${encodeURIComponent(waWeek19(W))}" target="_blank" rel="noopener">${ic('send',16)}أرسله واتساب</a></div></div>
+ <div class="sum19"><div class="sm19 g"><div class="h">${ic('ok',18)}خلص هالأسبوع</div><div class="n">${W.done.length}</div>${li(W.done,tl)}</div>
+ <div class="sm19 r"><div class="h">${ic('alert',18)}متأخر</div><div class="n">${W.late.length}</div>${li(W.late,t=>`<li><button class="lnk" data-go="${t.steps?'proc':'task'}-${t.id}">${esc(t.title)}</button> <small class="mini">${dueTxt17(t)}</small></li>`)}</div>
+ <div class="sm19 b"><div class="h">${ic('cal',18)}الأسبوع الجاي</div><div class="n">${W.X.length+W.nt.length}</div><div class="mini">${dm19(W.ns)} – ${dm19(W.ne)}</div>${nx.length?`<ul>${nx.join('')}</ul>`:'<div class="mini" style="margin-top:6px">ما فيه شي</div>'}</div></div>
+ <div class="r18" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)"><div class="cd18"><div class="h18">${ic('users',18,'var(--br)')}<b>${S.me==='r'?'إنجاز الفريق هالأسبوع':'إنجازك هالأسبوع'}</b></div>${W.team.map(x=>`<div class="dr19">${av(x.p)}<div class="tx"><b>${PEOPLE[x.p].name}</b><small>خلص ${x.done} · عنده ${x.open} مفتوحة${x.late?` · <span style="color:var(--red)">${x.late} متأخرة</span>`:''}</small></div></div>`).join('')}</div>
+ <div class="cd18"><div class="h18">${ic('file',18,'var(--br)')}<b>وثائق انتهت هالأسبوع</b><small>${W.exNew.length}</small></div>${W.exNew.length?W.exNew.slice(0,6).map(r=>`<div class="dr19"><div class="tx"><b>${esc(r.owner)}</b><small>${PL17[r.k]||r.k} · انتهت ${r.date}</small></div><button class="ib" data-go="${r.go}" aria-label="افتح">${ic('left',15)}</button></div>`).join(''):'<div class="mini">ما انتهى شي هالأسبوع</div>'}</div></div>`};
+/* لوحة التحكم: زر «ملخص الأسبوع» + شريط يوم الخميس */
+const _dashV19=PAGES.dash;PAGES.dash=prm=>{let h=_dashV19(prm);if(S.me==='k')return h;h=h.replace('<div class="acts">','<div class="acts">'+btn('ملخص الأسبوع','cal','','go:weekly'));
+ const ready=TODAY.getDay()===4&&new Date().getHours()>=16||TODAY.getDay()>4;if(!ready)return h;const W=week19();
+ const bar=`<button class="wk19" data-act="go:weekly">${ic('cal',20)}<span><b>ملخص الأسبوع جاهز</b><small>خلص ${W.done.length} · متأخر ${W.late.length} · الأسبوع الجاي ${W.X.length+W.nt.length}</small></span>${ic('left',16)}</button>`;
+ return h.includes('<div class="m18">')?h.replace('<div class="m18">','<div class="m18">'+bar):tplIns19(h,'.ph',bar)};
+(function(){['r','s'].forEach(p=>{const a=NAV[p];if(!a||a.some(n=>Array.isArray(n)&&n[2]==='weekly'))return;let i=a.findIndex(n=>Array.isArray(n)&&(n[2]==='mreport'||n[2]==='reports'));if(i<0)return;a.splice(i+1,0,['cal','ملخص الأسبوع','weekly'])});
+ try{Object.assign(CR,{weekly:['ملخص الأسبوع'],stale:['لوحة التحكم','قيد التجديد من زمان'],ppfirst:['لوحة التحكم','الجواز قبل الإقامة'],tamimport:['السيارات','تحديث من منصة تم']});Object.assign(SECT,{weekly:'g',stale:'t',ppfirst:'t',tamimport:'b'});Object.assign(PAGEI,{weekly:'cal',stale:'hist',ppfirst:'pass',tamimport:'xls'})}catch(x){}})();
+
+/* 6) الموظفين: تبويب «انتهت خدمتهم» */
+const ended19=()=>RAW.Employees.filter(e=>e.EmpStatus==='منتهي'&&(S.me==='r'||isFor(e.Company||''))).sort((a,b)=>(a.Title||'').localeCompare(b.Title||'','ar'));
+const _empsV19=PAGES.employees;PAGES.employees=prm=>{if(S.me==='k'&&!(typeof grants8==='function'&&grants8('k').foresta))return _empsV19(prm);const N=ended19();const on=ui.ee19==='end';
+ const tabs=`<div class="tb18 ee19" role="tablist"><button role="tab" aria-selected="${!on}" class="${on?'':'on'}" data-act="ee19:act">${ic('users',17)}على رأس العمل<span class="c">${visEmp().length}</span></button><button role="tab" aria-selected="${on}" class="${on?'on':''}" data-act="ee19:end">${ic('x',17)}انتهت خدمتهم<span class="c">${N.length}</span></button></div>`;
+ if(!on){const h=_empsV19(prm);return h.includes('ما عندك صلاحية')?h:tplIns19(h,'.ph',tabs)}
+ return `<div class="ph"><div><h1>الموظفين</h1><p>${N.length} انتهت خدمتهم · محفوظين للرجوع لهم</p></div></div>${tabs}
+ <div class="cd18">${N.length?`<div style="overflow-x:auto"><table class="t18"><thead><tr><th>#</th><th>الموظف</th><th>الجنسية</th><th>المهنة</th><th>نهاية العقد</th><th></th></tr></thead><tbody>${N.map((e,i)=>`<tr class="end19"><td class="sq18">${i+1}</td><td><b style="font-weight:600">${esc(e.Title||'')}</b><small class="sb">${esc(e.Company||'')}</small></td><td>${esc(e.Nationality||'—')}</td><td>${esc(e.JobTitle||'—')}</td><td>${iso2(e.ContractEnd)||'—'}</td><td>${pill('انتهت خدمته','gray')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty" style="padding:30px">ما فيه أحد</div>'}
+ <div class="mini" style="margin-top:10px">ما يطلعون في التنبيهات ولا البيانات الناقصة</div></div>`};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="ee19:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();ui.ee19=b.dataset.act.split(':')[1];render()},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
