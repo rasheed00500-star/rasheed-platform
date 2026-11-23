@@ -3237,7 +3237,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261124011639';
+const APPV18='20261124012506';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3892,7 +3892,7 @@ function remHist25(pid,k,max=8){const L=remsAll25(pid,k).slice().reverse();if(!L
  const ago=d=>{const n=Math.round((TODAY-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);return n<=0?'اليوم':n===1?'أمس':n===2?'من يومين':`من ${n} أيام`};
  const rows=L.slice(-max).map((m,i)=>{const d=remD24(m);const n=L.length-Math.min(L.length,max)+i+1;return `<li><b>التذكير ${n}</b><span>${fmt(d)}</span>${remMeta25(m)?`<em>${esc(remMeta25(m))}</em>`:''}<small>${esc(m.ByUser||'')}</small></li>`}).join('');
  const last=remD24(L[L.length-1]);return `<div class="rh25"><div class="hd">${ic('repeat',15)}<b>${L.length===1?'تذكير واحد':L.length===2?'تذكيرين':L.length+' تذكيرات'}</b><span>آخر تذكير ${fmt(last).slice(0,5)} · ${ago(last)}</span></div><ol>${rows}</ol></div>`}
-function remMsg25(p,k){if(k==='e')return empMsg24(p,empOf24(p));if(k==='y'){const x=payItem22(p);return x?ayTxt22(x):''}return ''}
+function remMsg25(p,k){if(k==='e')return empMsg24(p,empOf24(p));if(k==='y'){const x=payItem22(p);if(x)return ayTxt22(x);const c=p.task&&p.task.curStep;const m=c?stepMsg(p,c.t,procVals(p)):null;return m?m.m:''}return ''}
 function remTo25(p,k){if(k==='e'){const e=empOf24(p);return e&&e.phone?[e.phone,e.name.split(' ')[0]]:null}if(k==='y')return SET10.ayham?[SET10.ayham,'أيهم']:null;return null}
 function remModal25(pid,k){const p=S.procs.find(q=>q.id==pid);if(!p)return;ui.rm25={pid:p.id,k,d:ymd(new Date()),m:k==='a'?'اتصال':'واتساب',n:k==='e'?3:1};const draw=()=>{const s=ui.rm25;const T=ymd(new Date()),Y=ymd(new Date(Date.now()-864e5));const msg=remMsg25(p,k);const to=remTo25(p,k);const e=k==='e'?empOf24(p):null;
   const nd=s.nd||ymd(new Date(TODAY.getTime()+s.n*864e5));
@@ -3917,10 +3917,11 @@ window.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="rm23
 const rb25=h=>h.replace(/<span class="rb24"><span class="mini">[^<]*<\/span><button class="chip" data-act="rk24:([ea]):(\d+):1">[\s\S]*?<\/span>/g,(m,k,id)=>`<button class="btn sm" data-act="rmd25:${k}:${id}">${ic('tick',15)}سجّل تذكير</button>`);
 /* صفحة الإجراء: سجل التذكيرات المرقّم + زر واحد */
 const _procV25=PAGES.proc;PAGES.proc=prm=>{let h=rb25(_procV25(prm));const p=S.procs.find(x=>x.id==prm.id);if(!p||!p.task||!p.task.curStep)return h;const cur=p.task.curStep;
- const k=EMPW24.test(cur.t)?'e':AYW20(cur.t)?'y':agWaits24().some(x=>x.p.id===p.id)?'a':null;if(!k)return h;
+ const k=EMPW24.test(cur.t)?'e':(AYW20(cur.t)||/استلام ملف حماية الأجور/.test(cur.t))?'y':agWaits24().some(x=>x.p.id===p.id)?'a':null;if(!k)return h;
  h=h.replace(/(<button class="btn" data-act="rem20:\d+">)[\s\S]*?(<\/button>)/,`$1${ic('tick',16)}سجّل تذكير لأيهم$2`);
  if(k==='e')h=h.replace(/(data-act="step2:\d+"[^>]*>[\s\S]*?)تمّت الخطوة/,'$1وصل من الموظف · كمّل');
  const hist=remHist25(p.id,k);const anchor='<div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">';const i=h.indexOf(anchor);if(i<0)return h;
+ if(/استلام ملف حماية الأجور/.test(cur.t)){const canAct=S.me==='r'||p.task.curWho===S.me;if(canAct)h=h.replace(new RegExp(`(<button[^>]*data-act="step2:${p.id}"[^>]*>[\\s\\S]*?</button>)`),`$1<button class="btn" data-act="rmd25:y:${p.id}">${ic('tick',16)}سجّل تذكير لأيهم</button>`);return h.slice(0,i+anchor.length)+hist+h.slice(i+anchor.length)}
  const j=h.indexOf('</div></div>',h.indexOf(k==='y'?'class="wt20"':'class="we24',i));if(j<0)return h;return h.slice(0,j+12)+hist+h.slice(j+12)};
 /* «المتابعات»: زر «سجّل تذكير» في كل الصفوف */
 const _payV25=PAGES.pay;PAGES.pay=prm=>{let h=rb25(_payV25(prm));h=h.replace(/<button class="btn sm" data-act="rm23:(\d+)">[\s\S]*?<\/button>/g,(m,id)=>`<button class="btn sm" data-act="rmd25:y:${id}">${ic('tick',15)}سجّل تذكير</button>`);
@@ -3949,7 +3950,7 @@ const G26=[
  [/حجز موعد الفحص/,null,{w:'الفحص الدوري',s:['احجز موعد من موقع الفحص الدوري (مركز قريب)','بلّغ مستخدم السيارة بالموعد'],t:''}],
  [/تذكير أيهم بالرواتب/,null,{w:'واتساب',s:['اجمع تغييرات الشهر: إجازات، غياب، خصومات، موظفين جدد أو منتهين','أرسل لأيهم الرسالة الجاهزة (فيها الإجازات تلقائي)'],t:'أيهم يحوّل الرواتب أول أيام الشهر الجاي'}],
  [/أيهم حوّل الرواتب/,null,{w:'واتساب',s:['اسأل أيهم إذا حوّل الرواتب','إذا ما حوّل: سجّل تذكير واختر متى ترجع له'],t:'التحويل عادة أول أيام الشهر'}],
- [/استلام ملف حماية الأجور/,null,{w:'قروب الشركة',s:['أيهم يرسل الملف في قروب الشركة خلال أول 10 أيام من الشهر','حمّل الملف وأرفقه في «مرفقات هذي الخطوة»'],t:'إذا ما وصل لين يوم 10: ذكّره'}],
+ [/استلام ملف حماية الأجور/,null,{w:'قروب الشركة',s:['أيهم يحوّل الرواتب من نفسه، ويرسل ملف حماية الأجور في قروب الشركة خلال أول 10 أيام من الشهر','لما يوصل الملف: حمّله وأرفقه في «مرفقات هذي الخطوة»','اضغط «تمّت الخطوة»'],t:'إذا ما وصل الملف لين يوم 10: أرسل له الرسالة الجاهزة وسجّل التذكير'}],
  [/رفع الملف في منصة مدد|رفع ملف حماية الأجور في منصة مدد/,null,{w:'مدد',s:['ادخل منصة مدد بحساب المنشأة','افتح «حماية الأجور» وارفع الملف','قارن عدد الموظفين في الملف مع عدد اللي انصرف لهم راتب'],t:'إذا العدد مختلف (مثلاً 20 موظف و19 انصرف لهم) يحتاج «تبرير» للموظف الناقص'}],
  [/هل فيه موظفين يحتاجون (تبرير|مبررات)/,null,{w:'مدد',s:['شوف نتيجة الرفع في مدد','إذا كل الموظفين تمام: اختر «لا»','إذا فيه موظف ما انصرف له راتب: اختر «نعم» وبعدها تختار الموظفين'],t:'التبرير لازم يخلص خلال 10 أيام من رفع الملف · بعدها تعتبر مخالفة'}],
  [/رفع التبرير في منصة مدد/,null,{w:'مدد',s:['ادخل مدد ← حماية الأجور ← المبررات','اختر الموظف ونوع التبرير (حسب المتفق عليه معه)','أرسل التبرير'],t:'بعدها لازم الموظف يوافق على التبرير من حسابه في مدد'}],
@@ -3963,12 +3964,12 @@ function guide26(t){for(const [a,b,g] of G26){if(a.test(t)&&(!b||b.test(t)))retu
 const gBox26=g=>`<div class="gd26"><div class="hd">${ic('layers',16,'var(--br)')}<b>كيف تسويها خطوة بخطوة</b>${g.w?`<span class="w">${esc(g.w)}</span>`:''}</div><ol>${g.s.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${g.t?`<div class="tp">${ic('alert',14,'#9A5D08')}<span>${esc(g.t)}</span></div>`:''}</div>`;
 
 /* 2) حماية الأجور: الخطوات حسب الواقع + التبرير لكل موظف خلال 10 أيام */
-const WPS26=[['تذكير أيهم بالرواتب وإرسال التغييرات (إجازات، غياب، خصومات، موظفين جدد أو منتهين)','شيخة',0],['التأكد إن أيهم حوّل الرواتب (أول أيام الشهر الجاي)','شيخة',8],['استلام ملف حماية الأجور من أيهم (يرسله في قروب الشركة خلال أول 10 أيام)','شيخة',15],['رفع الملف في منصة مدد','شيخة',16],['مراجعة النتيجة: هل فيه موظفين يحتاجون تبرير؟','شيخة',16],['التأكد من قبول الملف وحفظ الإيصال وإبلاغ رشيد','شيخة',17]];
-const isOldWps26=st=>st.some(s=>/مراجعة الملف: هل فيه موظفين يحتاجون مبررات/.test(s.t||''));
+const WPS26=[['استلام ملف حماية الأجور من أيهم (يرسله في قروب الشركة خلال أول 10 أيام من الشهر)','شيخة',15],['رفع الملف في منصة مدد','شيخة',16],['مراجعة النتيجة: هل فيه موظفين يحتاجون تبرير؟','شيخة',16],['التأكد من قبول الملف وحفظ الإيصال وإبلاغ رشيد','شيخة',17]];
+const isOldWps26=st=>st.some(s=>/مراجعة الملف: هل فيه موظفين يحتاجون مبررات|تذكير أيهم بالرواتب/.test(s.t||''));
 const _buildV26=build;build=function(){try{const r=(RAW.Recurring||[]).find(x=>x.Title==='رفع ملف حماية الأجور');if(r){let st=[];try{st=JSON.parse(r.Steps||'[]')}catch(e){}if(isOldWps26(st))r.Steps=JSON.stringify(WPS26.map(s=>({t:s[0],w:s[1],o:s[2]})))}}catch(e){}_buildV26()};
 const _ssV26=stepSpec;stepSpec=function(t){const s=_ssV26(t);if(/هل فيه موظفين يحتاجون تبرير/.test(t)&&!s.in.some(x=>x[0]==='just'))s.in.push(['just','فيه موظفين يحتاجون تبرير؟',['لا','نعم'],'']);return s};
 async function wpsMigrate26(){const r=(RAW.Tasks||[]).find(t=>/^REC:1:\d{4}-\d{2}$/.test(t.LinkRef||'')&&t.Status==='مفتوحة');if(!r)return;let st=[];try{st=JSON.parse(r.Steps||'[]')}catch(e){return}if(!isOldWps26(st)||st.some(s=>s.ok))return;
- const base=new Date((st[0].d||ymd(TODAY))+'T00:00:00');const ns=WPS26.map((s,i)=>{const d=new Date(base);d.setDate(d.getDate()+s[2]);return{n:i+1,t:s[0],w:s[1],g:'',d:ymd(d),ok:false,by:'',on:''}});const f={Steps:JSON.stringify(ns),DueDate:ns[ns.length-1].d+'T12:00:00Z'};await spPatch('Tasks',r.id,f,{noAudit:true});Object.assign(r,f)}
+ const base=/تذكير أيهم بالرواتب/.test(st[0].t||'')?new Date((st[0].d||ymd(TODAY))+'T00:00:00'):new Date(TODAY.getFullYear(),TODAY.getMonth(),25);const ns=WPS26.map((s,i)=>{const d=new Date(base);d.setDate(d.getDate()+s[2]);return{n:i+1,t:s[0],w:s[1],g:'',d:ymd(d),ok:false,by:'',on:''}});const f={Steps:JSON.stringify(ns),DueDate:ns[ns.length-1].d+'T12:00:00Z'};await spPatch('Tasks',r.id,f,{noAudit:true});Object.assign(r,f)}
 const MON26=t=>{const m=(t||'').split('·')[1];return m?m.trim():''};
 const MONJ26=t=>{const a=(t||'').split('·');return a.length>2?a[a.length-1].trim():''};
 function wpsjModal26(p){const E=visEmp().filter(e=>isFor(e.co));ui.wj26={pid:p.id,sel:[]};const draw=()=>{const s=ui.wj26;modal(`<div class="mh"><div><b>مين الموظفين اللي يحتاجون تبرير؟</b><div class="mini" style="margin-top:2px">لكل موظف تنفتح متابعة: رفع التبرير ← موافقة الموظف ← التأكيد · خلال 10 أيام</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div>
