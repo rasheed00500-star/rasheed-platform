@@ -848,6 +848,16 @@ tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
 @media(max-width:760px){.sum19{grid-template-columns:1fr}}
 .sm19 .lnk,.t18 .lnk,.cd18 .mini .lnk{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:right}
 .t18 .lnk:hover,.sm19 .lnk:hover{color:var(--br)}
+/* v20 */
+.ch20{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.ch20 .l{font-size:13px;color:var(--mute);font-weight:600;margin-inline-end:4px}
+.wt20{display:flex;gap:12px;align-items:center;background:#F6F3FE;border:1px solid #DCD3F7;border-radius:14px;padding:12px 14px;color:#5B44B5}
+.wt20 b{display:block;font-size:15px}.wt20 small{color:var(--ink2);font-size:13px}
+.up20{border:2px dashed #C9D6D0;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;background:#FAFCFB;cursor:pointer;flex-wrap:wrap}
+.up20.hot{border-color:#E3A63B;background:#FFFCF5}.up20 b{font-size:14.5px;display:block}.up20 small{color:var(--mute);font-size:12.5px}
+.ay20{margin:0 0 16px}
+.wl20 .r{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line2);flex-wrap:wrap}.wl20 .r:first-of-type{border-top:0}
+.wl20 .i{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#F0EDFB;color:#6650C2;flex:none}.wl20 .i.o{background:#FDEDEB;color:#CF3F35}
+.wl20 .tx{flex:1;min-width:180px}.wl20 .tx .lnk{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:right}.wl20 b{font-size:14.5px;display:block}.wl20 small{color:var(--mute);font-size:12.5px;display:block}
 
 </style>
 </head>
@@ -3110,7 +3120,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261123232311';
+const APPV18='20261123233247';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3257,6 +3267,54 @@ const _empsV19=PAGES.employees;PAGES.employees=prm=>{if(S.me==='k'&&!(typeof gra
  <div class="cd18">${N.length?`<div style="overflow-x:auto"><table class="t18"><thead><tr><th>#</th><th>الموظف</th><th>الجنسية</th><th>المهنة</th><th>نهاية العقد</th><th></th></tr></thead><tbody>${N.map((e,i)=>`<tr class="end19"><td class="sq18">${i+1}</td><td><b style="font-weight:600">${esc(e.Title||'')}</b><small class="sb">${esc(e.Company||'')}</small></td><td>${esc(e.Nationality||'—')}</td><td>${esc(e.JobTitle||'—')}</td><td>${iso2(e.ContractEnd)||'—'}</td><td>${pill('انتهت خدمته','gray')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty" style="padding:30px">ما فيه أحد</div>'}
  <div class="mini" style="margin-top:10px">ما يطلعون في التنبيهات ولا البيانات الناقصة</div></div>`};
 document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="ee19:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();ui.ee19=b.dataset.act.split(':')[1];render()},true);
+
+/* ===================== v20 · اللوحة الإرشادية (المرحلة 1): تجديد الإقامة + متابعة سداد أيهم ===================== */
+const AYW20=t=>/التأكد إن أيهم سدد|أيهم سدد|بانتظار سداد/.test(t||'');
+const UPS20=t=>/صورة التجديد/.test(t||'')?['ren','صورة التجديد من مقيم','صورة أو PDF · تنحفظ في ملفات الموظف','صورة تجديد الإقامة']:AYW20(t)?['rcp','صورة إيصال السداد','اختياري · تنحفظ في ملفات الموظف','إيصال سداد رسوم الإقامة']:null;
+const ago20=d=>{if(!d)return '';const n=Math.round((TODAY-new Date(d.slice(0,10)+'T00:00:00'))/864e5);return n<=0?'اليوم':n===1?'أمس':n===2?'من يومين':`من ${n} أيام`};
+ui.dt20=ui.dt20||{};ui.up20=ui.up20||{};
+/* تاريخ تنفيذ الخطوة: اليوم / أمس / تاريخ ثاني */
+const _stepDoneV20=stepDone;stepDone=async function(p,note){const d=(ui.dt20||{})[p.id];if(!d||d===ymd(new Date()))return _stepDoneV20(p,note);
+ const r=rawTask(p.id);const steps=JSON.parse(r.Steps);const i=steps.findIndex(s=>!s.ok);const spec=stepSpec(steps[i].t);const sv=(ui.sv||{})[p.id]||{};const vals={};spec.in.forEach(([k])=>{if(sv[k]!==undefined)vals[k]=sv[k]});
+ steps[i].ok=true;steps[i].by=PEOPLE[S.me].name;steps[i].on=d;if(Object.keys(vals).length)steps[i].v=vals;if(note)steps[i].nt=note;
+ const nx=steps[i+1];const f={Steps:JSON.stringify(steps)};if(nx){f.AssignedTo=nx.w||r.AssignedTo;if(nx.d)f.DueDate=nx.d+'T12:00:00Z'}else{f.Status='منجزة';f.DoneOn=new Date().toISOString()}
+ await spPatch('Tasks',p.id,f);Object.assign(r,f);if(ui.sv)delete ui.sv[p.id];delete ui.dt20[p.id];
+ if(nx&&KEY[nx.w]&&KEY[nx.w]!==S.me)await notify(nx.w,`دورك في «${p.title}»`,`الخطوة ${i+2}: ${nx.t}`+(note?' · ملاحظة: '+note:''),`proc-${p.id}`,'layers')};
+function dateChips20(p,wait){const v=ui.dt20[p.id]||ymd(new Date());const y=new Date();y.setDate(y.getDate()-1);const Y=ymd(y),T=ymd(new Date());const other=v!==T&&v!==Y;
+ return `<div class="ch20"><span class="l">${wait?'متى سدّد؟':'متى تمّت؟'}</span><button type="button" class="chip ${v===T?'on':''}" data-act="dt20:${p.id}:${T}">اليوم</button><button type="button" class="chip ${v===Y?'on':''}" data-act="dt20:${p.id}:${Y}">أمس</button><button type="button" class="chip ${other?'on':''}" data-act="dt20o:${p.id}">${other?d2f(v):'تاريخ ثاني'}</button>${other||ui.dt20o===p.id?`<input type="date" class="inp" style="max-width:170px;height:36px" data-dt20="${p.id}" value="${other?v:''}" max="${T}">`:''}</div>`}
+function upBox20(p,e,cur){const u=UPS20(cur.t);if(!u||!e)return '';const done=(ui.up20[p.id]||{})[u[0]];
+ return `<label class="up20 ${u[0]==='ren'?'hot':''}">${ic(done?'ok':'upload',22,done?'#12705E':u[0]==='ren'?'#B4700F':'var(--mute)')}<div style="flex:1;min-width:0"><b>${u[1]}</b><small>${done?'انرفعت ✓ '+esc(done):u[2]}</small></div><span class="btn sm ${u[0]==='ren'&&!done?'pri':''}">${ic('upload',15,u[0]==='ren'&&!done?'#fff':'')}${done?'غيّرها':'إرفاق'}</span><input type="file" accept="image/*,.pdf" hidden data-up20="${p.id}:${u[0]}"></label>`}
+const _procV20=PAGES.proc;PAGES.proc=prm=>{let h=_procV20(prm);const p=S.procs.find(x=>x.id==prm.id);if(!p||!p.task||!p.task.curStep)return h;const t=p.task,cur=t.curStep,ci=t.cur;const canAct=S.me==='r'||t.curWho===S.me;
+ const e=S.employees.find(x=>x.id===p.emp);const wait=AYW20(cur.t);const anchor='<div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">';const i=h.indexOf(anchor);if(i<0)return h;let top='';
+ if(wait){const prev=t.steps[ci-1];const sent=prev&&prev.ok?prev.on:'';
+  top=`<div class="wt20">${ic('clock',22,'#6650C2')}<div><b>بانتظار سداد أيهم</b><small>${sent?`أرسلت له ${ago20(sent)} (${d2f(sent)})`:'أرسلت له طلب السداد'} · ${t.curDue&&days(t.curDue)>=0?`المنصة تذكّرك ${days(t.curDue)===0?'اليوم':days(t.curDue)===1?'بكرة':'يوم '+t.curDue}`:'المنصة تذكّرك كل يوم لين يسدد'}</small></div></div>`;
+  h=h.replace(/(<section class="card" style="border:1.5px solid )var\(--br\)/,'$1#A99BE6').replace('padding:16px 20px;background:var(--brT)','padding:16px 20px;background:#F6F3FE')}
+ if(/صورة التجديد/.test(cur.t)&&e&&e._wpL)top+=`<div class="mini">${ic('layers',13)} رخصة العمل مربوطة بالإقامة · تاخذ نفس التاريخ الجديد تلقائي</div>`;
+ h=h.slice(0,i+anchor.length)+top+h.slice(i+anchor.length);
+ if(canAct){const btnRe=new RegExp(`(<button[^>]*data-act="step2:${p.id}"[^>]*>)([\\s\\S]*?)(</button>)`);
+  h=h.replace(btnRe,(m,a,b,c)=>`<div style="width:100%">${dateChips20(p,wait)}</div>`+(wait?`${a}${ic('ok',16,'#fff')}سدّد ✓${c}<button class="btn" data-act="rem20:${p.id}">${ic('clock',16)}لسه · ذكّرني بكرة</button>`:m))}
+ return h};
+/* زر واتساب لرسالة القروب (يفتح الواتساب وتختار القروب) */
+const _waDecV20=waDecorate10;waDecorate10=function(){_waDecV20();document.querySelectorAll('.msgbox').forEach(b=>{if(b.querySelector('.wa20g'))return;const hd=b.querySelector('b');const tx=b.querySelector('.msgtxt');if(!hd||!tx||!/قروب|القروب/.test(hd.textContent))return;
+ const cp=b.querySelector('[data-act^="copy:"]');const host=cp?cp.parentElement:hd.parentElement;host.insertAdjacentHTML('afterbegin',`<a class="btn sm wa10 wag wa20g" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(tx.textContent||'')}">${ic('wa',15,'#fff')}أرسل للقروب بالواتساب</a>`);host.style.display='flex';host.style.gap='6px';host.style.flexWrap='wrap'})};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="dt20"],[data-act^="rem20:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,id,d]=b.dataset.act.split(':');
+ if(a==='dt20'){ui.dt20[id]=d;ui.dt20o=null;render();return}
+ if(a==='dt20o'){ui.dt20o=id;render();setTimeout(()=>{const i=document.querySelector(`[data-dt20="${id}"]`);if(i){i.focus();try{i.showPicker()}catch(x){}}},30);return}
+ if(a==='rem20'){const p=S.procs.find(q=>q.id==id);if(!p)return;act(async()=>{const r=rawTask(p.id);const steps=JSON.parse(r.Steps);const i=steps.findIndex(s=>!s.ok);if(i<0)return;const tm=new Date(TODAY.getTime()+864e5);steps[i].d=ymd(tm);
+  const f={Steps:JSON.stringify(steps),DueDate:toIso(tm)};await spPatch('Tasks',p.id,f);Object.assign(r,f);await addMsg(p.id,'أيهم لسه ما سدّد · تذكير بكرة','متابعة')},'تمام · بنذكّرك بكرة');return}},true);
+document.addEventListener('change',async ev=>{const el=ev.target.closest&&ev.target.closest('[data-dt20],[data-up20]');if(!el)return;
+ if(el.dataset.dt20){if(el.value){ui.dt20[el.dataset.dt20]=el.value;ui.dt20o=null;render()}return}
+ const [pid,k]=el.dataset.up20.split(':');const f=el.files&&el.files[0];if(!f)return;const p=S.procs.find(q=>q.id==pid);const e=p&&S.employees.find(x=>x.id===p.emp);if(!e)return;const u=UPS20(p.task.curStep.t);
+ const ext=(f.name.match(/\.[a-z0-9]+$/i)||['.jpg'])[0].toLowerCase();const name=`${u?u[3]:'مرفق'} ${ymd(new Date())}${ext}`;
+ act(async()=>{await drivePut(`${empFolder(e)}/${name}`,f,f.type);AUDIT_HOOK&&AUDIT_HOOK('رفع ملف','Employees',e.id,null,{file:name},{Title:e.name,Company:e.co});ui.up20[pid]=Object.assign(ui.up20[pid]||{},{[k]:name});await addMsg(p.id,'انرفع: '+name,'مرفق')},'انرفعت ✓')},true);
+
+/* «يومي»: بانتظار سداد أيهم */
+function ayWait20(){return S.procs.filter(p=>p.task&&p.task.curStep&&AYW20(p.task.curStep.t)&&canSeeTask(p.task)).map(p=>{const t=p.task;const prev=t.steps[t.cur-1];return{p,sent:prev&&prev.ok?prev.on:'',by:prev&&prev.ok?prev.by:'',due:t.curDue}}).sort((a,b)=>(a.sent||'9').localeCompare(b.sent||'9'))}
+function ayCard20(){const L=ayWait20();if(!L.length)return '';const txt=r=>`أستاذ أيهم، نذكّركم بسداد رسوم «${r.p.title.split('·')[0].trim()}»${r.p.empName?' لـ '+r.p.empName:''}، ونرجو إرسال الإيصال. وشكراً.`;
+ const old=r=>{if(!r.sent)return false;return (TODAY-new Date(r.sent.slice(0,10)+'T00:00:00'))/864e5>=5};
+ return `<div class="cd18 ay20"><div class="h18">${ic('wallet',18,'#6650C2')}<b>بانتظار سداد أيهم</b><small>${L.length} ${L.length===1?'طلب':'طلبات'} · المنصة تذكّركم كل يوم لين يسدد</small></div><div class="wl20">${L.map(r=>`<div class="r"><span class="i ${old(r)?'o':''}">${ic('clock',18)}</span><div class="tx"><button class="lnk" data-go="proc-${r.p.id}"><b>${esc(r.p.title)}</b></button><small>${r.sent?`${r.by?'أرسلها '+esc(r.by)+' ':'أرسلت '}${d2f(r.sent).slice(0,5)} · ${ago20(r.sent)}`:'بانتظار السداد'}</small></div>
+ <button class="btn sm pri" data-go="proc-${r.p.id}">${ic('ok',15,'#fff')}سدّد</button>${SET10.ayham?`<a class="btn sm" target="_blank" rel="noopener" href="${waHref10(SET10.ayham,txt(r))}">${ic('wa',15)}ذكّره</a>`:`<button class="btn sm" data-act="ay10set">${ic('wa',15)}رقم أيهم</button>`}</div>`).join('')}</div></div>`}
+const _homeV20=PAGES.home;PAGES.home=prm=>{const h=_homeV20(prm);const c=ayCard20();if(!c)return h;const t=document.createElement('template');t.innerHTML=h;const at=t.content.querySelector('.co16')||t.content.querySelector('.ph');if(!at)return h+c;at.insertAdjacentHTML('afterend',c);return t.innerHTML};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
