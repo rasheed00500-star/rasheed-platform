@@ -543,6 +543,8 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .up7 td:last-child{white-space:nowrap}
 .up7 .v7nm small{max-width:170px}
 .ib .bd{top:-8px;left:-8px;height:20px;min-width:20px;padding:0 5px;box-sizing:border-box;line-height:16px;font-size:10.5px;z-index:2}
+.med10{margin:0}
+.med10 .inp{background:#fff}
 
 </style>
 </head>
@@ -1908,7 +1910,7 @@ const MGE10=[['iq','الإقامة','date',e=>!e.saudi],['wp','رخصة العم
 const MGV10=[['reg','الاستمارة','date'],['insp','الفحص الدوري','date'],['ins','التأمين','date',v=>v.ins==='ما فيه'||!v.ins],['user','المستخدم الفعلي','text'],['authType','نوع التفويض','text'],['auth','نهاية التفويض','date',v=>!!v.authType]];
 const MGC10=[['contact','الشخص المسؤول','text'],['phone','الجوال','tel']];
 const mgVal10=(kind,o,k)=>{if(kind==='cli'){const r=(RAW.Clients||[]).find(x=>x.id==o.id)||{};return k==='contact'?(r.Contact&&r.Contact!=='—'?r.Contact:''):r.Phone||''}if(kind==='veh'&&k==='ins')return o._d.ins&&o._d.ins.ExpiryDate?iso2(o._d.ins.ExpiryDate):(o.ins==='ساري'?'ساري':'');return o[k]||''};
-function mgData10(t){const C=t==='emp'?MGE10:t==='veh'?MGV10:MGC10;const src=t==='emp'?visEmp():t==='veh'?visVeh():S.clients;
+function mgData10(t){const C=t==='emp'?MGE10.filter(c=>!(c[0]==='med'&&MEDCO10())):t==='veh'?MGV10:MGC10;const src=t==='emp'?visEmp():t==='veh'?visVeh():S.clients;
  const rows=src.map(o=>{const cells=C.map(c=>{const app=!c[3]||c[3](o);const v=app?mgVal10(t,o,c[0]):'';return{c,app,v,miss:app&&!v}});return{o,cells,miss:cells.filter(x=>x.miss).length}}).filter(r=>r.miss);return{C,rows,miss:rows.reduce((s,r)=>s+r.miss,0)}}
 const _missingV10=PAGES.missing;
 PAGES.missing=()=>{let tab=ui.mt||(S.me==='k'?'cli':'data');
@@ -2082,6 +2084,22 @@ const _upV101=upcoming7;upcoming7=function(){return _upV101().replace('<div clas
 team7=function(){let A=null;try{A=achData('m','all')}catch(e){}
  return `<div class="v7c">${head7('users','الفريق','إنجاز هالشهر والمفتوح عند كل واحد',lnk7('تقرير الإنجاز','achieve'))}<div class="v7list">${['r','s','k'].map(p=>{const x=A&&A.per[p]||{done:[],steps:[],docs:[],open:[],late:[]};const dn=x.done.length+x.steps.length+x.docs.length,op=x.open.length,lt=x.late.length;const pc=dn+op?Math.round(dn/(dn+op)*100):0;
   return `<button class="rw" data-act="agfor:${p}">${av(p)}<div class="tx"><b>${PEOPLE[p].name}</b><small>${op?op+' مفتوحة':'ما عنده شي مفتوح'}${lt?` · <span style="color:var(--red)">${lt} متأخرة</span>`:''}</small></div><div style="width:44%;min-width:120px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-bottom:5px"><span>أنجز هالشهر <b style="color:var(--ink)">${dn}</b></span>${dn+op?`<b style="color:var(--ink)">${pc}%</b>`:''}</div><div class="v7bar"><i style="width:${dn+op?pc:0}%;background:${PEOPLE[p].c}"></i></div></div></button>`}).join('')}</div></div>`};
+
+/* ---------- v10.2 medical insurance = one company policy ---------- */
+const MEDCO10=()=>SET10.medCompany!==false;
+const _missRowsV102=missingRows;missingRows=function(){const L=_missRowsV102();if(!MEDCO10())return L;return L.map(r=>r.kind==='emp'?{...r,m:r.m.filter(x=>x[0]!=='med')}:r).filter(r=>r.m.length)};
+const _expRowsV102=expRows;expRows=function(){let L=_expRowsV102();if(!MEDCO10())return L;L=L.filter(r=>r.k!=='med');
+ if(S.me!=='k'&&SET10.medEnd){const d=SET10.medEnd.split('-').reverse().join('/');L.push({k:'med',owner:'بوليصة الشركة',sub:SET10.medIns||'كل الموظفين',date:d,n:days(d),go:'missing',upd:'medp10'})}return L};
+{const i=MGE10.findIndex(c=>c[0]==='med');if(i>=0)MGE10[i]=['med','التأمين الطبي','date',()=>!MEDCO10()]}
+const medRow10=()=>{const d=SET10.medEnd?SET10.medEnd.split('-').reverse().join('/'):'';const n=d?days(d):null;
+ return `<button class="rw" data-go="missing">${ti7('heart','#C2415D','#FCEAF0')}<div class="tx"><b>التأمين الطبي</b><small>${d?`بوليصة الشركة · تنتهي ${d}`:'بوليصة الشركة · سجّل تاريخ انتهائها'}</small></div>${d?(n<0?pill('منتهية','exp'):n<=30?pill('قريبة','soon'):pill('سارية','ok')):pill('ناقص','soon')}</button>`};
+const _govV102=gov7;gov7=function(){const h=_govV102();if(!MEDCO10())return h;const k=h.indexOf('<b>التأمين الطبي</b>');if(k<0)return h;const a=h.lastIndexOf('<button',k),b=h.indexOf('</button>',k)+9;return h.slice(0,a)+medRow10()+h.slice(b)};
+const medBox10=()=>{const d=SET10.medEnd||'';const n=d?days(d.split('-').reverse().join('/')):null;
+ return `<form data-form="medp10" class="v7strip med10" style="background:#FDF4F6;border-color:#F2D3DB">${ic('heart',20,'#C2415D')}<div style="flex:1;min-width:200px"><b>التأمين الطبي بوليصة وحدة للشركة</b><div class="mini">${d?`تنتهي ${d.split('-').reverse().join('/')}${n<0?' · <b style="color:var(--red)">منتهية</b>':n<=30?' · قريبة':''}`:'سجّل تاريخ انتهاء البوليصة عشان تنبّهك قبلها'} · ما تنطلب من كل موظف لحاله</div></div><input class="inp" id="med10i" placeholder="شركة التأمين" value="${esc(SET10.medIns||'')}" style="max-width:170px;height:38px"><input class="inp" type="date" id="med10d" value="${esc(d)}" style="max-width:170px;height:38px" aria-label="تاريخ انتهاء البوليصة"><button class="btn sm pri" type="submit">${ic('tick',15)}حفظ</button></form>`};
+const _missV102=PAGES.missing;PAGES.missing=()=>{const h=_missV102();if(S.me==='k'||!MEDCO10()||ui.mt==='img')return h;const i=h.indexOf('<div class="prog10">')>=0?h.indexOf('<div class="prog10">'):h.indexOf('<section');return i>0?h.slice(0,i)+medBox10()+h.slice(i):h+medBox10()};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act="medp10"]');if(!el)return;e.stopPropagation();e.preventDefault();modal(`<div class="mh"><b>بوليصة التأمين الطبي</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb">${medBox10()}</div>`)},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="medp10"]');if(!f)return;e.preventDefault();e.stopPropagation();const d=(f.querySelector('#med10d')||{}).value||'';const ins=((f.querySelector('#med10i')||{}).value||'').trim();if(!d){toast('اختر تاريخ انتهاء البوليصة');return}
+ act(async()=>{await updSet10(s=>{s.medCompany=true;s.medEnd=d;s.medIns=ins});if(document.querySelector('.ov'))closeModal()},'انحفظت بوليصة التأمين ✓')},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
