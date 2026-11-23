@@ -878,6 +878,41 @@ tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
 .cs21 .n{width:26px;height:26px;border-radius:50%;background:var(--brT);color:var(--br);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
 .cs21 .inp{height:40px}.cs21 .r>.inp:first-of-type{flex:1;min-width:0}.cs21 select.inp{width:96px;flex:none}.cs21 .inp.d{width:64px;flex:none}
 @media(max-width:600px){.cs21 .r{flex-wrap:wrap}.cs21 .r>.inp:first-of-type{flex-basis:100%}}
+/* v22 */
+.sm22{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sb22{border-radius:16px;padding:14px 16px;border:1px solid var(--line);background:#fff}.sb22.am{background:#FFFAF0;border-color:#F1E0BE}.sb22.rd{background:#FFF6F5;border-color:#F3C9C4}
+.sb22 small{display:block;font-weight:700;font-size:13.5px;color:var(--ink2)}.sb22 b{font-size:30px;line-height:1.2}
+.py22{display:flex;align-items:center;gap:12px;padding:14px 2px;border-top:1px solid var(--line2);flex-wrap:wrap}.py22:first-child{border-top:0}
+.py22 .i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}
+.py22 .tx{flex:1;min-width:200px}.py22 .tx .lnk{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:right}.py22 .tx b{display:block;font-size:15px}.py22 .tx small{color:var(--mute);font-size:12.5px;display:block}
+.cd22{width:200px;flex:none}.cd22 .l{font-size:12px;font-weight:700;margin-bottom:4px}.cd22 small{display:block;color:var(--mute);font-size:11.5px;margin-top:3px}
+.cd22 .bar{height:8px;border-radius:99px;background:#EEF2F0;overflow:hidden}.cd22 .bar i{display:block;height:100%;border-radius:99px}
+.lp22{display:flex;gap:12px;align-items:center;background:#FFF6F5;border:1px solid #F3C9C4;border-radius:14px;padding:12px 14px;color:#8E2B23;flex-wrap:wrap}
+.lp22 b{display:block;font-size:15px}.lp22 small{font-size:13px;color:#8E2B23;line-height:1.7}
+.cl22{display:flex;gap:10px;align-items:center;background:#F2F9F6;border:1px solid #CFE6DD;border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--ink2)}.cl22.am{background:#FFFAF0;border-color:#F1E0BE}
+.fl22{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.ex22{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.ex22 .chip .c{font-size:11.5px;font-weight:700;border-radius:99px;padding:0 7px;background:#F1F4F2;color:var(--ink2);margin-inline-start:4px}
+.grp22{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.gc22 .hd{display:flex;align-items:center;gap:8px;margin-bottom:6px}.gc22 .hd b{font-size:15.5px}.gc22 .hd .n{margin-inline-start:auto;display:flex;gap:6px;flex-wrap:wrap}
+.gc22 .r{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line2);font-size:13.5px;flex-wrap:wrap}.gc22 .r:first-of-type{border-top:0}
+.gc22 .sq{width:22px;color:var(--mute);font-size:12px;font-weight:700;flex:none}
+.gc22 .o{flex:1;min-width:130px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:right}.gc22 .o b{display:block;font-weight:600}.gc22 .o small{display:block;color:var(--mute);font-size:12px}
+.gc22 .dt{color:var(--ink2);font-size:12.5px;white-space:nowrap}
+.s22{font-weight:700;font-size:12.5px;white-space:nowrap}.s22.e{color:#CF3F35}.s22.s{color:#B4700F}.s22.i{color:#2D69B0}
+.gc22 .ac{display:flex;gap:6px;align-items:center}
+.tg22{border:0;background:#E6EEF8;color:#2D69B0;border-radius:8px;padding:4px 8px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+.pt22{display:none}
+@media(max-width:900px){.grp22{grid-template-columns:1fr}.sm22{grid-template-columns:1fr}}
+@media print{
+ body *{visibility:hidden!important}#main,#main *{visibility:visible!important}
+ #main{position:absolute!important;inset:0 0 auto 0!important;width:100%!important;padding:0!important;overflow:visible!important;height:auto!important}
+ #main .acts,#main .fl22,#main .ac,#main .ib{display:none!important}
+ .pt22{display:block!important;font-weight:700;font-size:16px;margin:0 0 12px}
+ .grp22{grid-template-columns:1fr 1fr!important}.gc22{break-inside:avoid;border:1px solid #ccc!important}
+ @page{size:A4;margin:12mm}
+}
+.fx22{display:flex!important;flex-direction:row!important;align-items:center;gap:12px;background:#F2F9F6;border:1px solid #CFE6DD;border-radius:14px;padding:10px 14px;margin-bottom:14px;flex-wrap:wrap;text-align:right}
+.fx22 b{font-size:14.5px}
 
 </style>
 </head>
@@ -3140,7 +3175,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261123234032';
+const APPV18='20261124001336';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3469,6 +3504,102 @@ const _vehPV21=PAGES.veh;PAGES.veh=prm=>{const h=_vehPV21(prm);if(S.me==='k'||h.
 const FI21=['تأسيس شركة (استثمار أجنبي)',{i:'bldg',steps:['حجز الاسم التجاري · المركز السعودي للأعمال','ترخيص وزارة الاستثمار · منصة استثمر في السعودية','عقد التأسيس · المركز السعودي للأعمال','إصدار السجل التجاري · المركز السعودي للأعمال','الاشتراك في الغرفة التجارية','فتح ملف المنشأة في قوى والتأمينات','تسليم العميل الملف'],need:['جوازات الشركاء','القوائم المالية للشركة الأم','عقد الإيجار أو العنوان الوطني','تفويض في منصة أبشر أعمال']}];
 function addFI21(){if(!SVCT[FI21[0]]){const g=(SVCT['تأسيس شركة']||{}).g;SVCT[FI21[0]]={...FI21[1],g}}}
 addFI21();const _acV21=applyCat9;applyCat9=function(cat){_acV21(cat);addFI21()};
+
+/* ===================== v22 · «بانتظار السداد» + مهلة الـ14 يوم لرخصة العمل + الانتهاءات الجديدة ===================== */
+const WPD22=14;
+const isWp22=t=>/رخصة العمل/.test(t)&&/(إصدار|تجديد)/.test(t)&&!/(سداد|أيهم)/.test(t);
+const isReq22=t=>/سداد/.test(t)&&/أيهم/.test(t)&&!AYW20(t);
+const dOn22=s=>s?new Date(String(s).slice(0,10)+'T00:00:00'):null;
+const since22=s=>{const d=dOn22(s);return d?Math.round((TODAY-d)/864e5):0};
+const dm22=d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+function payItem22(p){const t=p.task;if(!t||!t.curStep||!t.steps)return null;const st=t.steps,ci=t.cur;const ri=st.findIndex(s=>isReq22(s.t));if(ri<0)return null;const pi=st.findIndex((s,i)=>i>ri&&AYW20(s.t));
+ const sent=!!st[ri].ok;const paid=pi>=0?!!st[pi].ok:(sent&&ci>ri+1);if(paid)return null;const wi=st.findIndex(s=>isWp22(s.t));const wpOn=wi>=0&&wi<ri&&st[wi].ok?((st[wi].v||{}).wpd||st[wi].on||''):'';
+ if(!sent&&!wpOn)return null;let left=null,dl=null;if(wpOn){dl=new Date(dOn22(wpOn).getTime()+WPD22*864e5);left=Math.round((dl-TODAY)/864e5)}
+ return{p,sent,sentOn:sent?st[ri].on:'',by:sent?st[ri].by:'',wpOn,left,dl,lapsed:left!==null&&left<0,near:left!==null&&left>=0&&left<=3,emp:p.empName||(p.title.split('·')[1]||'').trim(),ri,wi}}
+function payList22(){return S.procs.filter(p=>p.task&&canSeeTask(p.task)).map(payItem22).filter(Boolean).sort((a,b)=>(b.lapsed-a.lapsed)||((a.left??99)-(b.left??99))||String(a.sentOn).localeCompare(String(b.sentOn)))}
+const leftTxt22=n=>n<0?`انلغت من ${-n===1?'يوم':-n===2?'يومين':-n+' أيام'}`:n===0?'تنلغي اليوم':n===1?'تنلغي بكرة':n===2?'باقي يومين قبل الإلغاء':`باقي ${n} ${n<=10?'أيام':'يوم'} قبل الإلغاء`;
+const ayTxt22=x=>{const what=(x.p.title.split('·')[0]||'').trim();let m=`أستاذ أيهم، السلام عليكم\nنذكّركم بسداد رسوم «${what}»${x.emp?' لـ '+x.emp:''}، ونرجو إرسال الإيصال.`;if(x.wpOn&&x.left!==null&&x.left>=0)m+=`\nملاحظة: رخصة العمل تنلغي ${x.left===0?'اليوم':'بتاريخ '+fmt(x.dl)} إذا ما انسددت.`;return m+'\nوشكراً لكم.'};
+const ayBtn22=(x,cls='btn sm')=>SET10.ayham?`<a class="${cls}" target="_blank" rel="noopener" href="${waHref10(SET10.ayham,ayTxt22(x))}">${ic('wa',15)}ذكّره</a>`:`<button class="${cls}" data-act="ay10set">${ic('wa',15)}رقم أيهم</button>`;
+function cdBar22(x){if(x.left===null)return '';const c=x.lapsed?'#CF3F35':x.near?'#B4700F':'#12705E';const used=Math.min(WPD22,Math.max(0,WPD22-x.left));
+ return `<div class="cd22"><div class="l" style="color:${c}">${leftTxt22(x.left)}</div><div class="bar"><i style="width:${x.lapsed?100:Math.max(5,used/WPD22*100)}%;background:${c}"></i></div><small>رخصة العمل صدرت ${dm22(dOn22(x.wpOn))}</small></div>`}
+
+/* 1) صفحة «بانتظار السداد» */
+PAGES.pay=()=>{if(S.me==='k')return noAccess();const L=payList22();const W=L.filter(x=>x.sent),N=L.filter(x=>x.near),X=L.filter(x=>x.lapsed),U=L.filter(x=>!x.sent);
+ const ico=p=>/إقامة/.test(p.title)?'idc':/خروج/.test(p.title)?'plane':p.veh?'car':/إنهاء/.test(p.title)?'userx':'wallet';
+ const row=x=>{const c=x.lapsed?['#FDEDEB','#CF3F35']:x.near?['#FFFAF0','#B4700F']:['#F0EDFB','#6650C2'];
+  return `<div class="py22 ${x.lapsed?'lp':''}"><span class="i" style="background:${c[0]};color:${c[1]}">${ic(ico(x.p),20)}</span><div class="tx"><button class="lnk" data-go="proc-${x.p.id}"><b>${esc(x.p.title)}</b></button><small>${x.sent?`${x.by?'أرسلها '+esc(x.by)+' ':'أرسلت '}${d2f(x.sentOn).slice(0,5)} · ${ago20(x.sentOn)}`:'<span style="color:#B4700F;font-weight:700">الرخصة صدرت وما انرسل طلب السداد لأيهم للحين</span>'}</small></div>${cdBar22(x)}
+  ${x.lapsed?`<button class="btn sm pri" data-go="proc-${x.p.id}">${ic('repeat',15,'#fff')}طلعت رخصة جديدة</button>`:x.sent?`<button class="btn sm pri" data-go="proc-${x.p.id}">${ic('ok',15,'#fff')}سدّد</button>${ayBtn22(x)}`:`<button class="btn sm pri" data-go="proc-${x.p.id}">${ic('send',15,'#fff')}أرسل لأيهم</button>`}</div>`};
+ return `<div class="ph"><div><h1>بانتظار السداد</h1><p>كل اللي أرسلناه لأيهم وننتظر سداده · من كل الإجراءات</p></div></div>
+ <div class="sm22"><div class="sb22"><small>بانتظار السداد</small><b style="color:#6650C2">${W.length}</b></div><div class="sb22 ${N.length?'am':''}"><small>رخصة العمل قربت تنلغي</small><b style="color:#B4700F">${N.length}</b></div><div class="sb22 ${X.length?'rd':''}"><small>انلغت · تحتاج رخصة جديدة</small><b style="color:#CF3F35">${X.length}</b></div></div>
+ <div class="cd18" style="margin-top:14px">${L.length?L.map(row).join(''):`<div class="empty" style="padding:30px">${ic('ok',24,'var(--br)')}<div style="margin-top:8px">ما فيه شي ننتظر سداده · كل شي مسدد</div></div>`}</div>
+ <div class="mini" style="margin-top:10px">رخصة العمل تنلغي إذا مرّ ${WPD22} يوم من إصدارها بدون سداد · العداد يبدأ من تاريخ إصدار الرخصة${U.length?` · ${U.length} رخصة صدرت وما انرسل طلبها`:''}</div>`};
+(function(){['r','s'].forEach(p=>{const a=NAV[p];if(!a||a.some(n=>Array.isArray(n)&&n[2]==='pay'))return;const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='msgs');a.splice(i>=0?i+1:4,0,['wallet','بانتظار السداد','pay',()=>{try{return payList22().length}catch(x){return 0}}])});
+ try{Object.assign(CR,{pay:['بانتظار السداد']});Object.assign(SECT,{pay:'g'});Object.assign(PAGEI,{pay:'wallet'})}catch(x){}})();
+
+/* «يومي» يستخدم نفس القائمة */
+ayWait20=function(){return payList22().filter(x=>x.sent).map(x=>({p:x.p,sent:x.sentOn,by:x.by,due:x.p.task.curDue,x}))};
+ayCard20=function(){const L=payList22();if(!L.length)return '';
+ return `<div class="cd18 ay20"><div class="h18">${ic('wallet',18,'#6650C2')}<b>بانتظار السداد</b><small>${L.length} · المنصة تذكّركم كل يوم لين يسدد</small><button class="lnk18" data-go="pay" style="margin-inline-start:auto">الكل ${ic('left',14)}</button></div><div class="wl20">${L.slice(0,5).map(x=>`<div class="r"><span class="i ${x.lapsed||x.near?'o':''}">${ic('clock',18)}</span><div class="tx"><button class="lnk" data-go="proc-${x.p.id}"><b>${esc(x.p.title)}</b></button><small>${x.sent?`أرسلت ${d2f(x.sentOn).slice(0,5)} · ${ago20(x.sentOn)}`:'ما انرسل لأيهم للحين'}${x.left!==null?` · <span style="color:${x.lapsed?'#CF3F35':x.near?'#B4700F':'inherit'};font-weight:${x.lapsed||x.near?700:400}">رخصة العمل: ${leftTxt22(x.left)}</span>`:''}</small></div>
+ <button class="btn sm pri" data-go="proc-${x.p.id}">${x.lapsed?'رخصة جديدة':x.sent?'سدّد':'أرسل'}</button>${x.sent&&!x.lapsed?ayBtn22(x):''}</div>`).join('')}</div></div>`};
+
+/* 2) صفحة الإجراء: عداد الرخصة + «طلعت رخصة جديدة» */
+ui.rw22=ui.rw22||{};
+const _procV22=PAGES.proc;PAGES.proc=prm=>{let h=_procV22(prm);const p=S.procs.find(x=>x.id==prm.id);if(!p)return h;const x=payItem22(p);if(!x||!x.wpOn)return h;
+ const anchor='<div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">';const i=h.indexOf(anchor);if(i<0)return h;let b='';
+ if(x.lapsed){const v=ui.rw22[p.id]||ymd(new Date());const y=ymd(new Date(Date.now()-864e5));
+  b=`<div class="lp22">${ic('alert',24,'#CF3F35')}<div style="flex:1;min-width:220px"><b>رخصة العمل انلغت · مرّ ${WPD22} يوم بدون سداد</b><small>صدرت ${d2f(x.wpOn)} وانلغت ${fmt(x.dl)}. طلّع رخصة جديدة من قوى، وبعدها ارجع لخطوة إرسال طلب السداد لأيهم.</small>
+  <div class="ch20" style="margin-top:8px"><span class="l" style="color:#8E2B23">الرخصة الجديدة صدرت:</span><button type="button" class="chip ${v===ymd(new Date())?'on':''}" data-act="rw22d:${p.id}:${ymd(new Date())}">اليوم</button><button type="button" class="chip ${v===y?'on':''}" data-act="rw22d:${p.id}:${y}">أمس</button><input type="date" class="inp" style="max-width:160px;height:34px" data-rw22="${p.id}" value="${v}" max="${ymd(new Date())}"></div></div>
+  <button class="btn pri" data-act="rw22:${p.id}">${ic('repeat',16,'#fff')}طلعت رخصة جديدة</button></div>`}
+ else b=`<div class="cl22 ${x.near?'am':''}">${ic('clock',18,x.near?'#B4700F':'#12705E')}<span>رخصة العمل صدرت ${d2f(x.wpOn)} · <b>${leftTxt22(x.left)}</b> (تنلغي ${fmt(x.dl)} إذا ما انسددت)</span></div>`;
+ return h.slice(0,i+anchor.length)+b+h.slice(i+anchor.length)};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="rw22"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,id,d]=b.dataset.act.split(':');
+ if(a==='rw22d'){ui.rw22[id]=d;render();return}
+ const p=S.procs.find(q=>q.id==id);const x=p&&payItem22(p);if(!x)return;const nd=ui.rw22[id]||document.querySelector(`[data-rw22="${id}"]`)?.value||ymd(new Date());
+ act(async()=>{const r=rawTask(p.id);const st=JSON.parse(r.Steps);const old=(st[x.wi].v||{}).wpd||st[x.wi].on;st[x.wi].v=Object.assign({},st[x.wi].v||{},{wpd:nd,wpOld:[...((st[x.wi].v||{}).wpOld||[]),old]});st[x.wi].nt=`انلغت الرخصة اللي صدرت ${d2f(old)} · صدرت رخصة جديدة ${d2f(nd)}`;
+  for(let j=x.ri;j<st.length;j++){st[j].ok=false;st[j].by='';st[j].on=''}const f={Steps:JSON.stringify(st),AssignedTo:st[x.ri].w||r.AssignedTo,DueDate:toIso(TODAY),Status:'مفتوحة',DoneOn:null};
+  await spPatch('Tasks',p.id,f);Object.assign(r,f);await addMsg(p.id,`انلغت رخصة العمل (صدرت ${d2f(old)}) · صدرت رخصة جديدة ${d2f(nd)} · رجعنا لخطوة إرسال طلب السداد لأيهم`,'متابعة');delete ui.rw22[id]},'تمام · أرسل طلب السداد لأيهم من جديد')},true);
+document.addEventListener('change',ev=>{const el=ev.target.closest&&ev.target.closest('[data-rw22]');if(!el||!el.value)return;ui.rw22[el.dataset.rw22]=el.value;render()},true);
+/* رسالة التذكير فيها موعد إلغاء الرخصة */
+const _smV22=stepMsg;stepMsg=function(p,title,v){const m=_smV22(p,title,v);if(!m||!AYW20(title))return m;const x=payItem22(p);if(!x||!x.wpOn||x.left===null||x.left<0)return m;return {...m,m:m.m.replace(/\s*وشكراً\.?$/,'')+`\nملاحظة: رخصة العمل تنلغي ${x.left===0?'اليوم':'بتاريخ '+fmt(x.dl)} إذا ما انسددت. وشكراً.`}};
+
+/* 3) لوحة التحكم: كرت «بانتظار السداد» + تنبيه الرخصة */
+const _dashV22=PAGES.dash;PAGES.dash=prm=>{let h=_dashV22(prm);if(S.me==='k')return h;const L=payList22();const near=L.filter(x=>x.near||x.lapsed);
+ const sub=near.length?`<span class="dn">${near.filter(x=>x.lapsed).length?near.filter(x=>x.lapsed).length+' رخصة انلغت':near.length+' رخصة قربت تنلغي'}</span>`:L.length?'ما فيه رخصة قربت تنلغي':'ما فيه شي ننتظره';
+ const k=kc18('wallet','#6650C2','#F6F3FE','بانتظار السداد',L.filter(x=>x.sent).length,sub,'data-act="go:pay"');
+ const t=document.createElement('template');t.innerHTML=h;const old=t.content.querySelector('.kc18[data-act="kx16:exp"]');if(old){old.insertAdjacentHTML('afterend',k);old.remove()}
+ const iq=t.content.querySelector('.kc18[data-act="dx17:iq:ok"]');if(iq)iq.setAttribute('data-act','go:employees');return t.innerHTML};
+const _alertsV22=alerts18;alerts18=function(X){let h=_alertsV22(X);if(S.me==='k')return h;const A=payList22().filter(x=>x.lapsed||x.near).map(x=>[x.lapsed?'e':'s','wallet',x.lapsed?`رخصة عمل ${x.emp} انلغت · لازم رخصة جديدة`:`رخصة عمل ${x.emp} ${x.left===0?'تنلغي اليوم':x.left===1?'تنلغي بكرة':'تنلغي بعد '+(x.left===2?'يومين':x.left+' أيام')} · أيهم ما سدّد`,`go:proc-${x.p.id}`]);
+ if(!A.length)return h;h=h.replace(/<div class="al18"><div class="empty"[\s\S]*?<\/div><\/div><\/div>/,'<div class="al18"></div>');return h.replace('<div class="al18">','<div class="al18">'+A.map(a=>`<button class="${a[0]}" data-act="${a[3]}">${ic(a[1],17)}<span>${a[2]}</span>${ic('left',15)}</button>`).join(''))};
+
+/* 4) الانتهاءات: ما يطلع إلا المنتهي واللي قرب ينتهي · كل نوع في كرت */
+const EXK22={iq:'iq',pp:'pp',ce:'ce',reg:'reg',insp:'insp',ins:'ins',op:'op',auth:'auth'};
+const ord22=k=>{const i=EXT.findIndex(x=>x[0]===k);return i<0?(k==='ce'?4:k==='pe'?5:50):(EXT[i][2]==='veh'?100:0)+i};
+const lbl22=k=>PL17[k]||(EXT.find(x=>x[0]===k)||[k,k])[1];const ico22=k=>(EXT.find(x=>x[0]===k)||[0,0,0,k==='ce'||k==='pe'?'file':'file'])[3];
+function exState22(){const f=ui.ex||(ui.ex={types:[],st:'both',win:30});if(!['exp','soon','both'].includes(f.st))f.st='both';if(![30,60,90].includes(+f.win))f.win=30;f.types=f.types||[];return f}
+function exRows22(){const f=exState22();const keep=r=>r.n!=null&&(f.st==='exp'?r.n<0:f.st==='soon'?r.n>=0&&r.n<=f.win:r.n<=f.win);return expRows().filter(keep)}
+const _expiryV22=PAGES.expiry;PAGES.expiry=prm=>{if(S.me==='k')return _expiryV22(prm);const f=exState22();const R=exRows22();const ks=[...new Set(R.map(r=>r.k))].sort((a,b)=>ord22(a)-ord22(b));
+ const sel=f.types.filter(k=>ks.includes(k));const show=sel.length?sel:ks;const cnt=k=>R.filter(r=>r.k===k).length;
+ const own=r=>{const m=/^(emp|veh)-(\d+)/.exec(r.go||'');return m?[m[1],+m[2]]:r.eid?['emp',r.eid]:null};
+ const run=r=>{const o=own(r);if(!o)return null;const [key,id]=o;const kw={iq:/إقامة/,pp:/جواز/,ce:/عقد/,reg:/استمارة/,insp:/فحص/,ins:/تأمين مركبة/,op:/تشغيل/,auth:/تفويض/}[r.k];if(!kw)return null;return S.procs.find(p=>(key==='emp'?p.emp==id:p.veh==id)&&p.task&&p.task.curStep&&kw.test(p.title))};
+ const act22=r=>{const p=run(r);if(p)return `<button class="tg22" data-go="proc-${p.id}">${ic('layers',13)}الإجراء ماشي · ${p.task.cur+1}/${p.task.steps.length}</button>`;const bk=EXK22[r.k];const o=own(r);return bk&&o&&S.me!=='k'?`<button class="btn sm" data-act="ex22s:${bk}:${o[0]==='emp'?'e':'v'}:${o[1]}">${ic('layers',14)}ابدأ</button>`:''};
+ const st=r=>r.note==='قيد التجديد'?`<span class="s22 i">قيد التجديد</span>`:r.n<0?`<span class="s22 e">منتهي من ${-r.n===1?'يوم':-r.n===2?'يومين':-r.n+' '+(-r.n<=10?'أيام':'يوم')}</span>`:`<span class="s22 s">${r.n===0?'ينتهي اليوم':'بعد '+(r.n===1?'يوم':r.n===2?'يومين':r.n+' '+(r.n<=10?'أيام':'يوم'))}</span>`;
+ const card=k=>{const L=R.filter(r=>r.k===k).sort((a,b)=>a.n-b.n);const e=L.filter(r=>r.n<0).length,s=L.length-e;
+  return `<div class="cd18 gc22"><div class="hd">${ic(ico22(k),18,'var(--br)')}<b>${lbl22(k)}</b><span class="n">${e?pill(e+' منتهية','exp'):''}${s?pill(s+' قريبة','soon'):''}</span></div>${L.map((r,i)=>`<div class="r"><span class="sq">${i+1}</span><button class="lnk o" data-go="${r.go}"><b>${esc(r.owner)}</b>${r.sub?`<small>${esc(r.sub)}</small>`:''}</button><span class="dt">${r.date||''}</span>${st(r)}<span class="ac">${act22(r)}${r.upd?`<button class="ib" data-act="${r.upd}" title="حدّث التاريخ" aria-label="حدّث التاريخ">${ic('edit',14)}</button>`:''}</span></div>`).join('')}</div>`};
+ const fix=typeof fixRows10==='function'?fixRows10().length:0;
+ return `<div class="ph"><div><h1>الانتهاءات</h1><p>ما يطلع هنا إلا المنتهي واللي قرب ينتهي · ${TODAYS}</p></div><div class="acts">${btn('PDF للطباعة','file','','ex22p')}${btn('رسالة للإدارة','inbox','pri','exmsg')}</div></div>
+ <div class="fl22"><div class="ex22">${[['both','المنتهي والقريب'],['exp','المنتهي بس'],['soon','القريب بس']].map(x=>`<button class="chip ${f.st===x[0]?'on':''}" data-act="ex22st:${x[0]}">${x[1]}</button>`).join('')}${f.st!=='exp'?`<span class="mini">القريب = خلال</span>${[30,60,90].map(w=>`<button class="chip ${+f.win===w?'on':''}" data-act="ex22w:${w}">${w} يوم</button>`).join('')}`:''}</div>
+ ${ks.length>1?`<div class="ex22"><span class="mini" style="font-weight:700">النوع:</span><button class="chip ${sel.length?'':'on'}" data-act="ex22t:all">الكل <span class="c">${R.length}</span></button>${ks.map(k=>`<button class="chip ${sel.includes(k)?'on':''}" data-act="ex22t:${k}">${lbl22(k)} <span class="c">${cnt(k)}</span></button>`).join('')}</div>`:''}</div>
+ ${fix&&S.me!=='k'?`<div class="fx22 fl22">${ic('cal',20,'var(--br)')}<div style="flex:1;min-width:200px"><b>${fix} تاريخ منتهي</b><div class="mini">كثير منها يمكن تجدّد وما انحدّث تاريخه · حدّثها كلها في شاشة وحدة</div></div>${btn('حدّث التواريخ','left','sm pri','go:fixdates')}</div>`:''}
+ <div class="pt22">كشف الانتهاءات · ${expStTitle(f)} · ${TODAYS}</div>
+ ${show.length?`<div class="grp22">${show.map(card).join('')}</div>`:`<div class="cd18 empty" style="padding:40px">${ic('ok',26,'var(--br)')}<div style="margin-top:8px">ما فيه شي منتهي أو قريب ينتهي · كل شي سليم</div></div>`}`};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="ex22"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,x,y,z]=b.dataset.act.split(':');const f=exState22();
+ if(a==='ex22st'){f.st=x;render();return}if(a==='ex22w'){f.win=+x;render();return}
+ if(a==='ex22t'){if(x==='all')f.types=[];else{const s=new Set(f.types);s.has(x)?s.delete(x):s.add(x);f.types=[...s]}render();return}
+ if(a==='ex22p'){try{window.print()}catch(e){toast('الطباعة ما اشتغلت من هنا')}return}
+ if(a==='ex22s'){start21(x,y==='e'?{eid:+z}:{vid:+z});return}},true);
+/* «رسالة للإدارة» تاخذ نفس اللي ظاهر */
+window.addEventListener('click',ev=>{const b=ev.target.closest('[data-act="exmsg"]');if(!b||view.route!=='expiry')return;const f=exState22();if(!f.types.length){const R=exRows22();f.types=[...new Set(R.map(r=>r.k))];f._auto=1}},true);
+document.addEventListener('click',()=>{const f=ui.ex;if(f&&f._auto){setTimeout(()=>{f.types=[];delete f._auto},0)}});
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
