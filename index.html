@@ -628,6 +628,23 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .wr11.on13{background:#F1F8F5;border-radius:10px}
 .dot13{width:10px;height:10px;border-radius:50%;background:#C8D3CE;flex:none;margin-inline:5px}
 .dot13.ok{background:var(--br)}
+/* v13.1 toolbar */
+.tb13{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 14px}
+.tb13.on{border-color:#A8D2C6;background:#F6FBF9;box-shadow:0 0 0 3px var(--brT)}
+.sa13{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.sa13 input{position:absolute;opacity:0}
+.sa13 span{width:20px;height:20px;border-radius:6px;border:2px solid #9DB2A9;background:#fff}
+.sa13 input:checked+span{background:var(--br);border-color:var(--br);box-shadow:inset 0 0 0 3px #fff}
+.sa13 input:indeterminate+span{background:linear-gradient(#fff,#fff) center/10px 2px no-repeat,var(--br);border-color:var(--br)}
+.sa13 input:focus-visible+span{outline:2px solid var(--br);outline-offset:2px}
+.cnt13{font-size:13px;color:var(--ink2);min-width:150px}
+.tb13.on .cnt13{color:var(--br)}
+.sep13{width:1px;height:30px;background:var(--line)}
+.grp13{display:flex;align-items:center;gap:6px}
+.grp13 small{font-size:11.5px;color:var(--mute);font-weight:700}
+.tb13 .btn[disabled]{opacity:.45;pointer-events:none}
+.ghost13{margin-inline-start:auto;background:none!important;border-color:transparent!important;color:var(--mute)!important}
+@container (max-width:900px){.sep13{display:none}.cnt13{min-width:0;flex:1}}
 
 </style>
 </head>
@@ -2413,6 +2430,22 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="rp13"]');if(!f)return;e.preventDefault();e.stopPropagation();const txt=(document.getElementById('rp13t').value||'').trim();if(!txt){toast('اكتب الرد');return}const wa=document.getElementById('rp13wa').checked;localStorage12('dm12wa',wa?'1':'0');const T=selTasks13();
  const peer=t=>{const by=KEY[rawOf11(t).AssignedBy];return t.who!==S.me?t.who:(by&&by!==S.me?by:(S.me==='k'?'r':'k'))};const p0=peer(T[0]);const w=wa?window.open('about:blank','_blank'):null;
  act(async()=>{for(const t of T){await addMsg(t.id,txt,'');const p=peer(t);await notify(PEOPLE[p].name,`رد من ${PEOPLE[S.me].name} على «${t.title.slice(0,50)}»`,txt.slice(0,100),'task-'+t.id,'inbox')}if(w)w.location.href=waUrl12(p0,`${T.length>1?'بخصوص: '+T.map(t=>t.title).join('، '):'بخصوص «'+T[0].title+'»'}\n${txt}\n— من منصة رشيد`);ui.mv12ids=[];closeModal()},'انرسل الرد ✓')},true);
+
+/* v13.1 — شريط الإجراءات فوق، تحت الإجماليات، بشكل مرتب */
+const tb13=()=>{const n=(ui.mv12ids||[]).length;const other=S.me==='k'?'r':'k';const dis=n?'':'disabled';
+ const B=(t,i,a,c='')=>`<button class="btn sm ${c}" data-act="${a}" ${dis}>${ic(i,15)}${t}</button>`;
+ return `<div class="tb13" id="bar13"><label class="sa13"><input type="checkbox" id="sa13" aria-label="تحديد الكل"><span></span>تحديد الكل</label><b class="cnt13" id="bar13n">${n?'محدد '+n:'حدد شغلة أو أكثر من القائمة'}</b>
+ <span class="sep13"></span><div class="grp13"><small>انقل</small>${B('لشركة أو عميل','repeat','mv12go')}</div>
+ <span class="sep13"></span><div class="grp13"><small>حوّل</small>${B(PEOPLE[other].name,'send','as13:'+other)}${B('لي','users','as13:'+S.me)}</div>
+ <span class="sep13"></span><div class="grp13"><small>رد وإنجاز</small>${B('رد','inbox','rp13')}${B('تمّت ✓','tick','dn13','pri')}</div>
+ ${n?`<button class="btn sm ghost13" data-act="mv12off">${ic('x',14)}إلغاء التحديد</button>`:''}</div>`};
+const pg131=o=>()=>{let h=o();if(!canWs11())return h;const i=h.indexOf('<div class="g211">');return i>0?h.slice(0,i)+tb13()+h.slice(i):h+tb13()};
+PAGES.arkan=pg131(_arkV12);PAGES.external=pg131(_extV12);
+const sync13=()=>{const n=(ui.mv12ids||[]).length;const bar=document.getElementById('bar13');if(!bar)return;bar.querySelectorAll('.grp13 .btn').forEach(b=>b.disabled=!n);const c=document.getElementById('bar13n');if(c)c.textContent=n?'محدد '+n:'حدد شغلة أو أكثر من القائمة';bar.classList.toggle('on',!!n);
+ let g=bar.querySelector('.ghost13');if(n&&!g)bar.insertAdjacentHTML('beforeend',`<button class="btn sm ghost13" data-act="mv12off">${ic('x',14)}إلغاء التحديد</button>`);if(!n&&g)g.remove();
+ const all=[...document.querySelectorAll('#main [data-mv12]')];const sa=document.getElementById('sa13');if(sa){sa.checked=all.length&&all.every(x=>x.checked);sa.indeterminate=!sa.checked&&all.some(x=>x.checked)}};
+document.addEventListener('change',e=>{if(e.target.id==='sa13'){const on=e.target.checked;const all=[...document.querySelectorAll('#main [data-mv12]')];ui.mv12ids=on?[...new Set([...(ui.mv12ids||[]),...all.map(x=>x.dataset.mv12)])]:[];all.forEach(x=>{x.checked=on;const r=x.closest('.wr11');if(r)r.classList.toggle('on13',on)});sync13();return}
+ if(e.target.closest('[data-mv12]'))setTimeout(sync13,0)});
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
