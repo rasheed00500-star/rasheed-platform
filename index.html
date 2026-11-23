@@ -803,6 +803,9 @@ tr.gh17 span{display:inline-flex;align-items:center;gap:7px;color:var(--ink2)}tr
 @media (max-width:700px){.k18{grid-template-columns:1fr 1fr}.kc18{flex-direction:column;align-items:flex-start;gap:8px;padding:14px}.kc18 .ic{width:40px;height:40px}.kc18 b{font-size:26px}.r18{grid-template-columns:1fr}.r18>:nth-child(2){order:0}.fl18 .sel{flex:1 1 45%}.fl18 .sel select{min-width:0;width:100%}}
 .no18{font-weight:600;letter-spacing:.02em;color:var(--ink2)}
 td .cp15{vertical-align:middle;margin-inline-start:4px}
+.sq18{width:34px;text-align:center!important;color:var(--mute);font-weight:700;font-size:12.5px}
+td .no18+.cp15,.t18 td .cp15{display:inline-grid}
+td:has(.no18){white-space:nowrap}
 
 </style>
 </head>
@@ -3022,7 +3025,7 @@ function rows18(){const d=ui.d18;const X=expRows();const idn=e=>{const r=(RAW.Em
  return {head:['السيارة','المستخدم','الاستمارة','الفحص الدوري','التأمين','الحالة'],L,row:({v,is})=>`<tr class="cl" data-act="vf18"><td><b style="font-weight:600">${esc(v.l)} ${esc(v.n)}</b><small class="sb">${esc(v.m)}</small></td><td>${esc(v.user||'—')}</td><td>${v.reg||'—'}</td><td>${v.insp||'—'}</td><td>${esc(v.ins||'—')}</td><td>${is.length?pill('فيها شي منتهي','exp'):pill('سليمة','ok')}</td></tr>`}}
 const nm18=e=>`<span class="nm18"><span class="av" style="background:${e.c};width:32px;height:32px;font-size:13px">${esc(e.name[0])}</span><span><b>${esc(e.name)}</b><small>${esc(e.job||'')}</small></span></span>`;
 function tbody18(){const d=ui.d18;const {head,L,row}=rows18();const per=8;const pages=Math.max(1,Math.ceil(L.length/per));if(d.pg>pages)d.pg=pages;const P=L.slice((d.pg-1)*per,d.pg*per);
- return `<div class="tw18"><table class="t18"><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${P.map(row).join('')||`<tr><td colspan="${head.length}" class="empty">ما فيه نتائج</td></tr>`}</tbody></table></div>
+ return `<div class="tw18"><table class="t18"><thead><tr><th class="sq18">#</th>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${P.map((x,k)=>row(x).replace(/^<tr([^>]*)>/,`<tr$1><td class="sq18">${(d.pg-1)*per+k+1}</td>`)).join('')||`<tr><td colspan="${head.length+1}" class="empty">ما فيه نتائج</td></tr>`}</tbody></table></div>
  <div class="pg18"><span>${L.length?`عرض ${(d.pg-1)*per+1}–${Math.min(d.pg*per,L.length)} من ${L.length}`:''}</span><span class="p">${pages>1?Array.from({length:pages},(_,i)=>`<button class="${d.pg===i+1?'on':''}" data-act="pg18:${i+1}">${i+1}</button>`).join(''):''}</span></div>`}
 function table18(){const d=ui.d18;const X=expRows();const E=visEmp();const nats=[...new Set(E.map(e=>e.nat).filter(Boolean))].sort();
  const tabs=[['users','الموظفين',E.length,'emp'],['idc','الإقامات',E.filter(e=>!/سعود/.test(e.nat||'')).length,'iq'],['alert','قرب ينتهي',X.filter(r=>r.n<=W18).length,'soon'],['car','السيارات',visVeh().length,'veh']];
@@ -3061,8 +3064,8 @@ function docNo18(r){const m=String(r.upd||'').match(/^doc:(emp|veh):([^:]+):/);c
 const noCell18=r=>{const n=docNo18(r);return n?`<td><span class="no18" dir="ltr">${esc(n)}</span>${cpB15(n)}</td>`:'<td><span class="mini">—</span></td>'};
 const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L=expFilter();const i=h.indexOf('<tbody>');const j=h.indexOf('</tbody>',i);if(i<0||j<0||!h.includes('<th>الاسم / اللوحة</th>'))return h;
  const parts=h.slice(i+7,j).split(/(?=<tr)/).filter(Boolean);const data=parts.filter(p=>p.startsWith('<tr>'));if(data.length!==L.length)return h;let n=0;
- const out=parts.map(p=>{if(!p.startsWith('<tr>'))return p.replace(/colspan="6"/g,'colspan="7"');const r=L[n++];let c=0,pos=-1;for(let k=0;k<2;k++){pos=p.indexOf('</td>',pos+1);if(pos<0)return p}pos+=5;return p.slice(0,pos)+noCell18(r)+p.slice(pos)}).join('');
- h=h.slice(0,i+7)+out+h.slice(j);return h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>')};
+ const out=parts.map(p=>{if(!p.startsWith('<tr>'))return p.replace(/colspan="6"/g,'colspan="8"');const r=L[n++];let c=0,pos=-1;for(let k=0;k<2;k++){pos=p.indexOf('</td>',pos+1);if(pos<0)return p}pos+=5;return '<tr><td class="sq18">'+n+'</td>'+p.slice(4,pos)+noCell18(r)+p.slice(pos)}).join('');
+ h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
