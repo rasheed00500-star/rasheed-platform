@@ -705,6 +705,35 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 @media (max-width:600px){.dl16{flex-wrap:wrap}.dl16 .nums{width:100%;justify-content:space-around}}
 .ch16{padding:4px 2px 0}.ch16 svg{display:block;max-width:100%;height:auto;font-family:'IBM Plex Sans Arabic',Tahoma,sans-serif}
 .lg16{display:flex;gap:16px;justify-content:center;font-size:12.5px;color:var(--mute);margin-top:6px}.lg16 i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:6px;vertical-align:-1px}
+/* v17 — مهامي */
+.tk17bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tk17bar .seg{background:#fff;border:1px solid var(--line)}
+.tk17bar .seg .c{font-size:11.5px;color:var(--mute);margin-inline-start:4px}
+.tk17s{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.tk17s button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px 16px;font:inherit;cursor:pointer;text-align:right;border-inline-start:4px solid var(--c)}
+.tk17s button:hover{background:var(--t)}
+.tk17s small{color:var(--mute);font-size:12.5px;font-weight:600}.tk17s b{font-size:26px;color:var(--c);line-height:1.2}
+.tk17g{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;scroll-margin-top:80px}
+.tk17g.late{border-color:#F3C9C4}
+.tk17g .hd{display:flex;align-items:center;gap:8px;padding:12px 18px;font-weight:700;font-size:14.5px;border-bottom:1px solid var(--line2);list-style:none;cursor:default}
+.tk17g summary.hd{cursor:pointer}.tk17g summary.hd::-webkit-details-marker{display:none}
+.tk17g:not([open]) summary.hd{border-bottom:0}
+.tk17g .hd .d{width:10px;height:10px;border-radius:50%}
+.tk17g .hd .n{font-size:12px;font-weight:700;border-radius:99px;padding:1px 9px}
+.tk17g .hd small{color:var(--mute);font-weight:500;font-size:12.5px}
+.tk17g .hd .ch{margin-inline-start:auto;color:var(--mute);transition:transform .18s}.tk17g[open] .hd .ch{transform:rotate(180deg)}
+.tk17{display:flex;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--line2)}
+.tk17:first-of-type{border-top:0}
+.tk17:hover{background:#FAFCFB}
+.tk17 .tx{flex:1;min-width:0;text-align:right;background:none;border:0;padding:0;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.tk17 .tx b{font-size:14.5px;font-weight:600;color:var(--ink)}
+.tk17.dn .tx b{color:var(--mute);text-decoration:line-through}
+.tk17 .st{color:var(--mute);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk17 .tgs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tg17{font-size:11.5px;font-weight:600;border-radius:7px;padding:1px 8px;background:#F1F4F2;color:#4E5C56}.tg17.p{background:var(--brT);color:var(--br)}.tg17.r{background:#F0EDFB;color:#6650C2}
+.tk17 .du{font-size:12.5px;font-weight:700;white-space:nowrap}
+.tk17 .qa{display:flex;gap:4px}.tk17 .qa .ib{width:32px;height:32px}
+@media (max-width:640px){.tk17s{grid-template-columns:repeat(2,minmax(0,1fr))}.tk17{flex-wrap:wrap;padding:12px 14px}.tk17 .tx{flex:1 1 70%}.tk17 .du{order:5;margin-inline-start:34px}.tk17 .qa{order:6;margin-inline-start:auto}.tk17bar{flex-direction:column;align-items:stretch}.tk17bar .seg{overflow-x:auto}}
 
 </style>
 </head>
@@ -2780,10 +2809,9 @@ function day16(h,c){const tp=document.createElement('template');tp.innerHTML=h;c
  const out=[...ph];if(barEl)out.push(barEl);out.push(...appr);
  out.push(...(daySec.length?daySec:[dv('يومي','cal')]),...team,...tr,...top,...board,...next);
  const upX=(c==='ark'||c==='ext')?null:up;const prX=pr&&pr.querySelector('tr.cl')?pr:null;
- const soon=[upX?pair(upX,null):null,(prX||aw)?pair(prX,aw):null,...req,...ws.map(keepWs)].filter(Boolean);
- if(soon.length)out.push(dv('لازم نتصرف فيه قريب','clock','الوثائق والإجراءات والشغل الجاري'),...soon);
- const rem=[...strip,...miss,...ram,...rest];if(rem.length)out.push(...rem);
- const lk=document.createElement('template');lk.innerHTML=dashLink16(c);out.push(lk.content.firstElementChild);
+ const soon=[(prX||aw)?pair(prX,aw):null,...req,...ws.map(keepWs)].filter(Boolean);
+ if(soon.length)out.push(dv('لازم نتصرف فيه قريب','clock','الإجراءات والشغل الجاري'),...soon);
+ const rem=[...miss,...ram,...rest];if(rem.length)out.push(...rem);
  return out.map(x=>x.outerHTML).join('')}
 function dashLink16(c){const n=withCo16(c,()=>{const T=S.tasks.filter(t=>canSeeTask(t));return{o:T.filter(t=>!t.done).length,d:doneIn16(T,30),e:S.me==='k'?0:visEmp().length}});
  return `<button class="dl16" data-go="dash">${ti7('chart','#12705E','#E4F2EE')}<div class="tx"><b>لوحة التحكم</b><small>الأرقام والرسوم والإحصائيات${c?' · '+CO16[c]:''}</small></div><div class="nums">${n.e?`<span><b>${n.e}</b>موظف</span>`:''}<span><b>${n.o}</b>مهمة مفتوحة</span><span><b>${n.d}</b>خلصت آخر 30 يوم</span></div>${ic('left',18)}</button>`}
@@ -2813,14 +2841,23 @@ function kpis16(c){const T=S.tasks.filter(t=>canSeeTask(t));const O=T.filter(t=>
  const X=expRows();const sv=S.services.filter(s=>s.status!=='منجزة');
  return `<div class="v7k">${kpi('users','ok','إجمالي الموظفين',visEmp().length,`${visVeh().length} سيارة`,'employees')}${kpi('check','info','المهام المفتوحة',O.length,`${dm} خلصت آخر 30 يوم`,'tasks')}${kpi('alert','exp','متأخر',late+X.filter(r=>r.n<0).length,`${late} مهام · ${X.filter(r=>r.n<0).length} وثائق`,'expiry')}${kpi('brief','soon','طلبات العملاء الجارية',sv.length,`${S.clients.length} عملاء`,'services')}</div>`}
 PAGES.dash=()=>{const c=coGet16();return withCo16(c,()=>{const T=S.tasks.filter(t=>canSeeTask(t));const showFor=S.me!=='k'?(c===''||c==='for'):c==='for';
- const g=(a,b)=>`<div class="v7g2" ${!b?'style="grid-template-columns:1fr"':''}>${a}${b||''}</div>`;
- const R=[];R.push(kpis16(c));R.push(g(weekChart16(T),taskDonut16(T)));
- if(showFor)R.push(g(donut7(),S.me==='r'?team7():away7()));
- else if(c==='ark')R.push(g(arkDocs11(),S.me==='r'?team7():''));
- else if(c==='ext'||S.me==='k')R.push(g(svc7(),clients7()));
- if(showFor)R.push(g(gov7(),feed7()));else{const pv=procs7();const alt=c==='ext'?'ext':'ark';R.push(g(/class="cl"/.test(pv)?pv:(typeof wsCard11==='function'?wsCard11(alt):pv),feed7()))}
+ const g=(a,b)=>`<div class="v7g2" ${!b?'style="grid-template-columns:1fr"':''}>${a}${b||''}</div>`;const sec=(t,i,sub)=>`<div class="v7sec">${ic(i,20,'var(--br)')}${t}${sub?`<small class="v7sub16">${sub}</small>`:''}</div>`;
+ const ws=k=>typeof wsCard11==='function'?wsCard11(k):'';const A=[],B=[];
+ if(showFor){A.push(g(donut7(),taskDonut16(T)),g(S.me==='r'?team7():away7(),gov7()));B.push(upcoming7())}
+ else if(c==='ark'){A.push(g(taskDonut16(T),arkDocs11()));B.push(ws('ark'))}
+ else if(c==='ext'){A.push(g(taskDonut16(T),clients7()));B.push(svc7(),ws('ext'))}
+ else{A.push(g(taskDonut16(T),clients7()));B.push(svc7(),`<div class="v7g2 ws11g">${ws('ark')}${ws('ext')}</div>`)}
  const acts=S.me!=='k'?`${btn('التقرير الشهري','file','','go:mreport')}${btn('الانتهاءات','alert','','go:expiry')}`:btn('أعمال العملاء','brief','','go:external');
- return `<div class="ph"><div><h1>لوحة التحكم</h1><p>الأرقام والإحصائيات${c?' · '+CO16[c]:S.me==='s'?' · فوريستا':' · كل الشركات'}</p></div><div class="acts">${acts}</div></div>${coBar16()}${R.join('')}`})};
+ return `<div class="ph"><div><h1>لوحة التحكم</h1><p>الأرقام والإحصائيات${c?' · '+CO16[c]:S.me==='s'?' · فوريستا':' · كل الشركات'} · اضغط أي رقم يوديك لتفاصيله</p></div><div class="acts">${acts}</div></div>${coBar16()}
+ ${link16(kpis16(c))}${A.join('')}${sec('يحتاج تدخلك','alert','المنتهي واللي قرب ينتهي · اضغط على أي سطر وتدخل له')}${B.join('')}`})};
+/* كروت الأرقام: كل رقم يوديك على طول للقائمة اللي وراه */
+const KX16={'متأخر عن التجديد':'kx16:exp','ينتهي خلال 30 يوماً':'kx16:soon','السيارات':'kx16:veh','متأخر':'kx16:exp','المهام المفتوحة':'kx16:tasks','مهامي المفتوحة':'kx16:tasks','متأخرة':'kx16:tasks','مهام أركان المفتوحة':'kx16:ark','مستندات أركان':'kx16:ark'};
+function link16(h){return h.replace(/<button class="card kpi"([^>]*)>([\s\S]*?)<\/button>/g,(m,at,inner)=>{const t=(inner.match(/<div class="t">[\s\S]*?<\/span>([^<]*)<\/div>/)||[])[1];const a=t&&KX16[t.trim()];if(!a)return m;return `<button class="card kpi"${at.replace(/\s*data-go="[^"]*"/,'')} data-act="${a}" title="اضغط وتشوف التفاصيل">${inner}</button>`})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="kx16:"]');if(!b)return;e.stopPropagation();e.preventDefault();const k=b.dataset.act.slice(5);
+ if(k==='exp'||k==='soon'){ui.ex={types:EXT.map(x=>x[0]),st:k,win:30};go('expiry');return}
+ if(k==='veh'){ui.vf='bad';go('vehicles');return}
+ if(k==='ark'){go('arkan');return}
+ if(k==='tasks'){ui.tf='mine';go('tasks');return}},true);
 CR.dash=['لوحة التحكم'];
 (function(){['r','s','k'].forEach(p=>{const a=NAV[p];if(a.some(n=>Array.isArray(n)&&n[2]==='dash'))return;const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='home');a.splice(i>=0?i+1:1,0,['chart','لوحة التحكم','dash'])})})();
 
@@ -2833,6 +2870,37 @@ const _renderV16=render;render=function(){const r=_renderV16.apply(this,argument
  const unread=(()=>{try{return dmUnread12().length}catch(e){return 0}})();const td=(()=>{try{const A=agenda(S.me);return A.late.length+A.today.length}catch(e){return 0}})();
  const items=[['chart','لوحة التحكم','dash',0],['home','يومي','home',td],['check','مهامي','tasks',0],['inbox','الرسائل','msgs',unread],['menu','المزيد','@menu',0]];
  bn.innerHTML=items.map(i=>`<button ${i[2]==='@menu'?'data-act="burger"':`data-go="${i[2]}"`} class="${cur===i[2]?'on':''}">${ic(i[0],21)}<span>${i[1]}</span>${i[3]?`<b>${i[3]}</b>`:''}</button>`).join('')}}catch(e){}return r};
+
+/* ===================== v17 · «مهامي» أوضح: مقسمة حسب الوقت + أزرار سريعة ===================== */
+const TG17=[['late','متأخرة','#CF3F35','#FDEDEB','لازم تخلص أول'],['today','اليوم','#B4700F','#FDF3E1',''],['tmr','بكرة','#6650C2','#F0EDFB',''],['week','هالأسبوع','#2D69B0','#E6EEF8','خلال 7 أيام'],['later','بعدين','#66746E','#F1F4F2','أكثر من أسبوع'],['none','بدون موعد','#66746E','#F1F4F2','حدد لها موعد عشان ما تنسى']];
+const grp17=t=>{if(!t.due)return 'none';const n=days(t.due);return n<0?'late':n===0?'today':n===1?'tmr':n<=7?'week':'later'};
+const dueTxt17=t=>{if(t.done){const d=doneOn16(t);return d?'خلصت '+dayName14(d):'خلصت'}if(!t.due)return '';const n=days(t.due);if(n<0)return n===-1?'متأخرة يوم':n===-2?'متأخرة يومين':`متأخرة ${-n} أيام`;return dayName14(D(t.due))};
+function row17(t,tab){const g=grp17(t);const G=TG17.find(x=>x[0]===g);const by=t.by&&t.by!==S.me?PEOPLE[t.by]:null;const step=t.steps?(t.sub||''):(t.notes||'');
+ const tags=[t.co?`<span class="tg17">${esc(t.co)}</span>`:'',t.steps?'<span class="tg17 p">إجراء</span>':'',t.raw&&t.raw.ReqType==='تذكير'?'<span class="tg17 r">تذكير</span>':'',by&&tab!=='sent'?`<span class="mini">من ${by.name}</span>`:'',tab!=='mine'&&!t.done?`<span class="mini">عند ${PEOPLE[t.who].name}</span>`:''].join('');
+ const canLater=!t.done&&!t.steps&&(t.who===S.me||S.me==='r');
+ return `<div class="tk17 ${t.done?'dn':''}"><button class="cb ${t.done?'ok':''}" data-act="done:${t.id}" aria-label="${t.done?'رجّعها مفتوحة':'تمّت'}" title="${t.done?'رجّعها مفتوحة':'تمّت'}">${t.done?ic('tick',13,'#fff',3):''}</button>
+ <button class="tx" data-go="${t.steps?'proc':'task'}-${t.id}"><b>${esc(t.title)}</b>${step?`<small class="st">${esc(step.slice(0,110))}</small>`:''}<span class="tgs">${tags}</span></button>
+ <span class="du" style="color:${t.done?'var(--mute)':G[2]}">${dueTxt17(t)}</span>${tab!=='mine'?av(t.who,1):''}
+ <span class="qa">${canLater&&g!=='tmr'?`<button class="ib" data-act="tk17later:${t.id}" title="أجّلها لبكرة" aria-label="أجّلها لبكرة">${ic('clock',15)}</button>`:''}<button class="ib" data-go="${t.steps?'proc':'task'}-${t.id}" title="افتح" aria-label="افتح">${ic('left',15)}</button></span></div>`}
+PAGES.tasks=()=>{if(!['mine','sent','team','done'].includes(ui.tf))ui.tf='mine';if(ui.tf==='team'&&S.me!=='r')ui.tf='mine';const c=coGet16();
+ return withCo16(c,()=>{const vis=S.tasks.filter(canSeeTask);
+ const F={mine:['عندي',t=>!t.done&&t.who===S.me],sent:['طلبتها من غيري',t=>!t.done&&t.who!==S.me&&t.chain.includes(S.me)],...(S.me==='r'?{team:['الفريق كله',t=>!t.done]}:{}),done:['المنتهية',t=>t.done&&(t.chain.includes(S.me)||S.me==='r')]};
+ const tab=ui.tf;const L=vis.filter(F[tab][1]);const mine=vis.filter(F.mine[1]);
+ const cnt=k=>mine.filter(t=>grp17(t)===k).length;
+ const head=`<div class="ph"><div><h1>مهامي</h1><p>عندك ${mine.length} مفتوحة${cnt('late')?` · <b style="color:var(--red)">${cnt('late')} متأخرة</b>`:''}${cnt('today')?` · ${cnt('today')} اليوم`:''}</p></div><div class="acts">${btn('مهمة جديدة','plus','pri','newtask')}</div></div>
+ <div class="tk17bar"><div class="seg">${Object.entries(F).map(([k,v])=>`<button class="${tab===k?'on':''}" data-tf="${k}">${v[0]} <span class="c">${vis.filter(v[1]).length}</span></button>`).join('')}</div>${coBar16()}</div>`;
+ if(tab==='done'){const D2=L.sort((a,b)=>(doneOn16(b)||0)-(doneOn16(a)||0)).slice(0,60);
+  return head+`<section class="tk17g"><div class="hd"><span class="d" style="background:#12705E"></span>المنتهية<span class="n" style="background:#E4F2EE;color:#12705E">${L.length}</span><small>آخر 60</small></div>${D2.map(t=>row17(t,tab)).join('')||'<div class="empty">ما فيه مهام منتهية</div>'}</section>`}
+ const by={};L.forEach(t=>{const g=grp17(t);(by[g]=by[g]||[]).push(t)});Object.values(by).forEach(a=>a.sort((x,y)=>(D(x.due)||9e15)-(D(y.due)||9e15)));
+ const sum=`<div class="tk17s">${TG17.slice(0,4).map(g=>`<button data-act="tk17go:${g[0]}" style="--c:${g[2]};--t:${g[3]}"><small>${g[1]}</small><b>${(by[g[0]]||[]).length}</b></button>`).join('')}</div>`;
+ const groups=TG17.map(g=>{const a=by[g[0]]||[];if(!a.length)return '';const fold=g[0]==='later'||g[0]==='none';
+  const hd=`<span class="d" style="background:${g[2]}"></span>${g[1]}<span class="n" style="background:${g[3]};color:${g[2]}">${a.length}</span>${g[4]?`<small>${g[4]}</small>`:''}`;
+  return fold?`<details class="tk17g" id="tk17-${g[0]}"><summary class="hd">${hd}<span class="ch">${ic('down',15)}</span></summary>${a.map(t=>row17(t,tab)).join('')}</details>`
+   :`<section class="tk17g ${g[0]==='late'?'late':''}" id="tk17-${g[0]}"><div class="hd">${hd}</div>${a.map(t=>row17(t,tab)).join('')}</section>`}).join('');
+ return head+sum+(groups||`<div class="v7c empty" style="padding:40px">${ic('ok',24,'var(--br)')}<div style="margin-top:8px">ما فيه شي هنا · كل شي تمام</div></div>`)})};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act^="tk17"]');if(!el)return;e.stopPropagation();e.preventDefault();const [a,x]=el.dataset.act.split(':');
+ if(a==='tk17go'){const s=document.getElementById('tk17-'+x);if(s){if(s.tagName==='DETAILS')s.open=true;s.scrollIntoView({behavior:'smooth',block:'start'})}else toast('ما فيه شي هنا');return}
+ if(a==='tk17later'){const t=S.tasks.find(q=>q.id==x);if(!t)return;const tm=new Date(TODAY.getTime()+864e5);act(async()=>{const r=rawOf11(t);const f={DueDate:toIso(tm)};await spPatch('Tasks',t.id,f);Object.assign(r,f)},'تأجّلت لبكرة ✓');return}},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
