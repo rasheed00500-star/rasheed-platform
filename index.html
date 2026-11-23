@@ -463,6 +463,25 @@ button.rw{width:100%;background:none;border:0;border-bottom:1px solid var(--line
 .pm-sw.on{background:var(--br)}.pm-sw.on::after{right:23px}
 .aco{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .aco .btn{margin-inline-start:auto}
+/* v9 */
+.tpl9{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;align-items:start}
+.tpl9-list{padding:10px 12px;position:sticky;top:0;max-height:calc(100vh - 140px);overflow:auto}
+.tpl9-list .pm-h{margin:12px 6px 4px}
+.tpl9-it{width:100%;display:flex;align-items:center;gap:9px;border:0;background:none;border-radius:10px;padding:8px 10px;text-align:right;font-size:13.5px;color:var(--ink2)}
+.tpl9-it span{flex:1}.tpl9-it small{font-size:11px;color:var(--mute)}
+.tpl9-it:hover{background:#F6F9F8}.tpl9-it.on{background:var(--brT);color:var(--br);font-weight:700}
+.tpl9-ic{display:flex;flex-wrap:wrap;gap:6px}
+.tpl9-ic label{cursor:pointer}.tpl9-ic input{position:absolute;opacity:0;pointer-events:none}
+.tpl9-ic span{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--ink2);background:#fff}
+.tpl9-ic input:checked+span{border-color:var(--br);background:var(--brT);color:var(--br)}
+.tpl9-ic input:focus-visible+span{outline:2px solid var(--br);outline-offset:2px}
+.cf9{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.cf9 a{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink)}
+.cf9 a:hover{border-color:#A8D2C6;background:#F4FAF8}
+.cf9 a b{display:block;font-size:13px;font-weight:600}.cf9 a small{font-size:11.5px;color:var(--mute)}
+.svc8-need .ib{width:28px;height:28px;margin-inline-start:-4px}
+#main.ro9 .btn.pri,#main.ro9 .cb{opacity:.45}
+@media (max-width:900px){.tpl9{grid-template-columns:1fr}.tpl9-list{position:static;max-height:none}}
 
 </style>
 </head>
@@ -1559,7 +1578,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act^="v7wi
 /* ---------- permissions (stored as x_ keys inside Team.Perms, keeping the old keys) ---------- */
 const teamRow8=p=>(RAW.Team||[]).find(t=>KEY[t.Title]===p||KEY[(t.Title||'').trim().split(' ')[0]]===p);
 const permMap8=r=>{const m={};String((r&&r.Perms)||'').split(';').forEach(kv=>{const [k,v]=kv.split('=');if(k&&k.trim())m[k.trim()]=(v||'').trim()});return m};
-const grants8=p=>{const m=permMap8(teamRow8(p));return{foresta:m.x_foresta==='1'?1:0,clients:m.x_clients==='1'?1:0}};
+const grants8=p=>{const m=permMap8(teamRow8(p));const lv=v=>v==='1'?1:v==='v'?'v':0;return{foresta:lv(m.x_foresta),clients:lv(m.x_clients)}};
 const asMe8=(who,fn,prm)=>{const was=S.me;S.me=who;try{return fn(prm)}finally{S.me=was}};
 ['employees','emp','docs','vehicles','veh','leaves','expiry','missing','forms'].forEach(r=>{const o=PAGES[r];if(!o)return;PAGES[r]=prm=>S.me==='k'&&grants8('k').foresta?asMe8('s',o,prm):o(prm)});
 ['clients','client','services'].forEach(r=>{const o=PAGES[r];if(!o)return;PAGES[r]=prm=>S.me==='s'&&grants8('s').clients?asMe8('k',o,prm):o(prm)});
@@ -1574,7 +1593,7 @@ PAGES.perms=()=>{if(S.realMe!=='r'||S.me!=='r')return noAccess();const A=RAW.Acc
  const has=(a,f,n)=>(a[f]||'').split(',').map(x=>x.trim()).includes(n);
  const accRow=(p,co)=>{const L=A.filter(a=>(a.Company||'فوريستا')===co);if(!L.length)return '';const nm=PEOPLE[p].name;const v=L.filter(a=>has(a,'ViewBy',nm)).length,e=L.filter(a=>has(a,'EditBy',nm)).length;const lvl=e===L.length?'edit':v===L.length?'view':v||e?'some':'none';
   return `<div class="pm-row"><div class="tx"><b>${esc(co)}</b><small>${L.length} حساب: ${esc([...new Set(L.map(a=>a.Title))].slice(0,5).join('، '))}</small></div><div class="seg">${[['none','ما يشوف'],['view','يشوف بس'],['edit','يشوف ويعدّل']].map(o=>`<button class="${lvl===o[0]?'on':''}" data-act="pm8acc:${p}:${encodeURIComponent(co)}:${o[0]}">${o[1]}</button>`).join('')}</div>${lvl==='some'?'<span class="mini" style="color:var(--amb)">بعضها</span>':''}</div>`};
- const sec=(p,key,t,d,on)=>`<div class="pm-row"><div class="tx"><b>${t}</b><small>${d}</small></div><button class="pm-sw ${on?'on':''}" data-act="pm8sec:${p}:${key}" role="switch" aria-checked="${!!on}" aria-label="${t}"></button></div>`;
+ const sec=(p,key,t,d,on)=>`<div class="pm-row"><div class="tx"><b>${t}</b><small>${d}</small></div><div class="seg">${[['0','مقفل'],['v','عرض فقط'],['1','كامل']].map(o=>`<button class="${String(on||0)===o[0]?'on':''}" data-act="pm8lvl:${p}:${key}:${o[0]}">${o[1]}</button>`).join('')}</div></div>`;
  const card=p=>{const g=grants8(p);return `<section class="v7c"><div class="v7h">${av(p)}<div><h3>${PEOPLE[p].name}</h3><p>${PEOPLE[p].role}</p></div></div>
   <div class="pm-h">الأقسام</div>${p==='k'?sec('k','foresta','أقسام فوريستا','الموظفين، الانتهاءات، السيارات، الإجازات، النماذج',g.foresta):sec('s','clients','العملاء الخارجيين','ملفات العملاء وطلبات الخدمات',g.clients)}
   <div class="pm-h">حسابات المنصات</div>${cos.map(co=>accRow(p,co)).join('')||'<div class="empty">ما فيه حسابات</div>'}</section>`};
@@ -1648,6 +1667,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  if(a==='aco8'){e.stopPropagation();ui.aco=decodeURIComponent(x);ui.af='all';render();return}
  if(a==='svc8wait'){e.stopPropagation();const s=S.services.find(q=>q.id==x);const it=s&&s.stepItems.find(q=>q.Status!=='منجز');if(!it)return;const v=it.Status==='ينتظر جهة'?'جاري':'ينتظر جهة';act(async()=>{await spPatch('Procedures',it.id,{Status:v});it.Status=v},v==='ينتظر جهة'?'تسجّل إن الخطوة عند الجهة':'رجعت الخطوة لنا');return}
  if(a==='svc8hold'){e.stopPropagation();const sc=RAW.ServiceCases.find(q=>q.id==x);if(!sc)return;const v=sc.Status==='متوقف'?'جاري':'متوقف';act(async()=>{await spPatch('ServiceCases',sc.id,{Status:v});sc.Status=v},v==='متوقف'?'تسجّل إن الطلب بانتظار العميل':'رجع الطلب جاري');return}
+ if(a==='pm8lvl'){e.stopPropagation();const r=teamRow8(x);if(!r){toast('ما لقيت '+PEOPLE[x].name+' في قائمة الفريق');return}const m=permMap8(r);m['x_'+y]=z;const pv=Object.entries(m).map(([k,v])=>k+'='+v).join(';');act(async()=>{await spPatch('Team',r.id,{Perms:pv});r.Perms=pv},`${PEOPLE[x].name}: ${z==='1'?'صلاحية كاملة':z==='v'?'عرض فقط':'انقفل القسم'}`);return}
  if(a==='pm8sec'){e.stopPropagation();const r=teamRow8(x);if(!r){toast('ما لقيت '+PEOPLE[x].name+' في قائمة الفريق');return}const g=grants8(x);g[y]=g[y]?0:1;const m=permMap8(r);m['x_'+y]=String(g[y]);const pv=Object.entries(m).map(([k,v])=>k+'='+v).join(';');act(async()=>{await spPatch('Team',r.id,{Perms:pv});r.Perms=pv},g[y]?`صار ${PEOPLE[x].name} يشوف القسم`:`انشالت الصلاحية من ${PEOPLE[x].name}`);return}
  if(a==='pm8acc'){e.stopPropagation();const co=decodeURIComponent(y),lvl=z,nm=PEOPLE[x].name;const L=(RAW.Accounts||[]).filter(q=>(q.Company||'فوريستا')===co);
   const upd=(s,on)=>{const arr=(s||'').split(',').map(q=>q.trim()).filter(q=>q&&q!==nm);if(on)arr.push(nm);return arr.join(',')};
@@ -1655,6 +1675,78 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
 },true);
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="newsvc"]');if(!f)return;const steps=[...f.querySelectorAll('.ns-step')].map(i=>i.value.trim()).filter(Boolean),need=[...f.querySelectorAll('.ns-need')].map(i=>i.value.trim()).filter(Boolean);
  if(!steps.length){e.preventDefault();e.stopImmediatePropagation();toast('أضف خطوة وحدة على الأقل');return}const orig=SVCT[nsSel];SVCT[nsSel]={...orig,steps,need};setTimeout(()=>{SVCT[nsSel]=orig},0)},true);
+
+/* ===================== v9: editable service templates, client files, view-only access ===================== */
+/* ---------- service templates saved in SharePoint drive ---------- */
+const TPLF9='مرفقات المنصة/الإعدادات/قوالب الخدمات.json';
+const SVCI9=['file','edit','bldg','x','users','shield','idc','plane','wallet','brief','plus','layers','umb','truck'];
+function applyCat9(cat){if(!Array.isArray(cat)||!cat.length)return;SVC8.length=0;cat.forEach(g=>SVC8.push(g));Object.keys(SVCT).forEach(k=>delete SVCT[k]);SVC8.forEach(g=>g[1].forEach(s=>{SVCT[s[0]]={i:s[1],steps:s[2],need:s[3],g:g[0]}}));if(!SVCT[nsSel])nsSel=Object.keys(SVCT)[0]}
+let TPL9=null;
+async function loadTpl9(){try{const it=await driveGet(TPLF9);if(!it||!it['@microsoft.graph.downloadUrl'])return;const j=await fetch(it['@microsoft.graph.downloadUrl']).then(r=>r.json());TPL9={at:it.lastModifiedDateTime,by:(it.lastModifiedBy&&it.lastModifiedBy.user&&it.lastModifiedBy.user.displayName)||''};applyCat9(j.cat||j);if(['svctpl','client','clients','services'].includes(view.route))render()}catch(e){console.warn('tpl',e)}}
+const _buildV9=build;let tplLoaded9=false;build=function(){_buildV9();if(!tplLoaded9&&typeof SITE!=='undefined'&&SITE){tplLoaded9=true;setTimeout(loadTpl9,50)}};
+['r','k'].forEach(p=>{const a=NAV[p];const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='services');a.splice(i>=0?i+1:a.length,0,['layers','قوالب الخدمات','svctpl'])});
+CR.svctpl=['قوالب الخدمات'];
+const tplRow9=(cls,v,i)=>`<div class="ns-row"><span class="n">${i+1}</span><input class="inp ${cls}" value="${esc(v)}" aria-label="${i+1}"><button type="button" class="ib sm" data-act="ns8del" aria-label="حذف">${ic('x',14)}</button></div>`;
+PAGES.svctpl=()=>{if(S.me==='s'&&!grants8('s').clients)return noAccess();const sel=ui.tpl9&&SVCT[ui.tpl9]?ui.tpl9:Object.keys(SVCT)[0];const T=SVCT[sel];const isNew=ui.tpl9==='__new';const groups=SVC8.map(g=>g[0]);
+ const T2=isNew?{i:'brief',steps:['تحديد المطلوب','التنفيذ','تسليم العميل'],need:[],g:groups[0]}:T;
+ return `<div class="ph"><div><h1>قوالب الخدمات</h1><p>عدّل خطوات كل خدمة والمطلوب من العميل مرة وحدة، وتنطبق على كل طلب جديد. الطلبات القديمة ما تتغيّر.</p></div><div class="acts">${btn('خدمة جديدة','plus','pri','tpl9new')}</div></div>
+ ${TPL9&&TPL9.at?`<div class="banner">${ic('hist',18,'var(--blu)')}<span>آخر تعديل على القوالب: ${when(TPL9.at)}${TPL9.by?' · '+esc(TPL9.by):''}</span></div>`:''}
+ <div class="tpl9">
+  <aside class="v7c tpl9-list">${SVC8.map(g=>`<div class="pm-h">${esc(g[0])}</div>${g[1].map(s=>`<button class="tpl9-it ${!isNew&&s[0]===sel?'on':''}" data-act="tpl9sel:${encodeURIComponent(s[0])}">${ic(s[1],16)}<span>${esc(s[0])}</span><small>${s[2].length} خطوات</small></button>`).join('')}`).join('')}</aside>
+  <form class="v7c" data-form="tpl9:${isNew?'':encodeURIComponent(sel)}" style="display:flex;flex-direction:column;gap:14px">
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"><div class="field"><label for="tp-n">اسم الخدمة</label><input id="tp-n" class="inp" required value="${isNew?'':esc(sel)}"></div><div class="field"><label for="tp-g">الجهة</label><input id="tp-g" class="inp" list="tp-gl" required value="${esc(T2.g||groups[0])}"><datalist id="tp-gl">${groups.map(g=>`<option value="${esc(g)}">`).join('')}</datalist></div>
+   <div class="field"><label>الأيقونة</label><div class="tpl9-ic">${SVCI9.map(i=>`<label><input type="radio" name="tp-i" value="${i}" ${T2.i===i?'checked':''}><span>${ic(i,18)}</span></label>`).join('')}</div></div></div>
+   <div class="ns-cols"><div class="ns-box"><b>الخطوات</b><span class="mini">بالترتيب</span><div class="ns-list" id="ns-steps">${T2.steps.map((t,i)=>tplRow9('ns-step',t,i)).join('')}</div><button type="button" class="btn sm" data-act="ns8add:step">${ic('plus',14)}خطوة</button></div>
+   <div class="ns-box need"><b>المطلوب من العميل</b><span class="mini">كله مطلوب</span><div class="ns-list" id="ns-need">${T2.need.map((t,i)=>tplRow9('ns-need',t,i)).join('')}</div><button type="button" class="btn sm" data-act="ns8add:need">${ic('plus',14)}مطلوب</button></div></div>
+   <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn pri" type="submit">${ic('tick',16)}حفظ القالب</button>${isNew?'':btn('حذف الخدمة','x','',`tpl9del:${encodeURIComponent(sel)}`)}</div></form></div>`};
+async function saveCat9(cat,msg){act(async()=>{await drivePut(TPLF9,JSON.stringify({at:new Date().toISOString(),by:PEOPLE[S.me].name,cat},null,1),'application/json');applyCat9(cat);TPL9={at:new Date().toISOString(),by:PEOPLE[S.me].name};AUDIT_HOOK&&AUDIT_HOOK('تعديل','Templates',0,null,{msg},{Title:'قوالب الخدمات'},'قوالب الخدمات: '+msg)},msg)}
+const cloneCat9=()=>JSON.parse(JSON.stringify(SVC8));
+
+/* ---------- client files ---------- */
+const CF9={};const cliFolder9=c=>`مرفقات المنصة/العملاء/${String(c.name).replace(/[\\/:*?"<>|#%]/g,' ').trim()}`;
+async function loadCF9(c){CF9[c.id]=await driveList(cliFolder9(c));if(view.route==='client'&&view.params.id==c.id)render()}
+function cliNeeds9(c){return S.services.filter(s=>s.client===c.id&&s.status!=='منجزة').flatMap(s=>(s.need||[]).map((n,j)=>({n:n[0],ok:n[1],s,j})))}
+const _clientV9=PAGES.client;PAGES.client=prm=>{let h=_clientV9(prm);const c=S.clients.find(x=>x.id==prm.id);if(!c||h.includes('ما عندك صلاحية'))return h;if(!CF9[c.id]){CF9[c.id]=[];setTimeout(()=>loadCF9(c),0)}
+ const F=CF9[c.id]||[];const fileFor=n=>F.find(f=>f.name.startsWith(n));
+ F.length&&cliNeeds9(c).forEach(x=>{const f=fileFor(x.n);if(!f)return;const tag=`data-act="need:${x.s.id}:${x.j}">`;const i=h.indexOf(tag);if(i>=0){const e=h.indexOf('</button>',i);h=h.slice(0,e)+`</button><a class="ib sm" href="${esc(f.webUrl)}" target="_blank" rel="noopener" title="افتح الملف" aria-label="افتح ${esc(x.n)}">${ic('file',14)}</a>`+h.slice(e+9)}});
+ const sec=`<section class="v7c"><div class="v7h"><span class="ci">${ic('file',20)}</span><div><h3>ملفات العميل</h3><p>التفويض والهويات والعقود وكل اللي يرسله العميل · تنحفظ في SharePoint</p></div><div class="x">${btn('رفع ملف','upload','sm pri',`cf9up:${c.id}`)}</div></div>
+ ${F.length?`<div class="cf9">${F.sort((a,b)=>b.name.localeCompare(a.name)).map(f=>`<a href="${esc(f.webUrl)}" target="_blank" rel="noopener">${ic(/\.pdf$/i.test(f.name)?'pdf':'file',18)}<span><b>${esc(f.name.replace(/\.[^.]+$/,''))}</b><small>${f.size?Math.max(1,Math.round(f.size/1024))+' KB':''}</small></span></a>`).join('')}</div>`:'<div class="empty" style="padding:14px">ما فيه ملفات مرفوعة للحين</div>'}</section>`;
+ const k=h.lastIndexOf('<section class="v7c" style="display:flex;align-items:center;gap:10px;background:');return k>=0?h.slice(0,k)+sec+h.slice(k):h+sec};
+function cfModal9(cid){const c=S.clients.find(x=>x.id==cid);const N=cliNeeds9(c).filter(x=>!x.ok);
+ modal(`<div class="mh"><div><b>رفع ملف لـ ${esc(c.name)}</b><div class="mini" style="margin-top:2px">اختر وش الملف، ولو كان من المطلوب ينعلّم إنه وصل تلقائياً (صورة أو PDF، حتى 4MB)</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb">
+ <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">${N.map((x,i)=>`<label class="pk"><input type="radio" name="cf9t" value="${x.s.id}:${x.j}" ${i===0?'checked':''}><span><b>${esc(x.n)}</b><small class="mini" style="display:block">${esc(x.s.svc.split(' · ')[0])}</small></span></label>`).join('')}<label class="pk"><input type="radio" name="cf9t" value="other" ${N.length?'':'checked'}><span><b>ملف آخر</b></span></label></div>
+ <div class="field"><label for="cf9-n">اسم الملف (للملف الآخر)</label><input id="cf9-n" class="inp" placeholder="مثلاً: عقد الإيجار"></div>
+ <label class="btn pri" style="justify-content:center;cursor:pointer;height:46px">${ic('upload',18)}اختر الملف<input type="file" hidden accept="image/*,application/pdf" data-up9="${cid}"></label></div>`)}
+document.addEventListener('change',e=>{const inp=e.target.closest('input[data-up9]');if(!inp||!inp.files.length)return;const file=inp.files[0];inp.value='';if(file.size>4*1024*1024){toast('الملف أكبر من 4MB');return}
+ const c=S.clients.find(x=>x.id==inp.dataset.up9);const t=(document.querySelector('input[name=cf9t]:checked')||{}).value||'other';let label='ملف',sid=null,j=null;
+ if(t==='other'){label=(document.getElementById('cf9-n').value||'').trim()||'ملف'}else{[sid,j]=t.split(':').map(Number);const s=S.services.find(q=>q.id==sid);label=s.need[j][0]}
+ const ext=(file.name.match(/\.[^.]+$/)||[''])[0];const name=`${label.replace(/[\\/:*?"<>|#%]/g,' ')} - ${ymd(new Date())}${ext}`;
+ act(async()=>{await drivePut(`${cliFolder9(c)}/${name}`,file,file.type);AUDIT_HOOK&&AUDIT_HOOK('رفع ملف','Clients',c.id,null,{file:name},{Title:c.name});
+  if(sid){const s=S.services.find(q=>q.id==sid);const n=JSON.parse(JSON.stringify(s.need));n[j][1]=1;await spPatch('ServiceCases',s.id,{NeedJson:JSON.stringify(n)});RAW.ServiceCases.find(q=>q.id===s.id).NeedJson=JSON.stringify(n)}
+  closeModal();CF9[c.id]=await driveList(cliFolder9(c))},sid?'انرفع الملف وتعلّم إنه وصل ✓':'انرفع الملف')},true);
+
+/* ---------- view-only access to Foresta sections ---------- */
+const RO9=['employees','emp','docs','vehicles','veh','leaves','expiry','missing','forms'];
+const ROOK9=/^(go|ef|vf|df|tf|ext|extg|exst|exwin|extext|excsv|expgo|lt|af|ft|mt|mif|missgo|print|csv|copy|copyv|advprint|warnprint|lvform|search|notif|burger|readall|closeov|logout|reload|aco8)$/;
+const isRO9=()=>S.me==='k'&&grants8('k').foresta==='v'&&RO9.includes(view.route);
+const _renderV9=render;render=function(){_renderV9();if(!S.loaded)return;const m=document.getElementById('main');if(m&&isRO9()){m.classList.add('ro9');m.insertAdjacentHTML('afterbegin',`<div class="banner ro9b">${ic('eye',18,'var(--blu)')}<span>عندك صلاحية <b>عرض فقط</b> على أقسام فوريستا · للتعديل كلّم رشيد</span></div>`)}};
+document.addEventListener('click',e=>{if(!isRO9())return;const el=e.target.closest('#main [data-act], #main .cb, #main label.btn');if(!el)return;const a=(el.dataset&&el.dataset.act||'').split(':')[0];if(a&&ROOK9.test(a))return;e.preventDefault();e.stopImmediatePropagation();toast('عندك صلاحية عرض فقط هنا')},true);
+document.addEventListener('submit',e=>{if(isRO9()&&e.target.closest('#main')){e.preventDefault();e.stopImmediatePropagation();toast('عندك صلاحية عرض فقط هنا')}},true);
+
+/* ---------- actions ---------- */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const [a,x]=el.dataset.act.split(':');
+ if(a==='tpl9sel'){e.stopPropagation();ui.tpl9=decodeURIComponent(x);render();return}
+ if(a==='tpl9new'){e.stopPropagation();ui.tpl9='__new';render();return}
+ if(a==='tpl9del'){e.stopPropagation();const nm=decodeURIComponent(x);if(!el.dataset.sure){el.dataset.sure=1;el.innerHTML=ic('x',16)+'متأكد؟ اضغط مرة ثانية';return}const cat=cloneCat9();cat.forEach(g=>g[1]=g[1].filter(s=>s[0]!==nm));saveCat9(cat.filter(g=>g[1].length),'انحذفت خدمة «'+nm+'»');ui.tpl9=null;return}
+ if(a==='cf9up'){e.stopPropagation();cfModal9(x);return}
+},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="tpl9:"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();
+ const old=decodeURIComponent(f.dataset.form.slice(5));const name=f.querySelector('#tp-n').value.trim(),grp=f.querySelector('#tp-g').value.trim(),icon=(f.querySelector('input[name=tp-i]:checked')||{}).value||'brief';
+ const steps=[...f.querySelectorAll('.ns-step')].map(i=>i.value.trim()).filter(Boolean),need=[...f.querySelectorAll('.ns-need')].map(i=>i.value.trim()).filter(Boolean);
+ if(!name||!steps.length){toast('اكتب اسم الخدمة وخطوة وحدة على الأقل');return}if(name!==old&&SVCT[name]){toast('فيه خدمة بنفس الاسم');return}
+ const cat=cloneCat9();cat.forEach(g=>g[1]=g[1].filter(s=>s[0]!==old&&s[0]!==name));let g=cat.find(q=>q[0]===grp);if(!g){g=[grp,[]];const oi=cat.findIndex(q=>q[0]==='أخرى');cat.splice(oi>=0?oi:cat.length,0,g)}
+ const oldIdx=old?SVC8.find(q=>q[0]===grp)?.[1].findIndex(s=>s[0]===old):-1;const item=[name,icon,steps,need];if(oldIdx>=0)g[1].splice(oldIdx,0,item);else g[1].push(item);
+ ui.tpl9=name;saveCat9(cat.filter(q=>q[1].length),'انحفظ قالب «'+name+'»')},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
