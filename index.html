@@ -2818,11 +2818,21 @@ PAGES.dash=()=>{const c=coGet16();return withCo16(c,()=>{const T=S.tasks.filter(
  if(showFor)R.push(g(donut7(),S.me==='r'?team7():away7()));
  else if(c==='ark')R.push(g(arkDocs11(),S.me==='r'?team7():''));
  else if(c==='ext'||S.me==='k')R.push(g(svc7(),clients7()));
- if(showFor)R.push(g(gov7(),feed7()));else R.push(g(procs7(),feed7()));
+ if(showFor)R.push(g(gov7(),feed7()));else{const pv=procs7();const alt=c==='ext'?'ext':'ark';R.push(g(/class="cl"/.test(pv)?pv:(typeof wsCard11==='function'?wsCard11(alt):pv),feed7()))}
  const acts=S.me!=='k'?`${btn('التقرير الشهري','file','','go:mreport')}${btn('الانتهاءات','alert','','go:expiry')}`:btn('أعمال العملاء','brief','','go:external');
  return `<div class="ph"><div><h1>لوحة التحكم</h1><p>الأرقام والإحصائيات${c?' · '+CO16[c]:S.me==='s'?' · فوريستا':' · كل الشركات'}</p></div><div class="acts">${acts}</div></div>${coBar16()}${R.join('')}`})};
 CR.dash=['لوحة التحكم'];
 (function(){['r','s','k'].forEach(p=>{const a=NAV[p];if(a.some(n=>Array.isArray(n)&&n[2]==='dash'))return;const i=a.findIndex(n=>Array.isArray(n)&&n[2]==='home');a.splice(i>=0?i+1:1,0,['chart','لوحة التحكم','dash'])})})();
+
+/* v16.2 — لوحة التحكم أول شي يفتح، والترتيب: لوحة التحكم ← يومي ← مهامي ← الرسائل */
+(function(){['r','s','k'].forEach(p=>{const a=NAV[p];const take=k=>{const i=a.findIndex(n=>Array.isArray(n)&&n[2]===k);return i>=0?a.splice(i,1)[0]:null};
+ const d=take('dash'),h=take('home'),t=take('tasks'),m=take('msgs');const top=[d,h,t,m].filter(Boolean);if(h)h[1]='يومي';a.splice(0,0,...top)})})();
+let boot16=true;const _goV16=go;go=function(r){if(boot16){boot16=false;if(!r||r==='home')r='dash'}return _goV16(r)};
+document.addEventListener('change',e=>{if(e.target.matches&&e.target.matches('[data-preview]'))setTimeout(()=>{if(view.route==='home')go('dash')},0)});
+const _renderV16=render;render=function(){const r=_renderV16.apply(this,arguments);try{const bn=document.getElementById('bnav');if(bn){const cur=ROUTEBASE[view.route]||view.route;
+ const unread=(()=>{try{return dmUnread12().length}catch(e){return 0}})();const td=(()=>{try{const A=agenda(S.me);return A.late.length+A.today.length}catch(e){return 0}})();
+ const items=[['chart','لوحة التحكم','dash',0],['home','يومي','home',td],['check','مهامي','tasks',0],['inbox','الرسائل','msgs',unread],['menu','المزيد','@menu',0]];
+ bn.innerHTML=items.map(i=>`<button ${i[2]==='@menu'?'data-act="burger"':`data-go="${i[2]}"`} class="${cur===i[2]?'on':''}">${ic(i[0],21)}<span>${i[1]}</span>${i[3]?`<b>${i[3]}</b>`:''}</button>`).join('')}}catch(e){}return r};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
