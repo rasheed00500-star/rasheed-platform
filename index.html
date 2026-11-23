@@ -531,6 +531,18 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .ram10s .ln::before{content:"";position:absolute;top:17px;right:6px;left:6px;height:3px;border-radius:3px;background:#E3DDF7}
 .ram10s .ln span{position:absolute;top:-2px;right:0;left:0;text-align:center;font-size:12px;font-weight:700;color:#6650C2}
 .v7list .rw.cl{cursor:pointer}.v7list .rw.cl:hover{background:#F8FBFA}
+/* v10.1 review fixes */
+#main{container-type:inline-size}
+.grid.g4,.v7k{grid-template-columns:repeat(2,minmax(0,1fr))}
+@container (min-width:860px){.grid.g4,.v7k{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@container (max-width:420px){.grid.g4,.v7k{grid-template-columns:1fr}}
+.v7k .card.kpi,.grid.g4 .card.kpi{padding-inline-end:64px;min-width:0}
+.v7k .card.kpi .t .ico,.grid.g4 .card.kpi .t .ico{width:40px;height:40px}
+.up7 table{min-width:0;width:100%}
+.up7 td{padding:10px 8px}
+.up7 td:last-child{white-space:nowrap}
+.up7 .v7nm small{max-width:170px}
+.ib .bd{top:-8px;left:-8px;height:20px;min-width:20px;padding:0 5px;box-sizing:border-box;line-height:16px;font-size:10.5px;z-index:2}
 
 </style>
 </head>
@@ -2060,6 +2072,16 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
 },true);
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="ay10"]');if(!f)return;e.preventDefault();e.stopPropagation();const v=(document.getElementById('ay10n')||{}).value||'';const d=v.replace(/\D/g,'');if(d.length<9){toast('اكتب رقم جوال صحيح');return}
  act(async()=>{await updSet10(s=>{s.ayham=d});if(document.querySelector('.ov'))closeModal()},'انحفظ رقم أيهم ✓');},true);
+
+/* ---------- v10.1 review fixes ---------- */
+/* 1) past probation ends are not "overdue documents" */
+const _expRowsV101=expRows;expRows=function(){return _expRowsV101().filter(r=>!(r.k==='pe'&&r.n<0))};
+/* 3) upcoming table fits its card */
+const _upV101=upcoming7;upcoming7=function(){return _upV101().replace('<div class="v7t"><table>','<div class="v7t up7"><table>')};
+/* 4) team card: real monthly achievement (tasks + procedure steps + renewed docs) */
+team7=function(){let A=null;try{A=achData('m','all')}catch(e){}
+ return `<div class="v7c">${head7('users','الفريق','إنجاز هالشهر والمفتوح عند كل واحد',lnk7('تقرير الإنجاز','achieve'))}<div class="v7list">${['r','s','k'].map(p=>{const x=A&&A.per[p]||{done:[],steps:[],docs:[],open:[],late:[]};const dn=x.done.length+x.steps.length+x.docs.length,op=x.open.length,lt=x.late.length;const pc=dn+op?Math.round(dn/(dn+op)*100):0;
+  return `<button class="rw" data-act="agfor:${p}">${av(p)}<div class="tx"><b>${PEOPLE[p].name}</b><small>${op?op+' مفتوحة':'ما عنده شي مفتوح'}${lt?` · <span style="color:var(--red)">${lt} متأخرة</span>`:''}</small></div><div style="width:44%;min-width:120px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-bottom:5px"><span>أنجز هالشهر <b style="color:var(--ink)">${dn}</b></span>${dn+op?`<b style="color:var(--ink)">${pc}%</b>`:''}</div><div class="v7bar"><i style="width:${dn+op?pc:0}%;background:${PEOPLE[p].c}"></i></div></div></button>`}).join('')}</div></div>`};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
