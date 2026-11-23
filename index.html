@@ -858,6 +858,26 @@ tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
 .wl20 .r{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line2);flex-wrap:wrap}.wl20 .r:first-of-type{border-top:0}
 .wl20 .i{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#F0EDFB;color:#6650C2;flex:none}.wl20 .i.o{background:#FDEDEB;color:#CF3F35}
 .wl20 .tx{flex:1;min-width:180px}.wl20 .tx .lnk{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:right}.wl20 b{font-size:14.5px;display:block}.wl20 small{color:var(--mute);font-size:12.5px;display:block}
+/* v21 */
+.modal.wide21{width:min(920px,calc(100vw - 24px));max-width:none}
+.pk21{display:flex;flex-direction:column;gap:12px;max-height:70vh;overflow:auto}
+.gt21{font-size:14px;font-weight:700;color:var(--mute);display:flex;align-items:center;gap:6px;margin-top:4px}
+.tp21{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.tc21{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:#fff;display:flex;flex-direction:column;gap:5px;text-align:right;font:inherit;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.tc21:hover{border-color:var(--br);box-shadow:0 8px 20px -14px rgba(0,0,0,.35)}
+.tc21 .i,.i21{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}.i21{margin-inline-end:10px}
+.tc21 b{font-size:14.5px}.tc21 small{color:var(--mute);font-size:12px;line-height:1.6}
+.tc21 .src{font-size:11.5px;font-weight:700;border-radius:7px;padding:1px 8px;align-self:flex-start}
+.tc21.nw{border-style:dashed;border-width:2px;align-items:flex-start;color:var(--ink2)}
+.sl21{display:flex;flex-direction:column;gap:2px;background:var(--bg);border-radius:12px;padding:8px 12px}
+.sl21>div{display:flex;align-items:baseline;gap:10px;padding:5px 0}.sl21 span{width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.sl21 b{font-size:13.5px;font-weight:600;flex:1}.sl21 small{color:var(--mute);font-size:12px;white-space:nowrap}
+.u21{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#F3F7FD;border:1px solid #D7E3F4;border-radius:14px;padding:12px 14px}
+.u21.ok{background:#F2F9F6;border-color:#BFDCD2}.u21 b{display:block;font-size:14.5px}.u21 small{color:var(--ink2);font-size:12.5px}
+.cs21{display:flex;flex-direction:column;gap:8px}.cs21 .r{display:flex;gap:8px;align-items:center}
+.cs21 .n{width:26px;height:26px;border-radius:50%;background:var(--brT);color:var(--br);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.cs21 .inp{height:40px}.cs21 .r>.inp:first-of-type{flex:1;min-width:0}.cs21 select.inp{width:96px;flex:none}.cs21 .inp.d{width:64px;flex:none}
+@media(max-width:600px){.cs21 .r{flex-wrap:wrap}.cs21 .r>.inp:first-of-type{flex-basis:100%}}
 
 </style>
 </head>
@@ -3120,7 +3140,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261123233247';
+const APPV18='20261123234032';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3315,6 +3335,140 @@ function ayCard20(){const L=ayWait20();if(!L.length)return '';const txt=r=>`أس
  return `<div class="cd18 ay20"><div class="h18">${ic('wallet',18,'#6650C2')}<b>بانتظار سداد أيهم</b><small>${L.length} ${L.length===1?'طلب':'طلبات'} · المنصة تذكّركم كل يوم لين يسدد</small></div><div class="wl20">${L.map(r=>`<div class="r"><span class="i ${old(r)?'o':''}">${ic('clock',18)}</span><div class="tx"><button class="lnk" data-go="proc-${r.p.id}"><b>${esc(r.p.title)}</b></button><small>${r.sent?`${r.by?'أرسلها '+esc(r.by)+' ':'أرسلت '}${d2f(r.sent).slice(0,5)} · ${ago20(r.sent)}`:'بانتظار السداد'}</small></div>
  <button class="btn sm pri" data-go="proc-${r.p.id}">${ic('ok',15,'#fff')}سدّد</button>${SET10.ayham?`<a class="btn sm" target="_blank" rel="noopener" href="${waHref10(SET10.ayham,txt(r))}">${ic('wa',15)}ذكّره</a>`:`<button class="btn sm" data-act="ay10set">${ic('wa',15)}رقم أيهم</button>`}</div>`).join('')}</div></div>`}
 const _homeV20=PAGES.home;PAGES.home=prm=>{const h=_homeV20(prm);const c=ayCard20();if(!c)return h;const t=document.createElement('template');t.innerHTML=h;const at=t.content.querySelector('.co16')||t.content.querySelector('.ph');if(!at)return h+c;at.insertAdjacentHTML('afterend',c);return t.innerHTML};
+
+/* ===================== v21 · اللوحة الإرشادية (المرحلة 2 و 3): كل الإجراءات + اختيار الإجراء + «إجراء جديد» ===================== */
+/* إجراءات جاهزة (تنضاف إذا ما كانت موجودة في قوالبكم) — [المفتاح، القسم، الاسم، الأيقونة، المصدر، الخطوات [النص، المسؤول، اليوم]] */
+const BT21=[
+ ['iq','emp','تجديد إقامة','idc','مقيم + قوى',[['إصدار / تجديد رخصة العمل','شيخة',0],['إرسال طلب سداد لأيهم: رخصة العمل + رسوم الجوازات','شيخة',1],['التأكد إن أيهم سدد','شيخة',3],['التجديد عن طريق مقيم','شيخة',4],['إرسال صورة التجديد في قروب الشركة','شيخة',4],['تحديث تاريخ الإقامة الجديد في المنصة','شيخة',5]]],
+ ['exit','emp','إصدار خروج وعودة','plane','مقيم',[['تسجيل الطلب في «خروج وعودة» (المدة وتاريخ السفر)','شيخة',0],['إرسال طلب سداد الرسوم لأيهم','شيخة',0],['التأكد إن أيهم سدد','شيخة',1],['إصدار التأشيرة من مقيم','شيخة',2],['إرسال التأشيرة للموظف','شيخة',2]]],
+ ['ce','emp','تجديد عقد','brief','قوى',[['قرار تجديد العقد أو عدم تجديده','رشيد',0],['تحديث العقد في منصة قوى','شيخة',2],['موافقة الموظف على العقد في قوى','شيخة',5],['تحديث تاريخ نهاية العقد في المنصة','شيخة',6]]],
+ ['end','emp','إنهاء خدمة','userx','قوى + التأمينات + مقيم',[['حساب المخالصة ومستحقات نهاية الخدمة','شيخة',0],['اعتماد المخالصة','رشيد',1],['إرسال المخالصة لأيهم للسداد','شيخة',1],['التأكد إن أيهم سدد','شيخة',3],['إنهاء العقد في منصة قوى','شيخة',4],['استبعاد الموظف من التأمينات الاجتماعية','شيخة',4],['خروج نهائي أو نقل خدمات من مقيم','شيخة',6],['تحديث حالة الموظف في المنصة (انتهت خدمته)','شيخة',7]]],
+ ['pp','emp','تجديد جواز','pass','السفارة + مقيم',[['تقديم طلب تجديد الجواز في السفارة','شيخة',0],['استلام الجواز الجديد','شيخة',14],['تحديث بيانات الجواز في مقيم','شيخة',15],['تحديث تاريخ الجواز في المنصة','شيخة',15]]],
+ ['reg','veh','تجديد استمارة','idc','منصة تم',[['التأكد إن الفحص الدوري والتأمين ساريين','شيخة',0],['إرسال طلب سداد رسوم الاستمارة لأيهم','شيخة',0],['التأكد إن أيهم سدد','شيخة',2],['تجديد الاستمارة من منصة تم','شيخة',3],['تحديث تاريخ الاستمارة في المنصة','شيخة',3]]],
+ ['auth','veh','تفويض قيادة','shield','منصة تم',[['اختيار السائق والتأكد من رخصة قيادته','شيخة',0],['إصدار التفويض من منصة تم','شيخة',1],['إرسال التفويض للسائق','شيخة',1],['تحديث المستخدم وتاريخ التفويض في المنصة','شيخة',1]]],
+ ['op','veh','كرت تشغيل','truck','منصة تم + هيئة النقل',[['طلب كرت التشغيل من منصة هيئة النقل','شيخة',0],['إرسال طلب سداد الرسوم لأيهم','شيخة',0],['التأكد إن أيهم سدد','شيخة',2],['إصدار الكرت وتحميله','شيخة',3],['تحديث تاريخ كرت التشغيل في المنصة','شيخة',3]]],
+ ['insp','veh','فحص دوري','tool','الفحص الدوري',[['حجز موعد الفحص الدوري','شيخة',0],['إرسال السيارة للفحص','شيخة',3],['تحديث تاريخ الفحص في المنصة','شيخة',3]]],
+ ['ins','veh','تأمين مركبة','umb','شركة التأمين',[['طلب عروض أسعار التأمين','شيخة',0],['إرسال طلب سداد التأمين لأيهم','شيخة',1],['التأكد إن أيهم سدد','شيخة',3],['إصدار وثيقة التأمين','شيخة',3],['تحديث تاريخ التأمين في المنصة','شيخة',3]]]];
+const CAT21={emp:['الموظفين','user','#2D69B0','#E6EEF8'],veh:['السيارات','car','#B4700F','#FDF3E1'],gen:['عام','layers','#12705E','#E4F2EE']};
+const nrm21=s=>String(s||'').replace(/^(إصدار|تجديد)\s+/,'').replace(/[أإآ]/g,'ا').trim();
+const catOf21=t=>/سيار|مركب|استمارة|فحص|تفويض|تشغيل|منصة تم/.test(t)?'veh':/إقامة|خروج|عقد|جواز|إنهاء خدمة|موظف|تجربة|إجازة/.test(t)?'emp':'gen';
+function ctpl21(){return Array.isArray(SET10.ctpl)?SET10.ctpl:[]}
+function tpls21(){const out=[];const rec=(S.allTemplates||[]);
+ rec.forEach(t=>{const b=BT21.find(x=>nrm21(x[2])===nrm21(t.title)||t.title.includes(x[2]));out.push({key:'r'+t.id,src:'rec',id:t.id,title:t.title,cat:b?b[1]:catOf21(t.title),icon:b?b[3]:'layers',from:b?b[4]:'',steps:t.steps.map(s=>({t:s.t,w:s.w||t.owner,o:s.o||0,g:s.g||''})),owner:t.owner,bk:b?b[0]:''})});
+ BT21.forEach(b=>{if(out.some(o=>o.bk===b[0]))return;out.push({key:'b'+b[0],src:'b',title:b[2],cat:b[1],icon:b[3],from:b[4],steps:b[5].map(s=>({t:s[0],w:s[1],o:s[2],g:''})),owner:'شيخة',bk:b[0]})});
+ ctpl21().forEach(c=>out.push({key:'c'+c.k,src:'c',ck:c.k,title:c.title,cat:c.cat||'gen',icon:'layers',from:'إجراء خاص',steps:(c.steps||[]).map(s=>({t:s.t,w:s.w||'شيخة',o:+s.o||0,g:''})),owner:'شيخة'}));
+ return out}
+const stepHint21=T=>T.steps.slice(0,4).map(s=>s.t.replace(/\s*\(.*?\)/g,'').split(/[:·]/)[0].trim().split(' ').slice(0,3).join(' ')).join(' ← ')+(T.steps.length>4?' …':'');
+/* 1) اختيار الإجراء */
+function pick21(pre){pre=pre||{};const T=tpls21();const card=t=>{const c=CAT21[t.cat]||CAT21.gen;return `<button type="button" class="tc21" data-act="tp21:${t.key}"><span class="i" style="background:${c[3]};color:${c[2]}">${ic(t.icon,20)}</span><b>${esc(t.title)}</b><small>${t.steps.length} خطوات · ${esc(stepHint21(t))}</small>${t.from?`<span class="src" style="background:${c[3]};color:${c[2]}">${esc(t.from)}</span>`:''}</button>`};
+ const sec=(k)=>{const L=T.filter(t=>t.cat===k);if(!L.length)return '';const c=CAT21[k];return `<div class="gt21">${ic(c[1],16)}${c[0]}</div><div class="tp21">${L.map(card).join('')}</div>`};
+ const svc=S.me!=='s'||(typeof grants8==='function'&&grants8('s').clients)?Object.entries(SVCT).filter(([k])=>k!=='خدمة أخرى'):[];
+ modal(`<div class="mh"><div><b>ابدأ إجراء</b><div class="mini" style="margin-top:2px">اختر الإجراء، والمنصة تعطيك الخطوات بالترتيب وتمشي معك فيها</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div>
+ <div class="mb pk21">${sec('emp')}${sec('veh')}${svc.length?`<div class="gt21">${ic('bldg',16)}الشركات والعملاء</div><div class="tp21">${svc.map(([k,v])=>`<button type="button" class="tc21" data-act="sv21:${esc(k)}"><span class="i" style="background:#E4F2EE;color:#12705E">${ic(v.i||'bldg',20)}</span><b>${esc(k)}</b><small>${(v.steps||[]).length} خطوات · ${esc((v.steps||[]).slice(0,3).map(s=>s.split('·')[0].trim()).join(' ← '))}</small></button>`).join('')}</div>`:''}${sec('gen')}
+ <div class="tp21" style="margin-top:4px"><button type="button" class="tc21 nw" data-act="go21:mytpl">${ic('plus',20)}<b>إجراء جديد</b><small>تكتب خطواته مرة وحدة وبعدين يصير جاهز</small></button></div></div>`);
+ ui.pre21=pre;document.querySelector('#layer .modal')?.classList.add('wide21')}
+/* 2) اختيار الموظف / السيارة والتاريخ */
+function start21(key,pre){pre=pre||ui.pre21||{};const t=tpls21().find(x=>x.key===key||x.bk===key);if(!t){toast('ما لقيت الإجراء');return}ui.st21={key:t.key,d:ymd(TODAY),eid:pre.eid||'',vid:pre.vid||''};
+ const c=CAT21[t.cat]||CAT21.gen;const T=ymd(TODAY),tm=ymd(new Date(TODAY.getTime()+864e5));
+ const subj=t.cat==='emp'?`<div class="field"><label for="s21-e">الموظف</label><select id="s21-e" class="inp"><option value="">— اختر —</option>${visEmp().map(e=>`<option value="${e.id}" ${e.id==pre.eid?'selected':''}>${esc(e.name)}</option>`).join('')}</select></div>`
+  :t.cat==='veh'?`<div class="field"><label for="s21-v">السيارة</label><select id="s21-v" class="inp"><option value="">— اختر —</option>${visVeh().map(v=>`<option value="${v.id}" ${v.id==pre.vid?'selected':''}>${esc(v.title)}${v.m?' · '+esc(v.m):''}</option>`).join('')}</select></div>`
+  :`<div class="field"><label for="s21-x">يخص (اختياري)</label><input id="s21-x" class="inp" placeholder="مثلاً: اسم موظف أو شركة"></div>`;
+ modal(`<div class="mh"><span class="i21" style="background:${c[3]};color:${c[2]}">${ic(t.icon,20)}</span><div><b>${esc(t.title)}</b><div class="mini" style="margin-top:2px">${t.steps.length} خطوات${t.from?' · '+esc(t.from):''}</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div>
+ <form data-form="st21"><div class="mb" style="display:flex;flex-direction:column;gap:14px">${subj}
+ <div class="field"><label>يبدأ</label><div class="ch20"><button type="button" class="chip on" data-act="sd21:${T}">اليوم</button><button type="button" class="chip" data-act="sd21:${tm}">بكرة</button><input type="date" class="inp" id="s21-d" value="${T}" style="max-width:170px;height:36px"></div></div>
+ <div class="sl21">${t.steps.map((s,i)=>`<div><span>${i+1}</span><b>${esc(s.t)}</b><small>${esc(s.w)}${s.o?` · يوم ${s.o}`:''}</small></div>`).join('')}</div></div>
+ <div class="mf"><button class="btn pri" type="submit">${ic('layers',16,'#fff')}ابدأ الإجراء</button><button class="btn" type="button" data-act="np21">${ic('right',16)}إجراء ثاني</button></div></form>`)}
+async function create21(t,{emp,veh,who,start}){const s0=t.steps[0]?.o||0;const steps=t.steps.map((s,i)=>{const d=new Date(start);d.setDate(d.getDate()+Math.max(0,(s.o||0)-s0));return{n:i+1,t:s.t,w:s.w||t.owner,g:s.g||'',d:ymd(d),ok:false,by:'',on:''}});
+ const sub=emp?emp.name:veh?veh.title:who||'';const link=t.src==='rec'?`REC:${t.id}:M${Date.now()}`:`TPL:${t.src==='c'?'c'+t.ck:t.bk}:M${Date.now()}`;
+ const it=await spCreate('Tasks',{Title:t.title+(sub?' · '+sub:''),AssignedTo:steps[0].w,AssignedBy:PEOPLE[S.me].name,DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:emp?emp.co:veh?(veh.co||'فوريستا'):'فوريستا',LinkRef:link,Status:'مفتوحة',Steps:JSON.stringify(steps),EmpName:emp?emp.name:''});
+ RAW.Tasks.push(it);if(KEY[steps[0].w]&&KEY[steps[0].w]!==S.me)await notify(steps[0].w,`إجراء جديد: ${it.Title}`,'الخطوة 1: '+steps[0].t,'proc-'+it.id,'layers');return it}
+newProc2=function(eid){if(eid)return start21('iq',{eid:+eid});pick21({})};
+ppStart19=function(id){start21('pp',{eid:+id})};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="tp21:"],[data-act^="sv21:"],[data-act^="sd21:"],[data-act="np21"],[data-act^="go21:"],[data-act^="vp21:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const a=b.dataset.act;const [k,...r]=a.split(':');const x=r.join(':');
+ if(k==='tp21'){start21(x);return}
+ if(k==='sv21'){closeModal();nsSel=x;newSvc();return}
+ if(k==='np21'){pick21(ui.pre21||{});return}
+ if(k==='go21'){closeModal();go(x);return}
+ if(k==='vp21'){pick21({vid:+x});return}
+ if(k==='sd21'){const i=document.getElementById('s21-d');if(i)i.value=x;b.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));return}},true);
+document.addEventListener('submit',ev=>{const f=ev.target.closest('form[data-form="st21"]');if(!f)return;ev.preventDefault();ev.stopPropagation();const st=ui.st21||{};const t=tpls21().find(x=>x.key===st.key);if(!t)return;
+ const eid=document.getElementById('s21-e')?.value,vid=document.getElementById('s21-v')?.value,who=(document.getElementById('s21-x')?.value||'').trim();
+ const emp=eid?S.employees.find(e=>e.id==eid):null,veh=vid?S.vehicles.find(v=>v.id==vid):null;if(t.cat==='emp'&&!emp){toast('اختر الموظف');return}if(t.cat==='veh'&&!veh){toast('اختر السيارة');return}
+ const start=new Date((document.getElementById('s21-d')?.value||ymd(TODAY))+'T00:00:00');
+ act(async()=>{const it=await create21(t,{emp,veh,who,start});closeModal();setTimeout(()=>go('proc-'+it.id),0)},'بدأ الإجراء ✓')},true);
+
+/* ربط الإجراء بالسيارة */
+const _buildV21=build;build=function(){_buildV21();try{S.procs.forEach(p=>{if(p.emp)return;const v=S.vehicles.find(v=>v.title&&p.title.includes(v.title));if(v)p.veh=v.id})}catch(x){console.warn(x)}};
+
+/* 3) خطوات «تحديث في المنصة»: التاريخ الجديد يتسجل من نفس الخطوة */
+const addY21=(s,y)=>{const b=s&&D(s)&&D(s)>TODAY?D(s):new Date(TODAY);const d=new Date(b);d.setFullYear(d.getFullYear()+y);return ymd(d)};
+function upd21(p,cur){const t=cur.t;const e=p.emp?S.employees.find(x=>x.id===p.emp):null;const v=p.veh?S.vehicles.find(x=>x.id===p.veh):null;
+ if(v){const m=t.match(/تحديث تاريخ (الاستمارة|الفحص|التأمين|كرت التشغيل)/);if(m){const k={'الاستمارة':'reg','الفحص':'insp','التأمين':'ins','كرت التشغيل':'op'}[m[1]];const old=k==='ins'?(v._d.ins?iso2(v._d.ins.ExpiryDate):''):v[k];return{kind:'veh',id:v.id,k,lab:{reg:'الاستمارة',insp:'الفحص الدوري',ins:'التأمين',op:'كرت التشغيل'}[k],old:old&&/\//.test(old)?old:'',def:addY21(old&&/\//.test(old)?old:'',1)}}
+  if(/تحديث المستخدم وتاريخ التفويض/.test(t))return{kind:'veh',id:v.id,k:'auth',lab:'تفويض القيادة',old:v.auth||'',def:addY21(v.auth,1),drv:1,cur:v.user||''}}
+ if(e){if(/تحديث تاريخ نهاية العقد/.test(t)){const r=RAW.Employees.find(x=>x.id===e.id)||{};const old=iso2(r.ContractEnd);return{kind:'emp',id:e.id,k:'ce',lab:'نهاية العقد',old,def:addY21(old,1)}}
+  if(/تحديث تاريخ الجواز/.test(t))return{kind:'emp',id:e.id,k:'pp',lab:'الجواز',old:e.pp||'',def:''};
+  if(/تحديث حالة الموظف/.test(t))return{kind:'emp',id:e.id,k:'end'}}
+ return null}
+ui.u21=ui.u21||{};
+function updBox21(p,u){const done=ui.u21[p.id];if(u.k==='end')return `<div class="u21 ${done?'ok':''}">${ic(done?'ok':'userx',20,done?'#12705E':'#CF3F35')}<div style="flex:1;min-width:200px"><b>${done?'انتقل لـ«انتهت خدمتهم» ✓':'نقل الموظف لـ«انتهت خدمتهم»'}</b><small>${done?'ما يطلع في التنبيهات بعد الحين':'يختفي من التنبيهات والبيانات الناقصة ويبقى محفوظ في تبويب «انتهت خدمتهم»'}</small></div>${done?'':ui.u21c===p.id?`<span class="mini" style="font-weight:700">متأكد؟</span><button class="btn sm pri" data-act="u21:${p.id}">نعم، انتهت خدمته</button><button class="btn sm" data-act="u21n">لا</button>`:`<button class="btn sm" data-act="u21c:${p.id}">${ic('userx',15)}اعتمد إنهاء الخدمة</button>`}</div>`;
+ return `<div class="u21 ${done?'ok':''}">${ic(done?'ok':'cal',20,done?'#12705E':'#2D69B0')}<div style="flex:1;min-width:200px"><b>${done?`تحدّث ${u.lab} ✓ ${esc(done)}`:`تاريخ ${u.lab} الجديد`}</b><small>الحالي: ${u.old||'غير مسجل'}${u.drv?` · المستخدم الحالي: ${esc(u.cur||'—')}`:''}</small></div>
+ ${u.drv?`<select class="inp" id="u21-v-${p.id}" style="max-width:200px;height:38px"><option value="">${u.cur?'نفس المستخدم':'اختر السائق'}</option>${visEmp().map(e=>`<option ${e.name===u.cur?'selected':''}>${esc(e.name)}</option>`).join('')}</select>`:''}
+ <input type="date" class="inp" id="u21-d-${p.id}" value="${u.def}" style="max-width:170px;height:38px"><button class="btn sm pri" data-act="u21:${p.id}">${ic('tick',15,'#fff')}${done?'حدّث مرة ثانية':'حدّث في المنصة'}</button></div>`}
+const EXTW21=/(منصة تم|تم\b|قوى|مقيم|التأمينات|الجوازات|وزارة|المركز السعودي|الغرفة|البلدية|أبشر|السفارة|هيئة النقل|الفحص الدوري|شركة التأمين)/;
+const _procV21=PAGES.proc;PAGES.proc=prm=>{let h=_procV21(prm);const p=S.procs.find(x=>x.id==prm.id);if(!p||!p.task)return h;const t=p.task,cur=t.curStep;
+ if(p.veh&&!p.emp){const v=S.vehicles.find(x=>x.id===p.veh);if(v)h=tplIns19(h,'.ph p',` · <button class="lnk" data-go="veh-${v.id}" style="background:none;border:0;padding:0;color:var(--br);font-weight:600;font:inherit">${esc(v.title)}</button>`,'beforeend')}
+ if(!cur)return h;const canAct=S.me==='r'||t.curWho===S.me;const anchor='<div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">';const i=h.indexOf(anchor);
+ const u=upd21(p,cur);if(u&&i>=0&&canAct)h=h.slice(0,i+anchor.length)+updBox21(p,u)+h.slice(i+anchor.length);
+ if(canAct&&!AYW20(cur.t)&&EXTW21.test(cur.t)&&!u){const re=new RegExp(`(<button[^>]*data-act="step2:${p.id}"[^>]*>[\\s\\S]*?</button>)`);h=h.replace(re,`$1<button class="btn" data-act="ag21:${p.id}">${ic('clock',16)}بانتظار الجهة · ذكّرني بعد يومين</button>`)}
+ return h};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="u21"],[data-act^="ag21:"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,id]=b.dataset.act.split(':');
+ if(a==='u21c'){ui.u21c=+id;render();return}if(a==='u21n'){ui.u21c=null;render();return}
+ if(a==='ag21'){const p=S.procs.find(q=>q.id==id);if(!p)return;act(async()=>{const r=rawTask(p.id);const steps=JSON.parse(r.Steps);const i=steps.findIndex(s=>!s.ok);if(i<0)return;const tm=new Date(TODAY.getTime()+2*864e5);steps[i].d=ymd(tm);const f={Steps:JSON.stringify(steps),DueDate:toIso(tm)};await spPatch('Tasks',p.id,f);Object.assign(r,f);await addMsg(p.id,'بانتظار الجهة · تذكير بعد يومين','متابعة')},'تمام · بنذكّرك بعد يومين');return}
+ if(a==='u21'){const p=S.procs.find(q=>q.id==id);const u=p&&upd21(p,p.task.curStep);if(!u)return;
+  if(u.k==='end'){const r=RAW.Employees.find(x=>x.id===u.id);act(async()=>{const fl={EmpStatus:'منتهي'};await spPatch('Employees',u.id,fl);Object.assign(r,fl);ui.u21[p.id]='تم';ui.u21c=null},'انتقل لـ«انتهت خدمتهم»');return}
+  const d=document.getElementById('u21-d-'+p.id)?.value;if(!d){toast('اختر التاريخ');return}const drv=u.drv?document.getElementById('u21-v-'+p.id)?.value:'';
+  act(async()=>{await saveDate10(u.k,u.kind,u.id,d);if(drv){const fl={Driver:drv};await spPatch('Vehicles',u.id,fl);syncRaw('Vehicles',u.id,fl)}ui.u21[p.id]=d.split('-').reverse().join('/')+(drv?' · '+drv:'')},'تحدّث ✓')}},true);
+
+/* رسائل جاهزة للخطوات الجديدة */
+const _smV21=stepMsg;stepMsg=function(p,title,v){const e=p.emp?S.employees.find(x=>x.id===p.emp):null;const veh=p.veh?S.vehicles.find(x=>x.id===p.veh):null;
+ if(veh&&/(سداد|أيهم)/.test(title)&&!/التأكد إن أيهم سدد/.test(title)){const what=(p.title.split('·')[0]||'').trim();return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنرجو سداد رسوم «${what}» للسيارة ${veh.title}${veh.m?' ('+veh.m+')':''}، وإرسال الإيصال. وشكراً لكم.`}}
+ if(veh&&/التأكد إن أيهم سدد/.test(title))return {to:'أيهم',m:`أستاذ أيهم، نذكّركم بسداد رسوم «${(p.title.split('·')[0]||'').trim()}» للسيارة ${veh.title}، ونرجو إرسال الإيصال. وشكراً.`};
+ if(veh&&/إرسال التفويض للسائق/.test(title))return {to:veh.user||'السائق',m:`السلام عليكم، تم إصدار تفويض قيادة السيارة ${veh.title}${veh.m?' ('+veh.m+')':''} باسمك من منصة تم. نرجو المحافظة على السيارة والالتزام بأنظمة المرور.`};
+ if(e&&/المخالصة لأيهم/.test(title))return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nمرفق مخالصة نهاية خدمة الموظف ${e.name}، نرجو مراجعتها وسداد المستحقات، وإرسال الإيصال. وشكراً لكم.`};
+ return _smV21(p,title,v)};
+
+/* 4) «إجراء جديد»: تكتب خطواته مرة وحدة */
+PAGES.mytpl=()=>{if(S.me==='k')return noAccess();const L=ctpl21();const ed=ui.ct21||{title:'',cat:'emp',steps:[{t:'',w:'شيخة',o:0}]};ui.ct21=ed;const who=['شيخة','رشيد','خالد'];
+ return `<div class="ph"><div><h1>إجراء جديد</h1><p>تكتب خطوات الإجراء مرة وحدة، وبعدها يطلع في «ابدأ إجراء» وتمشي فيه خطوة خطوة</p></div><div class="acts">${btn('رجوع','right','','go:procs')}</div></div>
+ <div class="r18" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)"><div class="cd18"><div class="h18">${ic('plus',18,'var(--br)')}<b>${ed.k?'تعديل الإجراء':'إجراء جديد'}</b></div>
+ <div class="field"><label for="ct-t">اسم الإجراء</label><input id="ct-t" class="inp" value="${esc(ed.title)}" placeholder="مثلاً: نقل كفالة"></div>
+ <div class="field"><label>يخص</label><div class="seg">${Object.entries(CAT21).map(([k,c])=>`<button type="button" class="${ed.cat===k?'on':''}" data-act="ct21cat:${k}">${c[0]==='الموظفين'?'موظف':c[0]==='السيارات'?'سيارة':'عام'}</button>`).join('')}</div></div>
+ <div class="mini" style="font-weight:700;margin:6px 0">الخطوات بالترتيب</div><div class="cs21">${ed.steps.map((s,i)=>`<div class="r"><span class="n">${i+1}</span><input class="inp" data-ct21="${i}:t" value="${esc(s.t)}" placeholder="وش يتسوى في هذي الخطوة؟"><select class="inp" data-ct21="${i}:w">${who.map(w=>`<option ${s.w===w?'selected':''}>${w}</option>`).join('')}</select><input class="inp d" type="number" min="0" data-ct21="${i}:o" value="${+s.o||0}" title="بعد كم يوم من البداية" aria-label="بعد كم يوم"><button class="ib" data-act="ct21del:${i}" aria-label="احذف الخطوة">${ic('x',15)}</button></div>`).join('')}</div>
+ <div class="mini" style="margin:6px 0 10px">الرقم الأخير = بعد كم يوم من بداية الإجراء · إذا فيها «سداد» أو «أيهم» تطلع لها رسالة جاهزة لأيهم</div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap">${btn('أضف خطوة','plus','','ct21add')}${btn(ed.k?'احفظ التعديل':'احفظ الإجراء','tick','pri','ct21save')}${ed.k?btn('إلغاء التعديل','x','','ct21new'):''}</div></div>
+ <div class="cd18"><div class="h18">${ic('layers',18,'var(--br)')}<b>إجراءاتكم الخاصة</b><small>${L.length}</small></div>${L.length?L.map(c=>`<div class="dr19"><div class="tx"><b>${esc(c.title)}</b><small>${(c.steps||[]).length} خطوات · ${(CAT21[c.cat]||CAT21.gen)[0]}</small></div><button class="btn sm" data-act="ct21ed:${c.k}">${ic('edit',14)}تعديل</button>${ui.ct21x===c.k?`<button class="btn sm" style="color:var(--red)" data-act="ct21rm:${c.k}">متأكد؟ احذف</button>`:`<button class="ib" data-act="ct21x:${c.k}" aria-label="حذف">${ic('x',15)}</button>`}</div>`).join(''):'<div class="mini" style="line-height:1.9">ما فيه للحين · أول إجراء تحفظه يطلع هنا وفي «ابدأ إجراء»</div>'}</div></div>`};
+document.addEventListener('input',ev=>{const el=ev.target.closest&&ev.target.closest('[data-ct21],#ct-t');if(!el||!ui.ct21)return;if(el.id==='ct-t'){ui.ct21.title=el.value;return}const [i,f]=el.dataset.ct21.split(':');ui.ct21.steps[+i][f]=f==='o'?+el.value:el.value},true);
+document.addEventListener('change',ev=>{const el=ev.target.closest&&ev.target.closest('select[data-ct21]');if(!el||!ui.ct21)return;const [i,f]=el.dataset.ct21.split(':');ui.ct21.steps[+i][f]=el.value},true);
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="ct21"]');if(!b)return;ev.stopPropagation();ev.preventDefault();const [a,x]=b.dataset.act.split(':');const ed=ui.ct21||(ui.ct21={title:'',cat:'emp',steps:[{t:'',w:'شيخة',o:0}]});
+ if(a==='ct21cat'){ed.cat=x;render();return}if(a==='ct21add'){const l=ed.steps[ed.steps.length-1];ed.steps.push({t:'',w:l?l.w:'شيخة',o:l?+l.o||0:0});render();setTimeout(()=>{const i=document.querySelectorAll('[data-ct21$=":t"]');i[i.length-1]?.focus()},30);return}
+ if(a==='ct21del'){ed.steps.splice(+x,1);if(!ed.steps.length)ed.steps.push({t:'',w:'شيخة',o:0});render();return}
+ if(a==='ct21new'){ui.ct21=null;render();return}if(a==='ct21x'){ui.ct21x=x;render();return}
+ if(a==='ct21ed'){const c=ctpl21().find(q=>q.k===x);if(c)ui.ct21=JSON.parse(JSON.stringify(c));render();return}
+ if(a==='ct21rm'){act(async()=>{await updSet10(s=>{s.ctpl=(s.ctpl||[]).filter(q=>q.k!==x)});ui.ct21x=null},'انحذف');return}
+ if(a==='ct21save'){const title=(ed.title||'').trim();const steps=ed.steps.map(s=>({t:(s.t||'').trim(),w:s.w||'شيخة',o:+s.o||0})).filter(s=>s.t);if(!title||!steps.length){toast('اكتب اسم الإجراء وخطوة وحدة على الأقل');return}
+  const k=ed.k||('t'+Date.now().toString(36));const rec={k,title,cat:ed.cat||'gen',steps,by:PEOPLE[S.me].name,at:new Date().toISOString()};
+  act(async()=>{await updSet10(s=>{const L=(s.ctpl||[]).filter(q=>q.k!==k);L.push(rec);s.ctpl=L});ui.ct21=null},'انحفظ ✓ · تلقاه في «ابدأ إجراء»');return}},true);
+try{Object.assign(CR,{mytpl:['الإجراءات','إجراء جديد']});Object.assign(SECT,{mytpl:'g'});Object.assign(PAGEI,{mytpl:'layers'})}catch(x){}
+/* زر «إجراء جديد» في صفحة الإجراءات + «ابدأ إجراء» في صفحة السيارة */
+const _procsV21=PAGES.procs;PAGES.procs=prm=>{const h=_procsV21(prm);if(S.me==='k')return h;return h.replace('<div class="acts">','<div class="acts">'+btn('إجراء جديد','plus','','go:mytpl'))};
+const _vehPV21=PAGES.veh;PAGES.veh=prm=>{const h=_vehPV21(prm);if(S.me==='k'||h.includes('ما عندك صلاحية'))return h;const t=document.createElement('template');t.innerHTML=h;const ph=t.content.querySelector('.ph');const b=btn('ابدأ إجراء','layers','',`vp21:${prm.id}`);
+ if(ph){let a=ph.querySelector('.acts');if(!a){a=document.createElement('div');a.className='acts';ph.appendChild(a)}a.insertAdjacentHTML('afterbegin',b);return t.innerHTML}
+ const c=t.content.querySelector('section.card');if(!c)return h;c.insertAdjacentHTML('beforeend',`<div style="margin-inline-start:auto">${b}</div>`);return t.innerHTML};
+
+/* تأسيس شركة (استثمار أجنبي) في خدمات العملاء */
+const FI21=['تأسيس شركة (استثمار أجنبي)',{i:'bldg',steps:['حجز الاسم التجاري · المركز السعودي للأعمال','ترخيص وزارة الاستثمار · منصة استثمر في السعودية','عقد التأسيس · المركز السعودي للأعمال','إصدار السجل التجاري · المركز السعودي للأعمال','الاشتراك في الغرفة التجارية','فتح ملف المنشأة في قوى والتأمينات','تسليم العميل الملف'],need:['جوازات الشركاء','القوائم المالية للشركة الأم','عقد الإيجار أو العنوان الوطني','تفويض في منصة أبشر أعمال']}];
+function addFI21(){if(!SVCT[FI21[0]]){const g=(SVCT['تأسيس شركة']||{}).g;SVCT[FI21[0]]={...FI21[1],g}}}
+addFI21();const _acV21=applyCat9;applyCat9=function(cat){_acV21(cat);addFI21()};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
