@@ -682,6 +682,11 @@ input.cell10.m:focus{outline:0;background:#fff;border:1.5px solid var(--br);box-
 .lgi14{width:10px;height:10px;border-radius:50%;flex:none;background:#B9C4BF;margin-top:6px}
 .lgi14.ok{background:#12705E}.lgi14.no{background:#CF3F35}.lgi14.later{background:#B4700F}
 @media (max-width:600px){.hh14{flex-direction:column}.ha14 .btn{flex:1 1 calc(50% - 6px);justify-content:center}}
+/* v15 — البحث */
+.sg15{display:flex;align-items:baseline;gap:8px;padding:12px 20px 4px;font-size:11.5px;font-weight:700;color:var(--mute)}
+.sg15 small{font-weight:500;font-size:11px;color:#9AA7A1}
+.hit15{margin-top:3px;font-size:12.5px;color:var(--br);font-weight:600}
+#qr mark{background:#FDF0C8;color:inherit;border-radius:3px;padding:0 1px}
 
 </style>
 </head>
@@ -2637,6 +2642,69 @@ const _taskV14=PAGES.task;PAGES.task=prm=>{let h=_taskV14(prm);const t=S.tasks.f
 (function(){const lab=()=>'متابعة '+(H14().length>1?'بدون حساب':H14()[0]);const cnt=()=>{try{return hNeed14()}catch(e){return 0}};
  const K=NAV.k;if(!K.some(n=>Array.isArray(n)&&n[2]==='helpers')){const i=K.findIndex(n=>Array.isArray(n)&&n[2]==='msgs');K.splice(i>=0?i+1:2,0,['user',lab,'helpers',cnt,1])}
  const R=NAV.r;if(!R.some(n=>Array.isArray(n)&&n[2]==='helpers')){const i=R.findIndex(n=>Array.isArray(n)&&n[2]==='arkan');R.splice(i>=0?i+1:R.length,0,['user',lab,'helpers',cnt,1])}})();
+
+/* ===================== v15 · بحث شامل: الاسم، رقم الهوية/الإقامة، الجواز، الجوال، اللوحة، الاستمارة، السجل التجاري… ===================== */
+const AR15=s=>String(s??'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[ً-ْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase();
+const DG15=s=>{let d=AR15(s).replace(/\D/g,'');if(/^9665\d{8}$/.test(d))d='0'+d.slice(3);return d};
+const DOCL15={'إقامة':'رقم الإقامة','جواز سفر':'رقم الجواز','استمارة':'رقم الاستمارة','تفويض قيادة':'رقم التفويض','كرت تشغيل':'رقم كرت التشغيل','بطاقة سائق':'رقم بطاقة السائق','ترخيص نقل':'رقم ترخيص النقل','سجل تجاري':'رقم السجل التجاري','السجل التجاري':'رقم السجل التجاري'};
+const docNos15=owner=>(RAW.Documents||[]).filter(d=>d.BelongsTo===owner&&d.DocNo).map(d=>[DOCL15[d.DocType]||('رقم '+(d.DocType||'المستند')),d.DocNo]);
+const ph15=()=>'الاسم، رقم الهوية أو الإقامة، الجوال، اللوحة، السجل التجاري…';
+/* كل سجل: عنوان + وصف + حقول للبحث [اسم الحقل، القيمة] */
+function recs15(){const G=[];const canFor=S.me!=='k'||grants8('k').foresta;
+ if(canFor){
+  G.push(['الموظفين',visEmp().map(e=>{const r=(RAW.Employees||[]).find(x=>x.id===e.id)||{};const idL=/سعود/.test(e.nat)?'رقم الهوية':'رقم الإقامة';
+   const f=[[idL,r.IdNo],['الجوال',r.Phone||e.phone],['رقم عقد قوى',r.QiwaContractNo],['الرقم الوظيفي',r.EmpNo],['الإيميل',r.Email]].concat(docNos15(e.name).filter(x=>DG15(x[1])!==DG15(r.IdNo)));
+   return{i:'user',t:e.name,s:`${e.job||'—'} · ${e.co} · الإقامة ${dstat(e.iq)[0]}`,go:`emp-${e.id}`,txt:[e.name,e.job,e.nat,e.co],f}})]);
+  G.push(['السيارات',visVeh().map(v=>{const r=(RAW.Vehicles||[]).find(x=>x.id===v.id)||{};
+   const f=[['رقم اللوحة',`${v.l} ${v.n}`]].concat(docNos15(v.title)).concat([['المفوّض',r.AuthHolder]]);
+   return{i:'car',t:`${v.l} ${v.n} · ${v.m}`,s:`المستخدم: ${v.user||'غير محدد'} · الفحص ${dstat(v.insp)[0]}`,go:'vehicles',txt:[v.l,v.l.replace(/\s/g,''),v.n,v.m,v.t,v.user,v.co,r.AuthHolder],f}})]);
+  G.push(['مستندات الشركة',(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&(S.me==='r'||isFor(d.Company||d.BelongsTo||''))).map(d=>({i:'file',t:`${d.DocType||d.Title} · ${d.BelongsTo||d.Company||''}`,s:d.ExpiryDate?'ينتهي '+iso2(d.ExpiryDate):'',go:'docs',txt:[d.DocType,d.Title,d.BelongsTo,d.Company],f:[[DOCL15[d.DocType]||'الرقم',d.DocNo]]}))])}
+ if(S.me!=='s'||grants8('s').clients){
+  G.push(['العملاء',S.clients.map(c=>{const r=(RAW.Clients||[]).find(x=>x.id===c.id)||{};return{i:'bldg',t:c.name,s:`التواصل: ${c.contact}`,go:`client-${c.id}`,txt:[c.name,r.Contact,r.Notes],f:[['رقم السجل التجاري',r.CRNo],['الرقم الموحد',r.UnifiedNo],['الجوال',r.Phone]]}})]);
+  G.push(['طلبات الخدمات',S.services.map(s=>{const r=(RAW.ServiceCases||[]).find(x=>x.id===s.id)||{};return{i:'brief',t:s.svc,s:s.clientName||'',go:`client-${s.client}`,txt:[s.svc,s.clientName,r.ServiceType],f:[['رقم الطلب',r.CaseNo],['جوال العميل',r.ClientPhone]]}})])}
+ if(canWs11())G.push(['ملف أركان',(SET10.arkDocs||[]).map(d=>({i:'file',t:d.n,s:d.end?'ينتهي '+d.end.split('-').reverse().join('/'):'',go:'arkan',txt:[d.n,d.note,'أركان'],f:[[/سجل/.test(d.n)?'رقم السجل التجاري':'الرقم',d.no]]}))]);
+ G.push(['المهام والإجراءات',S.tasks.filter(canSeeTask).map(t=>({i:'check',t:t.title,s:`عند ${PEOPLE[t.who].name}${t.due?' · '+t.due:''}${t.done?' · منجزة':''}`,go:`${t.steps?'proc':'task'}-${t.id}`,txt:[t.title,t.sub,t.co,t.emp],f:[]}))]);
+ return G}
+function hit15(r,toks){let score=0,show=null;
+ for(const tk of toks){const num=/^\d{3,}$/.test(tk)?(/^9665\d+$/.test(tk)?'0'+tk.slice(3):tk):'';let ok=false;
+  for(const [l,v] of r.f){if(v==null||v==='')continue;const dv=DG15(v);if(num&&dv.includes(num)){ok=true;score+=dv===num?100:dv.startsWith(num)?40:20;if(!show)show=[l,v];break}if(!num&&AR15(v).includes(tk)){ok=true;score+=10;if(!show)show=[l,v];break}}
+  if(!ok){const T=AR15(r.txt.concat([r.t]).join(' '));if(T.includes(tk)){ok=true;score+=AR15(r.t).startsWith(tk)?30:15}else if(num&&DG15(r.txt.join(' ')+' '+r.t).includes(num)){ok=true;score+=15}}
+  if(!ok)return null}
+ return{score,show}}
+const mark15=(v,toks)=>{const s=String(v);for(const tk of toks){const n=/^\d+$/.test(tk);const plain=AR15(s);const i=n?plain.indexOf(tk):plain.indexOf(tk);if(i>=0&&plain.length===s.length)return esc(s.slice(0,i))+'<mark>'+esc(s.slice(i,i+tk.length))+'</mark>'+esc(s.slice(i+tk.length))}return esc(s)};
+doSearch=function(q){const box=document.getElementById('qr');if(!box)return;q=String(q||'').trim();
+ if(!q){box.innerHTML=`<div class="empty" style="line-height:1.9">اكتب أي شي تعرفه:<br><span class="mini">الاسم · رقم الهوية أو الإقامة · رقم الجواز · الجوال · رقم اللوحة أو الاستمارة · رقم السجل التجاري أو الموحد · اسم العميل أو المهمة</span></div>`;return}
+ const toks=AR15(q).split(/\s+/).filter(Boolean);
+ const H=recs15().map(([g,L])=>[g,L.map(r=>({r,h:hit15(r,toks)})).filter(x=>x.h).sort((a,b)=>b.h.score-a.h.score)]).filter(g=>g[1].length);
+ H.sort((a,b)=>b[1][0].h.score-a[1][0].h.score);
+ box.innerHTML=H.length?H.map(([g,L])=>`<div class="sg15"><span>${g}</span>${L.length>6?`<small>أول 6 من ${L.length}</small>`:''}</div>${L.slice(0,6).map(({r,h})=>`<button class="li" style="border-top:0;padding:9px 20px" data-go="${r.go}"><span class="ico" style="background:var(--bg);color:var(--ink2)">${ic(r.i,17)}</span><div style="flex:1;min-width:0"><b style="font-size:14px;font-weight:600">${mark15(r.t,toks)}</b><div class="mini">${esc(r.s)}</div>${h.show&&h.show[0]!=='رقم اللوحة'?`<div class="hit15">${esc(h.show[0])}: <span dir="ltr">${mark15(h.show[1],toks)}</span></div>`:''}</div></button>`).join('')}`).join(''):`<div class="empty">ما لقيت شي بـ«${esc(q)}»<div class="mini" style="margin-top:4px">جرّب جزء من الاسم أو آخر أرقام الهوية</div></div>`};
+const _searchModalV15=searchModal;searchModal=function(){_searchModalV15();const q=document.getElementById('q');if(q){q.placeholder=ph15();q.setAttribute('inputmode','search')}doSearch('')};
+const _topbarV15=topbar;topbar=function(c){return _topbarV15(c).replace('ابحث عن موظف، سيارة، مهمة، عميل…','ابحث بالاسم أو رقم الهوية أو اللوحة أو السجل…')};
+
+/* ---- العميل: رقم السجل التجاري والرقم الموحد ---- */
+const _cliModalV15=cliModal;cliModal=function(id){_cliModalV15(id);const r=RAW.Clients.find(x=>x.id==id)||{};const g=document.querySelector('.ov form[data-form^="cli:"] .mb > div');if(!g)return;
+ g.insertAdjacentHTML('beforeend',`<div class="field"><label for="cl-cr">رقم السجل التجاري</label><input id="cl-cr" class="inp" dir="ltr" inputmode="numeric" value="${esc(r.CRNo||'')}"></div><div class="field"><label for="cl-un">الرقم الموحد (700)</label><input id="cl-un" class="inp" dir="ltr" inputmode="numeric" value="${esc(r.UnifiedNo||'')}"></div>`)};
+window.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="cli:"]');if(!f||!f.querySelector('#cl-cr'))return;e.preventDefault();e.stopPropagation();const id=+f.dataset.form.split(':')[1];const V=i=>(f.querySelector('#'+i)||{}).value||'';
+ const fl={Contact:V('cl-c').trim(),Phone:V('cl-p').trim(),CRNo:AR15(V('cl-cr')).trim(),UnifiedNo:AR15(V('cl-un')).trim()};act(async()=>{await spPatch('Clients',id,fl);Object.assign(RAW.Clients.find(x=>x.id===id),fl);closeModal()},'انحفظت بيانات العميل')},true);
+const _newClientV15=newClient;newClient=function(){_newClientV15();const p=document.getElementById('nc-p');if(!p)return;p.closest('.field').insertAdjacentHTML('afterend',`<div class="field"><label for="nc-cr">رقم السجل التجاري (اختياري)</label><input id="nc-cr" class="inp" dir="ltr" inputmode="numeric"></div>`)};
+window.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="newclient"]');if(!f)return;const cr=AR15((document.getElementById('nc-cr')||{}).value||'').trim();if(!cr)return;e.preventDefault();e.stopPropagation();const V=i=>document.getElementById(i).value.trim();
+ act(async()=>{const it=await spCreate('Clients',{Title:V('nc-n'),Contact:V('nc-c'),Phone:V('nc-p'),CRNo:cr,FollowEvery:+V('nc-e'),Owner:V('nc-o'),LastTouch:toIso(TODAY)});RAW.Clients.push(it);closeModal();setTimeout(()=>go('client-'+it.id),0)},'انضاف العميل')},true);
+const _clientV15=PAGES.client;PAGES.client=prm=>{let h=_clientV15(prm);const r=(RAW.Clients||[]).find(x=>x.id==prm.id);if(!r||!(r.CRNo||r.UnifiedNo))return h;const k='<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">';const i=h.indexOf(k);if(i<0)return h;
+ return h.slice(0,i)+`<div class="mini" style="margin-top:4px">${r.CRNo?`السجل التجاري: <span dir="ltr">${esc(r.CRNo)}</span>`:''}${r.CRNo&&r.UnifiedNo?' · ':''}${r.UnifiedNo?`الرقم الموحد: <span dir="ltr">${esc(r.UnifiedNo)}</span>`:''}</div>`+h.slice(i)};
+
+/* ---- ملف أركان: رقم المستند ---- */
+const _arkDocModalV15=arkDocModal11;arkDocModal11=function(id){_arkDocModalV15(id);const d=(SET10.arkDocs||[]).find(x=>x.id===id)||{};const n=document.getElementById('ak-n');if(!n)return;
+ n.closest('.field').insertAdjacentHTML('afterend',`<div class="field"><label for="ak-no">رقم المستند (اختياري)</label><input id="ak-no" class="inp" dir="ltr" inputmode="numeric" value="${esc(d.no||'')}" placeholder="مثلاً: رقم السجل التجاري"></div>`)};
+window.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="ark11doc:"]');if(!f||!f.querySelector('#ak-no'))return;e.preventDefault();e.stopPropagation();const x=f.dataset.form.split(':').slice(1).join(':');const V=i=>((f.querySelector('#'+i)||{}).value||'').trim();
+ const n=V('ak-n');if(!n){toast('اكتب اسم المستند');return}const d={id:x||('d'+Date.now()),n,no:AR15(V('ak-no')),end:V('ak-d'),note:V('ak-o')};
+ act(async()=>{await updSet10(s=>{s.arkDocs=(s.arkDocs||[]).filter(q=>q.id!==d.id).concat([d])});closeModal()},'انحفظ في ملف أركان ✓')},true);
+const _arkDocsV15=arkDocs11;arkDocs11=function(){let h=_arkDocsV15();(SET10.arkDocs||[]).forEach(d=>{if(!d.no)return;const k=`data-act="ark11doc:${d.id}"`;const i=h.indexOf(k);if(i<0)return;const j=h.indexOf('<small>',i);if(j<0)return;h=h.slice(0,j+7)+`<span dir="ltr">${esc(d.no)}</span> · `+h.slice(j+7)});return h};
+
+/* ---- الانتهاءات: ما يكون فيه شي مختار من نفسه · المستخدم يختار وش يبان ---- */
+if(ui.ex)ui.ex.types=[];else ui.ex={types:[],st:'both',win:30};
+window.addEventListener('click',e=>{const b=e.target.closest('[data-go="expiry"]');if(!b||!b.closest('.side,.bnav,.mnav,nav'))return;ui.ex={types:[],st:(ui.ex&&ui.ex.st)||'both',win:(ui.ex&&ui.ex.win)||30}},true);
+const _expiryV15=PAGES.expiry;PAGES.expiry=prm=>{const h=_expiryV15(prm);if(!ui.ex||(ui.ex.types||[]).length)return h;
+ return h.replace(/<tr><td colspan="6" class="empty">[\s\S]*?<\/td><\/tr>/,`<tr><td colspan="6" class="empty" style="padding:36px 16px">${ic('filter',22,'var(--br)')}<div style="margin-top:8px;font-weight:600">اختر من فوق وش تبي يبان</div><div class="mini" style="margin-top:4px">مثلاً: إقامة، أو جواز سفر، أو استمارة · تقدر تختار أكثر من وحدة</div></td></tr>`)};
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
