@@ -976,9 +976,10 @@ tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
  .sum19,.sm22{grid-template-columns:1fr}
 }
 /* v27 · توحيد الأرقام */
-.sb18 .rw{grid-template-columns:96px minmax(60px,1fr) auto}
-.sb18 .rw small{font-size:12.5px}
+.sb18 .rw{grid-template-columns:96px minmax(50px,1fr) 170px}
+.sb18 .rw small{font-size:12.5px;overflow:hidden;text-overflow:ellipsis}
 .sb18 em.s{color:#B4700F}
+@media (max-width:480px){.sb18 .rw{grid-template-columns:84px minmax(40px,1fr) 150px;gap:8px}.sb18 .rw small{font-size:12px}}
 
 </style>
 </head>
@@ -3241,7 +3242,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261124213025';
+const APPV18='20261124213459';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
