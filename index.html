@@ -1691,7 +1691,7 @@ const LISTNAME={Accounts:'حساب منصة',Requests:'طلب',LettersLog:'خط�
 const FLD={Username:'اسم المستخدم',Password:'كلمة المرور',Url:'الرابط',Owner:'صاحب الحساب',ViewBy:'يشوفه',EditBy:'يعدّله',ChangedBy:'عدّله',ChangedOn:'تاريخ التعديل',Phone:'الجوال',Email:'الإيميل',Purpose:'الاستخدام',Details:'التفاصيل',Status:'الحالة',AssignedTo:'عند',AssignedBy:'من',DueDate:'الموعد',DoneOn:'تاريخ الإنجاز',Steps:'الخطوات',ExpiryDate:'تاريخ الانتهاء',RenewStatus:'حالة التجديد',RenewedOn:'تاريخ التجديد',Driver:'المستخدم الفعلي',AuthType:'نوع التفويض',AuthEnd:'نهاية التفويض',Chain:'التحويل',LastTouch:'آخر تواصل',NeedJson:'المطلوب من العميل',TrvStatus:'حالة السفر',ContractEnd:'نهاية العقد',Title:'العنوان',Notes:'ملاحظات',DepartedOn:'تاريخ السفر',ReturnedOn:'تاريخ الرجوع',ApprovedBy:'اعتمدها',ApprovedOn:'تاريخ الاعتماد',IsRead:'مقروء',EmpName:'الموظف',Company:'الشركة',ReqType:'النوع',DocNo:'رقم الوثيقة'};
 const realName=()=>PEOPLE[S.realMe].name+(S.me!==S.realMe?` (معاينة كـ${PEOPLE[S.me].name})`:'');
 AUDIT_HOOK=(act,list,id,before,after,raw,label)=>{const title=label||(raw&&(raw.Title||raw.EmployeeName))||'';spCreate('AuditLog',{Title:`${act} ${LISTNAME[list]||list}: ${title}`.slice(0,250),Entity:list,RecordId:+id,Company:(raw&&raw.Company)||'',ActBy:realName(),Details:JSON.stringify({a:act,b:before,f:after})},{noAudit:true}).then(x=>{(RAW.AuditLog=RAW.AuditLog||[]).push(x)}).catch(e=>console.warn('audit',e))};
-const fmtVal=(k,v)=>{if(v===null||v===undefined||v==='')return '—';if(k==='Steps'){try{const a=JSON.parse(v);const d=a.filter(s=>s.ok).length;const c=a.find(s=>!s.ok);return `${d} من ${a.length}${c?' · الحالية: '+c.t:' · مكتمل'}`}catch(e){return '…'}}if(k==='NeedJson'){try{const a=JSON.parse(v);return a.filter(x=>x[1]).length+' من '+a.length+' وصلت'}catch(e){return '…'}}if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T/.test(v))return iso2(v);if(typeof v==='boolean')return v?'نعم':'لا';return String(v).slice(0,80)};
+const fmtVal=(k,v)=>{if(k==='Perms')return v?'إعدادات الصلاحيات ('+String(v).split(';').filter(x=>/=[12v]/.test(x)).length+' مفعّلة)':'—';if(v===null||v===undefined||v==='')return '—';if(k==='Steps'){try{const a=JSON.parse(v);const d=a.filter(s=>s.ok).length;const c=a.find(s=>!s.ok);return `${d} من ${a.length}${c?' · الحالية: '+c.t:' · مكتمل'}`}catch(e){return '…'}}if(k==='NeedJson'){try{const a=JSON.parse(v);return a.filter(x=>x[1]).length+' من '+a.length+' وصلت'}catch(e){return '…'}}if(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T/.test(v))return iso2(v);if(typeof v==='boolean')return v?'نعم':'لا';return String(v).slice(0,80)};
 const auditRows=()=>(RAW.AuditLog||[]).filter(a=>a.Details&&a.Details[0]==='{').map(a=>{let d={};try{d=JSON.parse(a.Details)}catch(e){}return{id:a.id,when:new Date(a.Created),by:a.ActBy||'',title:a.Title||'',list:a.Entity,rid:a.RecordId,act:d.a||'',b:d.b||null,f:d.f||{}}}).sort((x,y)=>y.when-x.when);
 /* ---------- build additions ---------- */
 const _buildV4=build;
@@ -3243,7 +3243,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261124220538';
+const APPV18='20261124221321';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3884,10 +3884,10 @@ document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="pr
 const ACCF24=[['Url','رابط الدخول'],['Username','اسم المستخدم'],['Password','كلمة المرور'],['Owner','صاحب الحساب']];
 const accMiss24=()=>(RAW.Accounts||[]).filter(a=>typeof accCanView!=='function'||accCanView(a)).map(a=>({a,m:ACCF24.filter(f=>!String(a[f[0]]||'').trim()).map(f=>f[1])})).filter(x=>x.m.length);
 const _accV24=PAGES.accounts;PAGES.accounts=prm=>{let h=_accV24(prm);const M=accMiss24();if(!M.length)return h;
- const box=`<div class="am24">${ic('alert',20,'#B4700F')}<div style="flex:1;min-width:220px"><b>${M.length===1?'حساب واحد ناقص فيه بيانات':M.length===2?'حسابين ناقص فيهم بيانات':M.length+' '+(M.length<=10?'حسابات':'حساب')+' ناقص فيها بيانات'}</b><div class="ls">${M.map(x=>`<span><b>${esc(x.a.Title||'')}</b>${x.a.Company?' · '+esc(x.a.Company):''}: ناقص ${x.m.join(' و')}</span>`).join('')}</div><small>أول ما تكمّلونها تختفي من هنا · وكل تعديل ينسجل باسم اللي عدّله</small></div></div>`;
+ const box=`<div class="am24">${ic('alert',20,'#B4700F')}<div style="flex:1;min-width:220px"><b>${M.length===1?'حساب واحد ناقص فيه بيانات':M.length===2?'حسابين ناقص فيهم بيانات':M.length+' '+(M.length<=10?'حسابات ناقص فيها بيانات':'حساب ناقص فيه بيانات')}</b><div class="ls">${M.map(x=>`<span><b>${esc(x.a.Title||'')}</b>${x.a.Company?' · '+esc(x.a.Company):''}: ناقص ${x.m.join(' و')}</span>`).join('')}</div><small>أول ما تكمّلونها تختفي من هنا · وكل تعديل ينسجل باسم اللي عدّله</small></div></div>`;
  const t=document.createElement('template');t.innerHTML=h;const ph=t.content.querySelector('.ph');if(!ph)return box+h;ph.insertAdjacentHTML('afterend',box);return t.innerHTML};
 const _alertsV24=alerts18;alerts18=function(X){let h=_alertsV24(X);const M=accMiss24();if(!M.length)return h;h=h.replace(/<div class="al18"><div class="empty"[\s\S]*?<\/div><\/div><\/div>/,'<div class="al18"></div>');
- const b=`<button class="v" data-act="go:accounts">${ic('key',17)}<span>حسابات المنصات: ${M.length===1?'حساب ناقص فيه بيانات':M.length+' ناقص فيها بيانات'}</span>${ic('left',15)}</button>`;return h.replace(/(<div class="al18">(?:<button[\s\S]*?<\/button>)*)/,`$1${b}`)};
+ const b=`<button class="v" data-act="go:accounts">${ic('key',17)}<span>حسابات المنصات: ${M.length===1?'حساب واحد ناقص فيه بيانات':M.length===2?'حسابين ناقص فيهم بيانات':M.length+' '+(M.length<=10?'حسابات ناقص فيها بيانات':'حساب ناقص فيه بيانات')}</span>${ic('left',15)}</button>`;return h.replace(/(<div class="al18">(?:<button[\s\S]*?<\/button>)*)/,`$1${b}`)};
 
 /* ===================== v25 · «سجّل تذكير»: تاريخ كل تذكير وطريقته · سجل مرقّم · التذكير الجاي باختيارك ===================== */
 const RK25={e:['تذكير موظف','الموظف'],y:['تذكير أيهم','أيهم'],a:['تذكير جهة','الجهة']};
@@ -4046,7 +4046,7 @@ const _repDataV27=repData;repData=function(){const f=ui.rf;const VK=['reg','insp
 /* ===== تصحيح لغوي تلقائي: العدد والمعدود · «لـال» ← «لل» ===== */
 const W27=[['يوم','يومين','أيام'],['موظف','موظفين','موظفين'],['سيارة','سيارتين','سيارات'],['إقامة','إقامتين','إقامات'],['وثيقة','وثيقتين','وثائق'],['مستند','مستندين','مستندات'],['إجراء','إجراءين','إجراءات'],['طلب','طلبين','طلبات'],['عميل','عميلين','عملاء'],['حساب','حسابين','حسابات'],['عقد','عقدين','عقود'],['شهر','شهرين','أشهر'],['ساعة','ساعتين','ساعات'],['خطوة','خطوتين','خطوات'],['مهمة','مهمتين','مهام'],['تذكير','تذكيرين','تذكيرات'],['رخصة','رخصتين','رخص'],['شاحنة','شاحنتين','شاحنات'],['أسبوع','أسبوعين','أسابيع'],['معلومة','معلومتين','معلومات'],['شغلة','شغلتين','شغلات'],['سلفة','سلفتين','سلف'],['إنذار','إنذارين','إنذارات'],['جواز','جوازين','جوازات'],['تاريخ','تاريخين','تواريخ'],['بند','بندين','بنود'],['تبرير','تبريرين','تبريرات'],['رسالة','رسالتين','رسائل'],['إشعار','إشعارين','إشعارات'],['ملف','ملفين','ملفات'],['شركة','شركتين','شركات'],['وثيقة','وثيقتين','وثائق']];
 const M27={};W27.forEach(w=>{M27[w[0]]=w;M27[w[2]]=w});
-const ADJ27={'منتهي':'منتهية','ينتهي':'تنتهي','جاري':'جارية','ناقص':'ناقصة','مفتوح':'مفتوحة','متأخر':'متأخرة','ساري':'سارية','مسجل':'مسجلة'};
+const ADJ27={'منتهي':'منتهية','ينتهي':'تنتهي','جاري':'جارية','مفتوح':'مفتوحة','متأخر':'متأخرة','ساري':'سارية','مسجل':'مسجلة'};
 const RX27=new RegExp('(^|[^\\d\\/.:٫,])(\\d+)( |\\u00a0)('+Object.keys(M27).sort((a,b)=>b.length-a.length).join('|')+')(?=$|[\\s\\u00a0·.,:،؛)\\/\\-»"\'(])( (?:'+Object.keys(ADJ27).join('|')+')(?=$|[\\s\\u00a0·.,:،؛)]))?','g');
 function fixAr27(s){if(!s||typeof s!=='string'||!/[؀-ۿ]/.test(s))return s;
  s=s.replace(RX27,(m,pre,num,sp,w,adj)=>{const n=+num;const e=M27[w];if(!e||n===0)return m;
@@ -4055,7 +4055,8 @@ function fixAr27(s){if(!s||typeof s!=='string'||!/[؀-ۿ]/.test(s))return s;
   if(n<=10){const human=e[0]==='موظف'||e[0]==='عميل';return pre+num+sp+e[2]+(adj&&!human?' '+(ADJ27[adj.trim()]||adj.trim()):adj||'')}
   return pre+num+sp+e[0]+(adj||'')});
  s=s.replace(/شيخة (أنهى|كتب|رجّع|أعطاك|حوّل)(?= )/g,(m,v)=>'شيخة '+({'أنهى':'أنهت','كتب':'كتبت','رجّع':'رجّعت','أعطاك':'أعطتك','حوّل':'حوّلت'}[v]));
- return s.replace(/لـ\s+ال/g,'لل').replace(/لـ\s+(?=[ء-ي])/g,'ل').replace(/لـال/g,'لل').replace(/لـ(?=[ء-ي])/g,'ل')}
+ s=s.replace(/(متأخر|متأخرة) 1 يوم(?![\d])/g,'$1 يوم').replace(/(باقي|بعد|قبل|من) 1 يوم(?![\d])/g,'$1 يوم');
+ return s.replace(/لـ\s*(?=[A-Za-z])/g,'إلى ').replace(/لـ\s+ال/g,'لل').replace(/لـ\s+(?=[ء-ي])/g,'ل').replace(/لـال/g,'لل').replace(/لـ(?=[ء-ي])/g,'ل')}
 const SKIP27=n=>{for(let p=n.parentNode;p;p=p.parentNode){if(p.nodeType!==1)continue;const t=p.tagName;if(t==='TEXTAREA'||t==='INPUT'||t==='SCRIPT'||t==='STYLE'||p.isContentEditable)return true}return false};
 function fixNode27(root){try{const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){const v=n.nodeValue;if(!v||!/\d|لـ|شيخة/.test(v))continue;const f=fixAr27(v);if(f!==v&&!SKIP27(n))n.nodeValue=f}}catch(e){console.warn('fix27',e)}}
 try{new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData'){const n=m.target;const v=n.nodeValue,f=fixAr27(v);if(f!==v&&!SKIP27(n))n.nodeValue=f}else m.addedNodes.forEach(x=>{if(x.nodeType===3){const f=fixAr27(x.nodeValue);if(f!==x.nodeValue&&!SKIP27(x))x.nodeValue=f}else if(x.nodeType===1)fixNode27(x)})}}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});fixNode27(document.body)}catch(e){console.warn(e)}
@@ -4090,6 +4091,11 @@ const _buildV27=build;build=function(){_buildV27();try{S.tasks.forEach(t=>{if(t.
 
 /* التقرير الشهري: «بيانات ناقصة» = نفس رقم صفحة البيانات الناقصة */
 {const o=mrData10;mrData10=function(k){const M=o(k);try{if('miss' in M)M.miss=mgData10('emp').miss+mgData10('veh').miss}catch(e){}return M}}
+/* أركان والعملاء: عدّاد القائمة = المتأخرة + اللي موعدها اليوم · ينكتب في رأس الصفحة */
+['arkan','external'].forEach(r=>{const o=PAGES[r];if(!o)return;PAGES[r]=prm=>{let h=o(prm);try{const n=wsCnt11(r==='arkan'?'ark':'ext')();if(n)h=h.replace(/(<div class="ph"><div><h1>[^<]*<\/h1><p>[^<]*)/,`$1 · <b style="color:var(--red)">${n} تحتاج تصرّف اليوم</b> (متأخرة أو موعدها اليوم)`)}catch(e){}return h}});
+try{FLD.Perms='الصلاحيات'}catch(e){}
+/* «المحوّل لي»: العدد في الرأس + الجملة حسب صلاحية خالد الفعلية */
+{const o=PAGES.transferred;if(o)PAGES.transferred=prm=>{let h=o(prm);try{const n=S.tasks.filter(t=>t.who===S.me&&isFor(t.co)&&!t.done).length;const fx=typeof grants8==='function'&&grants8(S.me).foresta;h=h.replace(/(<p>)(مهام فوريستا اللي حوّلها لك رشيد أو شيخة)( · ما تشوف غيرها من فوريستا)?/,(m,a,b)=>`${a}${n?n+' مفتوحة · ':''}${b}${fx?' · وعندك صلاحية تشوف فوريستا كلها':' · ما تشوف غيرها من فوريستا'}`)}catch(e){}return h}}
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
