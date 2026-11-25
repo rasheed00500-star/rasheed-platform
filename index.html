@@ -1124,7 +1124,7 @@ const rawTask=id=>RAW.Tasks.find(t=>t.id==id);
 
 /* ===================== layout ===================== */
 const myTasks=()=>S.tasks.filter(t=>t.who===S.me&&!t.done);
-const canSeeTask=t=>S.me==='r'||(S.me==='s'?(isFor(t.co)||t.chain.includes('s')):(!isFor(t.co)||t.chain.includes('k')));
+const canSeeTask=t=>S.me==='r'||(S.me==='s'?(isFor(t.co)||t.chain.includes('s')):(!isFor(t.co)||t.chain.includes('k')||(typeof hOf14==='function'&&!t.steps&&!!hOf14(t))));
 const visEmp=()=>S.employees.filter(e=>S.me==='r'||isFor(e.co));
 const visVeh=()=>S.vehicles.filter(v=>S.me==='r'||isFor(v.co)||!v.co);
 const NAV={
@@ -3280,7 +3280,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261125083450';
+const APPV18='20261125084318';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -4504,6 +4504,15 @@ function sumTxt29(){const L=prio28().filter(x=>x.lv!=='f');return `ملخص «ا
 {const o=render;render=function(){const r=o.apply(this,arguments);try{let el=document.getElementById('wa29');const w=ui.wa29;if(!w){el&&el.remove();return r}if(!el){el=document.createElement('div');el.id='wa29';document.body.appendChild(el)}
  el.innerHTML=`<span class="i">${ic('wa',18,'#1E8E4F')}</span><div class="tx"><b>تبي تنبّه ${esc(nm28(w.p))} بالواتساب؟</b><small>${esc(String(w.t).slice(0,70))}</small></div>${w.href?`<a class="btn sm wa29" target="_blank" rel="noopener" href="${w.href}" data-act="wa29x">${ic('wa',15,'#fff')}أرسل</a>`:`<button class="btn sm" data-go="wanum" data-act="wa29x">أضف رقمه أول</button>`}<button class="ib" data-act="wa29x" aria-label="إغلاق">${ic('x',16)}</button>`}catch(e){}return r}}
 document.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.closest('[data-act="wa29x"]');if(!b)return;setTimeout(()=>{ui.wa29=null;document.getElementById('wa29')?.remove()},200)},true);
+
+/* ===================== v30 · عبدالله يبان عند خالد + شغلاته في «العاجل جداً» ===================== */
+{const _p30=prio28;prio28=function(){const L=_p30.apply(this,arguments);if(L._h30)return L;L._h30=1;
+ try{if(canWs11()){H14().forEach(h=>{const A=S.tasks.filter(t=>!t.done&&!t.steps&&canSeeTask(t)&&hOf14(t)===h&&t.who!==S.me&&t.due&&days(t.due)<=0);if(!A.length)return;
+  const late=A.filter(t=>days(t.due)<0).length;const key='h30:'+h+':'+A.length+':'+ymd(new Date());if(snz28(key))return;
+  L.push({lv:late?'i':'f',key,i:'user',t:`عند ${h} ${A.length===1?'شغلة':A.length===2?'شغلتين':A.length+' شغلات'} ${late?'فات موعدها':'موعدها اليوم'}`,s:A.slice(0,2).map(t=>t.title.slice(0,35)).join('، ')+(A.length>2?'…':'')+` · يتابعها ${[...new Set(A.map(t=>PEOPLE[t.who].name))].join(' و')}`,go:'helpers'})});
+  const o={u:0,i:1,f:2};L.sort((a,b)=>o[a.lv]-o[b.lv])}}catch(e){}return L}}
+/* صفحة المتابعة: النص يناسب إن الشغلة ممكن يتابعها غيرك */
+{const _h30=PAGES.helpers;PAGES.helpers=prm=>{let h=_h30(prm);return h.replace('ما عنده حساب · أنت تعطيه الشغلة، وكل يوم تحدّث وش صار فيها','ما عنده حساب · كل شغلاته هنا (اللي أعطيته أنت أو رشيد)، وكل يوم تحدّث وش صار فيها')}}
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
