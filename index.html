@@ -3280,7 +3280,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261125082956';
+const APPV18='20261125083450';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -4129,7 +4129,7 @@ const _buildV27=build;build=function(){_buildV27();try{S.tasks.forEach(t=>{if(t.
 /* التقرير الشهري: «بيانات ناقصة» = نفس رقم صفحة البيانات الناقصة */
 {const o=mrData10;mrData10=function(k){const M=o(k);try{if('miss' in M)M.miss=mgData10('emp').miss+mgData10('veh').miss}catch(e){}return M}}
 /* أركان والعملاء: عدّاد القائمة = المتأخرة + اللي موعدها اليوم · ينكتب في رأس الصفحة */
-['arkan','external'].forEach(r=>{const o=PAGES[r];if(!o)return;PAGES[r]=prm=>{let h=o(prm);try{const n=wsCnt11(r==='arkan'?'ark':'ext')();if(n)h=h.replace(/(<div class="ph"><div><h1>[^<]*<\/h1><p>[^<]*)/,`$1 · <b style="color:var(--red)">${n} تحتاج تصرّف اليوم</b> (متأخرة أو موعدها اليوم)`)}catch(e){}return h}});
+['arkan','external','fortasks'].forEach(r=>{const o=PAGES[r];if(!o)return;PAGES[r]=prm=>{let h=o(prm);try{const n=wsCnt11(r==='arkan'?'ark':r==='fortasks'?'for':'ext')();if(n)h=h.replace(/(<div class="ph"><div><h1>[^<]*<\/h1><p>[^<]*)/,`$1 · <b style="color:var(--red)">${n} تحتاج تصرّف اليوم</b> (متأخرة أو موعدها اليوم)`)}catch(e){}return h}});
 try{FLD.Perms='الصلاحيات'}catch(e){}
 /* «المحوّل لي»: العدد في الرأس + الجملة حسب صلاحية خالد الفعلية */
 {const o=PAGES.transferred;if(o)PAGES.transferred=prm=>{let h=o(prm);try{const n=S.tasks.filter(t=>t.who===S.me&&isFor(t.co)&&!t.done).length;const fx=typeof grants8==='function'&&grants8(S.me).foresta;h=h.replace(/(<p>)(مهام فوريستا اللي حوّلها لك رشيد أو شيخة)( · ما تشوف غيرها من فوريستا)?/,(m,a,b)=>`${a}${n?n+' مفتوحة · ':''}${b}${fx?' · وعندك صلاحية تشوف فوريستا كلها':' · ما تشوف غيرها من فوريستا'}`)}catch(e){}return h}}
@@ -4312,7 +4312,7 @@ function selfCheck28(){const bad=[],warn=[];let n=0;const B=(w,a,b)=>{n++;if(a!=
  /* كل الصفحات تفتح */
  Object.keys(PAGES).forEach(r=>{if(['emp','veh','proc','task','client','svc','helper','msg'].includes(r))return;n++;try{const h=txt(PAGES[r]({}));if(/صار خطأ في عرض|undefined|NaN|\[object/.test(h))bad.push(`صفحة «${(CR[r]||[r]).slice(-1)[0]}» فيها نص غلط`)}catch(e){bad.push(`صفحة «${(CR[r]||[r]).slice(-1)[0]}» ما فتحت: ${e.message.slice(0,60)}`)}});
  /* تكرار الإجراءات التلقائية */
- const lr={};(RAW.Tasks||[]).forEach(t=>{if(!t.LinkRef||['منجزة','ملغاة'].includes(t.Status))return;(lr[t.LinkRef]=lr[t.LinkRef]||[]).push(t)});n++;Object.entries(lr).forEach(([k,a])=>{if(a.length>1)bad.push(`«${a[0].Title}» مكرر ${a.length} مرات`)});
+ const lr={};(RAW.Tasks||[]).forEach(t=>{if(!t.LinkRef||!/^(REC|AUTO|SYNC|WPSJ|FUP|TPL):/.test(t.LinkRef)||['منجزة','ملغاة'].includes(t.Status))return;(lr[t.LinkRef]=lr[t.LinkRef]||[]).push(t)});n++;Object.entries(lr).forEach(([k,a])=>{if(a.length>1)bad.push(`«${a[0].Title}» مكرر ${a.length} مرات`)});
  /* البيانات */
  const st=stale19().length;if(st)warn.push(`${st} تواريخ «قيد التجديد» من أكثر من شهر`);const uc=unconf28().length;if(uc)warn.push(`${uc} تواريخ ما أحد تأكد منها من ${CONF28} يوم`);
  return{n,bad,warn}}
