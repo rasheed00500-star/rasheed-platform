@@ -3280,7 +3280,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261125084318';
+const APPV18='20261125085246';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -4513,6 +4513,21 @@ document.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.clos
   const o={u:0,i:1,f:2};L.sort((a,b)=>o[a.lv]-o[b.lv])}}catch(e){}return L}}
 /* صفحة المتابعة: النص يناسب إن الشغلة ممكن يتابعها غيرك */
 {const _h30=PAGES.helpers;PAGES.helpers=prm=>{let h=_h30(prm);return h.replace('ما عنده حساب · أنت تعطيه الشغلة، وكل يوم تحدّث وش صار فيها','ما عنده حساب · كل شغلاته هنا (اللي أعطيته أنت أو رشيد)، وكل يوم تحدّث وش صار فيها')}}
+/* «يومي»: خيار «لعبدالله» في صندوق التذكير (لرشيد وخالد) */
+{const _rc30=remComposer;remComposer=function(){let h=_rc30.apply(this,arguments);try{if(!canWs11())return h;const i=h.indexOf('</select>');if(i<0)return h;
+ return h.slice(0,i)+H14().map(x=>`<option value="h:${esc(x)}">لـ${esc(x)} (أنت تتابعها)</option>`).join('')+h.slice(i)}catch(e){return h}}}
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="rem"]');if(!f)return;const w=(document.getElementById('rm-w')||{}).value||'';if(!w.startsWith('h:'))return;
+ e.preventDefault();e.stopImmediatePropagation();const h=w.slice(2);const t=document.getElementById('rm-t').value.trim();if(!t)return;const dd=document.getElementById('rm-d').value;const wn=ui.remWhen||'today';const due=dd?new Date(dd):new Date(TODAY.getTime()+({today:0,tom:1,after:2}[wn])*864e5);
+ act(async()=>{const it=await spCreate('Tasks',{Title:t,AssignedTo:PEOPLE[S.me].name,AssignedBy:PEOPLE[S.me].name,DueDate:toIso(due),Company:S.me==='k'?'':'فوريستا',Status:'مفتوحة',ReqType:'مهمة',Chain:hChain14({Chain:''},h)});RAW.Tasks.push(it);ui.remDate=''},`صارت عند ${h} · وأنت تتابعها ✓`)},true);
+/* لوحة التحكم · الفريق: سطر لعبدالله */
+{const _t30=team7;team7=function(){let h=_t30.apply(this,arguments);try{if(!canWs11())return h;const ms=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);
+ const rows=H14().map(x=>{const A=S.tasks.filter(t=>!t.steps&&canSeeTask(t)&&hOf14(t)===x);const op=A.filter(t=>!t.done).length,lt=A.filter(t=>!t.done&&t.due&&days(t.due)<0).length,dn=A.filter(t=>t.done&&rawOf11(t).DoneOn&&new Date(rawOf11(t).DoneOn)>=ms).length;const pc=dn+op?Math.round(dn/(dn+op)*100):0;
+  return `<button class="rw" data-go="helpers">${hAv14(x,34)}<div class="tx"><b>${esc(x)}</b><small>بدون حساب · ${op?op+' مفتوحة':'ما عنده شي مفتوح'}${lt?` · <span style="color:var(--red)">${lt} متأخرة</span>`:''}</small></div><div style="width:44%;min-width:120px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-bottom:5px"><span>أنجز هالشهر <b style="color:var(--ink)">${dn}</b></span>${dn+op?`<b style="color:var(--ink)">${pc}%</b>`:''}</div><div class="v7bar"><i style="width:${pc}%;background:#8A6FB0"></i></div></div></button>`}).join('');
+ const k=h.lastIndexOf('</div></div>');return k<0?h:h.slice(0,k)+rows+h.slice(k)}catch(e){return h}}}
+/* لوحة خالد: كرت «عبدالله» (رشيد يشوفه في كرت الفريق) */
+function hCard30(){const ms=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);return H14().map(x=>{const A=S.tasks.filter(t=>!t.steps&&canSeeTask(t)&&hOf14(t)===x);const O=A.filter(t=>!t.done).sort((a,b)=>(D(a.due)||9e15)-(D(b.due)||9e15));const lt=O.filter(t=>t.due&&days(t.due)<0).length;const dn=A.filter(t=>t.done&&rawOf11(t).DoneOn&&new Date(rawOf11(t).DoneOn)>=ms).length;
+ return `<div class="v7c">${head7('user',esc(x)+' · بدون حساب',O.length?`${O.length} مفتوحة${lt?' · '+lt+' متأخرة':''} · أنجز هالشهر ${dn}`:'ما عنده شي مفتوح الحين',lnk7('متابعة '+esc(x),'helpers'))}<div class="v7list">${O.slice(0,4).map(t=>{const n=t.due?days(t.due):null;return `<button class="rw" data-go="task-${t.id}">${hAv14(x,30)}<div class="tx"><b>${esc(t.title.slice(0,60))}</b><small>يتابعها ${PEOPLE[t.who].name}${t.co?' · '+esc(isArk11(t)?'أركان':t.co):''}</small></div>${n===null?pill('بدون موعد','gray'):n<0?pill(`متأخرة ${-n} يوم`,'exp'):n===0?pill('اليوم','soon'):pill(dayName14(D(t.due)),'info')}</button>`}).join('')||`<div class="empty" style="padding:18px">أعطه شغلة من «يومي» أو من صفحة «متابعة ${esc(x)}»</div>`}</div></div>`}).join('')}
+{const _d30=PAGES.dash;PAGES.dash=prm=>{let h=_d30(prm);try{if(S.me!=='k')return h;const i=h.indexOf('<div class="v7g2');if(i<0)return h;return h.slice(0,i)+`<div class="v7g2" style="grid-template-columns:1fr">${hCard30()}</div>`+h.slice(i)}catch(e){return h}}}
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
