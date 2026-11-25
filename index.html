@@ -1033,6 +1033,11 @@ tr.same19 td{opacity:.6}tr.end19 td{color:var(--ink2)}
 .nt30 .tx{flex:1;min-width:0}.nt30 .tx b{display:block;font-size:14.5px;font-weight:600;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}.nt30 .tx small{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--mute);font-size:12.5px;margin-top:3px}
 @media (max-width:600px){.nt30f .nt30r .btn{width:100%;justify-content:center;margin:0}.nt30-d .inp{width:140px}}
 .nt30 .ib{width:34px;height:34px;flex:none}
+.co30{display:flex;align-items:center;gap:14px;padding:14px 20px;border-top:1px solid var(--line)}.co30:first-child{border-top:0}
+.co30 .ico{width:42px;height:42px;border-radius:12px;background:var(--brT);display:grid;place-items:center;flex:none}
+.co30 .tx{flex:1;min-width:0}.co30 .tx b{display:block;font-size:15px}.co30 .tx small{display:block;color:var(--mute);font-size:12.5px;margin-top:3px}.co30 .tx .nt{color:var(--ink2)}
+.co30 .ac{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.co30 .ac>span{display:contents}
+@media (max-width:640px){.co30{flex-wrap:wrap}.co30 .ac{width:100%;justify-content:flex-start}}
 
 </style>
 </head>
@@ -3295,7 +3300,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261125090508';
+const APPV18='20261125103916';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3934,7 +3939,7 @@ document.addEventListener('click',ev=>{const b=ev.target.closest('[data-act^="pr
 
 /* حسابات المنصات: الناقص يطلع */
 const ACCF24=[['Url','رابط الدخول'],['Username','اسم المستخدم'],['Password','كلمة المرور'],['Owner','صاحب الحساب']];
-const accMiss24=()=>(RAW.Accounts||[]).filter(a=>typeof accCanView!=='function'||accCanView(a)).map(a=>({a,m:ACCF24.filter(f=>!String(a[f[0]]||'').trim()).map(f=>f[1])})).filter(x=>x.m.length);
+const accMiss24=()=>(RAW.Accounts||[]).filter(a=>!/^\[مغلق/.test(a.Notes||'')&&(typeof accCanView!=='function'||accCanView(a))).map(a=>({a,m:ACCF24.filter(f=>!String(a[f[0]]||'').trim()).map(f=>f[1])})).filter(x=>x.m.length);
 const _accV24=PAGES.accounts;PAGES.accounts=prm=>{let h=_accV24(prm);const M=accMiss24();if(!M.length)return h;
  const box=`<div class="am24">${ic('alert',20,'#B4700F')}<div style="flex:1;min-width:220px"><b>${M.length===1?'حساب واحد ناقص فيه بيانات':M.length===2?'حسابين ناقص فيهم بيانات':M.length+' '+(M.length<=10?'حسابات ناقص فيها بيانات':'حساب ناقص فيه بيانات')}</b><div class="ls">${M.map(x=>`<span><b>${esc(x.a.Title||'')}</b>${x.a.Company?' · '+esc(x.a.Company):''}: ناقص ${x.m.join(' و')}</span>`).join('')}</div><small>أول ما تكمّلونها تختفي من هنا · وكل تعديل ينسجل باسم اللي عدّله</small></div></div>`;
  const t=document.createElement('template');t.innerHTML=h;const ph=t.content.querySelector('.ph');if(!ph)return box+h;ph.insertAdjacentHTML('afterend',box);return t.innerHTML};
@@ -4303,7 +4308,7 @@ function healthIdx28(){const P=[];const X=expRows().filter(r=>r.date&&r.k!=='pe'
  P.push({k:'conf',n:uc.length,t:`تواريخ ما أحد تأكد منها من ${CONF28} يوم`,s:'شيك عليها في المنصة الحكومية واضغط «أكّد»',go:'health',b:'أكّدها',c:'a'});
  let miss=0,cells=0;try{const canC=S.me==='r'||(typeof grants8==='function'&&grants8('s').clients);const T=[['emp',visEmp().length],['veh',visVeh().length]].concat(canC?[['cli',S.clients.length]]:[]);T.forEach(([t,n])=>{const d=mgData10(t);miss+=d.miss;cells+=n*d.C.length})}catch(e){}
  P.push({k:'miss',n:miss,t:'بيانات ناقصة',s:'خانات فاضية في الموظفين والسيارات والعملاء',go:'missing',b:'كمّلها',c:'a'});
- let accN=0,accT=0;try{accT=(RAW.Accounts||[]).length;accN=accMiss24().length}catch(e){}if(S.me!=='k')P.push({k:'acc',n:accN,t:'حسابات منصات ناقص فيها بيانات',s:'كلمة مرور أو رابط أو اسم مستخدم',go:'accounts',b:'كمّلها',c:'a'});
+ let accN=0,accT=0;try{accT=(RAW.Accounts||[]).filter(a=>!/^\[مغلق/.test(a.Notes||'')).length;accN=accMiss24().length}catch(e){}if(S.me!=='k')P.push({k:'acc',n:accN,t:'حسابات منصات ناقص فيها بيانات',s:'كلمة مرور أو رابط أو اسم مستخدم',go:'accounts',b:'كمّلها',c:'a'});
  const E=visEmp();const eng=E.filter(e=>/[A-Za-z]{2,}/.test(e.name));P.push({k:'eng',n:eng.length,t:'أسماء موظفين بالإنجليزي',s:'تطلع كذا في التقارير والرسائل',go:eng[0]?'emp-'+eng[0].id:'employees',b:'عدّلها',c:'b'});
  const tot=X.length+cells+(S.me!=='k'?accT:0)+E.length;const bad=st.length+fx.length+uc.length+miss+(S.me!=='k'?accN:0)+eng.length;const sc=tot?Math.max(0,Math.round(100*(1-bad/tot))):100;return{sc,P,bad}}
 {const o=PAGES.dash;PAGES.dash=prm=>{let h=o(prm);try{if(S.me==='k'&&!(typeof grants8==='function'&&grants8('k').foresta))return h;const H=healthIdx28();const top=H.P.filter(x=>x.n).sort((a,b)=>b.n-a.n).slice(0,3);
@@ -4580,6 +4585,55 @@ window.addEventListener('click',e=>{const el=e.target.closest('[data-act^="nt30d
   L.push({lv,key,i:'note',t:'ملاحظتك: '+n.t.replace(/\s+/g,' ').slice(0,80),s:`كتبتها ${dayName14(n.at)}`+(x===null?'':x<0?` · فات موعدها ${-x===1?'من يوم':-x===2?'من يومين':'من '+(-x)+(-x<=10?' أيام':' يوم')}`:x===0?' · موعدها اليوم':' · موعدها '+dayName14(D(fd30(n.d)))),go:'note-'+n.id,b:'__nt30:'+n.id})});
   const o={u:0,i:1,f:2};L.sort((a,b)=>o[a.lv]-o[b.lv])}catch(e){}return L}}
 {const _pp30=PAGES.prio;PAGES.prio=prm=>_pp30(prm).replace(/<button class="btn sm pri" data-go="note-(\d+)">__nt30:\d+<\/button>/g,(m,id)=>`<button class="btn sm pri" data-act="nt30d:${id}">${ic('tick',15,'#fff')}خلّصتها</button>`)}
+/* ===================== v30.3 · وثائق الشركة (فوريستا) + إغلاق الحسابات ===================== */
+const CODF30='مرفقات المنصة/وثائق الشركة';
+const coCan30=()=>S.me!=='k'||grants8('k').foresta;
+const coDocs30=()=>coCan30()?(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&isFor(d.Company||'')):[];
+const coN30=d=>d.ExpiryDate?days(iso2(d.ExpiryDate)):null;
+const coSoon30=()=>coDocs30().filter(d=>{const n=coN30(d);return n!==null&&n<=60}).length;
+const COT30=['السجل التجاري','اشتراك الغرفة التجارية','رخصة البلدية','ترخيص نقل','شهادة الزكاة','شهادة التأمينات الاجتماعية','شهادة السعودة','العنوان الوطني'];
+let coFiles30=null;
+async function coLoad30(){const L=await driveList(CODF30);coFiles30=L||[];document.querySelectorAll('[data-cof30]').forEach(el=>{const id=el.dataset.cof30;const F=coFiles30.filter(f=>f.name.startsWith(id+' - '));el.innerHTML=F.length?F.map(f=>`<a class="btn sm" href="${esc(f.webUrl)}" target="_blank" rel="noopener">${ic('file',14)}افتح الملف</a>`).join(''):''})}
+PAGES.codocs=()=>{if(!coCan30())return noAccess();const L=coDocs30().sort((a,b)=>(coN30(a)??9e9)-(coN30(b)??9e9));const ed=S.me!=='k'||grants8('k').foresta;setTimeout(coLoad30,0);
+ const st=n=>n===null?pill('بدون تاريخ انتهاء','gray'):n<0?pill('منتهية','exp'):n<=60?pill(`تنتهي بعد ${n===0?'اليوم':n===1?'يوم':n===2?'يومين':n<=10?n+' أيام':n+' يوم'}`,'soon'):pill('سارية','ok');
+ const row=d=>{const n=coN30(d);return `<div class="co30"><span class="ico">${ic('file',20,'var(--br)')}</span><div class="tx"><b>${esc(d.DocType||d.Title)}</b><small>${d.DocNo?`الرقم ${esc(d.DocNo)}`:'الرقم مو مسجل'}${d.ExpiryDate?` · تنتهي ${iso2(d.ExpiryDate)}`:''}</small>${d.Notes?`<small class="nt">${esc(String(d.Notes).replace(/\s*·\s*$/,''))}</small>`:''}</div><div class="ac">${st(n)}<span data-cof30="${d.id}"></span>${ed?`<label class="btn sm" style="cursor:pointer">${ic('upload',14)}ارفع ملف<input type="file" hidden data-up="codoc30:${d.id}"></label><button class="ib" data-act="co30e:${d.id}" aria-label="تعديل" title="تعديل">${ic('edit',16)}</button>`:''}</div></div>`};
+ const S2=L.filter(d=>{const n=coN30(d);return n!==null&&n<=60}).length;
+ return `<div class="ph"><div><h1>وثائق الشركة</h1><p>شركة فوريستا · ${L.length?`${L.length===1?'وثيقة وحدة':L.length===2?'وثيقتين':L.length<=10?L.length+' وثائق':L.length+' وثيقة'}${S2?` · ${S2===1?"وحدة تحتاج":S2+" تحتاج"} تجديد`:' · كلها سارية'}`:'ما فيه وثائق مسجلة'} · اللي تنتهي خلال 60 يوم تطلع في «العاجل جداً»</p></div>${ed?`<div class="acts"><button class="btn pri" data-act="co30e:0">${ic('plus',16,'#fff')}وثيقة جديدة</button></div>`:''}</div>
+ <section class="card" style="overflow:hidden">${L.length?L.map(row).join(''):`<div class="empty" style="padding:30px">ما فيه وثائق · أضف السجل التجاري والغرفة التجارية وغيرها</div>`}</section>`};
+CR.codocs=['فوريستا','وثائق الشركة'];
+['r','s'].forEach(u=>{const N=NAV[u];if(!N||N.some(n=>Array.isArray(n)&&n[2]==='codocs'))return;const i=N.findIndex(n=>Array.isArray(n)&&n[2]==='vehicles');if(i>=0)N.splice(i+1,0,['file','وثائق الشركة','codocs',()=>{try{return coSoon30()}catch(e){return 0}}])});
+try{if(typeof NAV8!=='undefined'&&NAV8.k&&!NAV8.k.some(n=>Array.isArray(n)&&n[2]==='codocs')){const i=NAV8.k.findIndex(n=>Array.isArray(n)&&n[2]==='vehicles');NAV8.k.splice(i>=0?i+1:NAV8.k.length,0,['file','وثائق الشركة','codocs',()=>{try{return coSoon30()}catch(e){return 0}}])}}catch(e){}
+function coModal30(id){const d=id?(RAW.Documents||[]).find(x=>x.id==id)||{}:{};const v=k=>esc(d[k]||'');const ex=d.ExpiryDate?String(d.ExpiryDate).slice(0,10):'';
+ modal(`<div class="mh"><b>${id?'تعديل وثيقة':'وثيقة جديدة'} · شركة فوريستا</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="co30:${id||''}"><div class="mb"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+ <div class="field"><label for="co-t">نوع الوثيقة</label><input id="co-t" class="inp" list="co-tl" required value="${v('DocType')}"><datalist id="co-tl">${COT30.map(x=>`<option value="${x}">`).join('')}</datalist></div>
+ <div class="field"><label for="co-n">الرقم</label><input id="co-n" class="inp" dir="ltr" value="${v('DocNo')}"></div>
+ <div class="field"><label for="co-x">تاريخ الانتهاء</label><input id="co-x" class="inp" type="date" value="${ex}"></div></div>
+ <div class="field" style="margin-top:12px"><label for="co-m">ملاحظات</label><textarea id="co-m" class="inp" rows="2">${v('Notes')}</textarea></div></div>
+ <div class="mf"><button class="btn pri" type="submit">احفظ</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+window.addEventListener('click',e=>{const el=e.target.closest('[data-act^="co30e:"]');if(!el)return;e.stopImmediatePropagation();e.preventDefault();coModal30(+el.dataset.act.split(':')[1]||0)},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="co30:"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const id=+f.dataset.form.split(':')[1]||0;
+ const V=x=>(document.getElementById(x)||{}).value||'';const type=V('co-t').trim();if(!type){toast('اكتب نوع الوثيقة');return}const x=V('co-x');
+ const fl={DocType:type,DocNo:V('co-n').trim(),Notes:V('co-m').trim(),ExpiryDate:x?x+'T12:00:00Z':null,Title:`${type} - شركة فوريستا`};
+ act(async()=>{if(id){await spPatch('Documents',id,fl,{label:fl.Title});Object.assign((RAW.Documents||[]).find(d=>d.id==id)||{},fl)}else{const it=await spCreate('Documents',{...fl,Company:'فوريستا',Category:'الشركة',BelongsTo:'شركة فوريستا',RenewStatus:'ساري'});RAW.Documents.push(it)}closeModal()},id?'انحفظ التعديل ✓':'انضافت الوثيقة ✓')},true);
+document.addEventListener('change',e=>{const inp=e.target.closest('input[data-up^="codoc30:"]');if(!inp||!inp.files.length)return;e.stopImmediatePropagation();const file=inp.files[0];inp.value='';if(file.size>4*1024*1024){toast('الملف أكبر من 4MB');return}
+ const id=inp.dataset.up.split(':')[1];const d=(RAW.Documents||[]).find(x=>x.id==id)||{};const clean=file.name.replace(/["*:<>?\/\\|#%]/g,'_');
+ act(async()=>{await drivePut(`${CODF30}/${id} - ${clean}`,file,file.type);AUDIT_HOOK('رفع ملف','Documents',+id,null,{file:clean},{Title:d.Title,Company:'فوريستا'})},'انرفع الملف ✓')},true);
+/* «العاجل جداً»: وثائق الشركة اللي تنتهي خلال 60 يوم */
+{const _pc30=prio28;prio28=function(){const L=_pc30.apply(this,arguments);if(L._c30)return L;L._c30=1;
+ try{coDocs30().forEach(d=>{const n=coN30(d);if(n===null||n>60)return;const lv=n<0||n<=14?'u':'i';const key='co:'+d.id+':'+lv+':'+String(d.ExpiryDate).slice(0,10);if(snz28(key))return;
+  L.push({lv,key,i:'file',t:`${d.DocType} · شركة فوريستا ${n<0?'منتهية':n===0?'تنتهي اليوم':'تنتهي بعد '+(n===1?'يوم':n===2?'يومين':n<=10?n+' أيام':n+' يوم')}`,s:`تنتهي ${iso2(d.ExpiryDate)}${d.DocNo?' · الرقم '+d.DocNo:''}`,go:'codocs'})});
+  const o={u:0,i:1,f:2};L.sort((a,b)=>o[a.lv]-o[b.lv])}catch(e){}return L}}
+/* الحسابات: «الحساب مغلق» يخفيه من القائمة (ما ينحذف، ينحفظ في السجل) */
+const accClosed30=a=>/^\[مغلق/.test(a.Notes||'');
+{const R=()=>RAW.Accounts;const _acc30=PAGES.accounts;PAGES.accounts=prm=>{const A0=RAW.Accounts||[];const C=A0.filter(a=>accClosed30(a)&&(typeof accCanView!=='function'||accCanView(a)));let h;
+ try{if(!ui.accCl30)RAW.Accounts=A0.filter(a=>!accClosed30(a));h=_acc30(prm)}finally{RAW.Accounts=A0}
+ if(!C.length)return h;const bar=`<div class="mini" style="margin:-4px 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${ic('lock',14)}${C.length===1?'فيه حساب واحد مغلق ومخفي':C.length===2?'فيه حسابين مغلقة ومخفية':C.length+' حسابات مغلقة ومخفية'}: ${C.map(a=>esc(a.Title)).join('، ')} <button class="btn sm" data-act="acccl30">${ui.accCl30?'اخفها':'اعرضها'}</button></div>`;
+ const i=h.indexOf('<div class="aco">');return i>=0?h.slice(0,i)+bar+h.slice(i):h+bar}}
+{const _am30=accModal;accModal=function(id){_am30(id);try{if(!id||S.me!=='r')return;const a=(RAW.Accounts||[]).find(x=>x.id==id);const mf=document.querySelector('.ov .mf');if(!a||!mf)return;const b=document.createElement('button');b.type='button';b.className='btn';b.style.marginInlineStart='auto';b.dataset.act='accclose30:'+id;b.innerHTML=accClosed30(a)?'رجّعه حساب شغّال':'الحساب مغلق · اخفه';mf.appendChild(b)}catch(e){}}}
+window.addEventListener('click',e=>{const el=e.target.closest('[data-act="acccl30"],[data-act^="accclose30:"]');if(!el)return;e.stopImmediatePropagation();e.preventDefault();
+ if(el.dataset.act==='acccl30'){ui.accCl30=!ui.accCl30;render();return}
+ const id=+el.dataset.act.split(':')[1];const a=(RAW.Accounts||[]).find(x=>x.id==id);if(!a)return;const was=accClosed30(a);const notes=was?String(a.Notes||'').replace(/^\[مغلق[^\]]*\]\s*/,''):`[مغلق ${TODAYS}] ${a.Notes||''}`.trim();
+ act(async()=>{await spPatch('Accounts',id,{Notes:notes},{label:a.Title+(was?' · رجع شغّال':' · مغلق')});a.Notes=notes;closeModal()},was?'رجع الحساب للقائمة ✓':'انقفل الحساب وانخفى من القائمة ✓')},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
