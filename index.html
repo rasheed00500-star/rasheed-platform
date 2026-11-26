@@ -3300,7 +3300,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261125103916';
+const APPV18='20261126132705';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -4634,6 +4634,21 @@ window.addEventListener('click',e=>{const el=e.target.closest('[data-act="acccl3
  if(el.dataset.act==='acccl30'){ui.accCl30=!ui.accCl30;render();return}
  const id=+el.dataset.act.split(':')[1];const a=(RAW.Accounts||[]).find(x=>x.id==id);if(!a)return;const was=accClosed30(a);const notes=was?String(a.Notes||'').replace(/^\[مغلق[^\]]*\]\s*/,''):`[مغلق ${TODAYS}] ${a.Notes||''}`.trim();
  act(async()=>{await spPatch('Accounts',id,{Notes:notes},{label:a.Title+(was?' · رجع شغّال':' · مغلق')});a.Notes=notes;closeModal()},was?'رجع الحساب للقائمة ✓':'انقفل الحساب وانخفى من القائمة ✓')},true);
+/* ===================== v30.4 · تحديث تم: خالد بصلاحية + تأكيد كل التواريخ المطابقة ===================== */
+const tamConfIds30=T=>{const ids=[];(T&&T.all||[]).forEach(c=>{const d=c.v._d||{};['reg','insp'].forEach(k=>{if(d[k]&&d[k].id&&d[k].ExpiryDate)ids.push(d[k].id)})});return [...new Set(ids)]};
+const tamExtra30=T=>{if(!T)return [];const inF=new Set(T.all.map(c=>c.v.id));return visVeh().filter(v=>!inF.has(v.id))};
+{const _ti30=PAGES.tamimport;PAGES.tamimport=prm=>{const kg=S.me==='k'&&typeof grants8==='function'&&grants8('k').foresta;let h;if(kg){S.me='s';try{h=_ti30(prm)}finally{S.me='k'}}else h=_ti30(prm);const T=TAM19;if(!T||h.includes('ما عندك صلاحية'))return h;
+ const ids=tamConfIds30(T);const ex=tamExtra30(T);const n=T.ch.length;
+ let add=`<div class="mini" style="margin-top:10px;line-height:1.9">${ic('shield',14)} ${n?'لما تحفظ':'لما تضغط «أكّد»'}، كل تواريخ الاستمارة والفحص للسيارات اللي في الملف (${T.all.length}) تنحسب «متأكد منها اليوم من منصة تم».</div>`;
+ if(ex.length)add+=`<div class="mini" style="margin-top:6px;color:var(--amb)">مسجلة في المنصة ومو موجودة في ملف تم: ${ex.map(v=>esc(v.title)).join('، ')} · تأكد إذا انباعت أو انتقلت</div>`;
+ if(!n&&ids.length)add+=`<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap">${btn('إلغاء','x','','tam19x')}${btn(`أكّد التواريخ (${T.all.length} سيارة)`,'tick','pri','tam30cf')}</div>`;
+ const k=h.lastIndexOf('</div>');return k<0?h+add:h.slice(0,k)+add+h.slice(k)}}
+window.addEventListener('click',ev=>{const b=ev.target.closest('[data-act="tam19ok"],[data-act="tam30cf"]');if(!b)return;ev.stopImmediatePropagation();ev.preventDefault();const T=TAM19;if(!T)return;const C=T.ch||[];const ids=tamConfIds30(T);const N=T.all.length;
+ act(async()=>{for(const c of C){if(c.reg)await saveDate10('reg','veh',c.v.id,ymd(c.reg));if(c.insp)await saveDate10('insp','veh',c.v.id,ymd(c.insp));if(c.user){const fl={Driver:c.user};await spPatch('Vehicles',c.v.id,fl);syncRaw('Vehicles',c.v.id,fl)}}
+  const ids2=[...new Set(ids.concat(C.flatMap(c=>['reg','insp'].map(k=>c.v._d&&c.v._d[k]&&c.v._d[k].id).filter(Boolean))))];if(ids2.length)await confirm28(ids2);TAM19=null},C.length?`تحدّثت ${C.length===1?'سيارة وحدة':C.length===2?'سيارتين':C.length+(C.length<=10?' سيارات':' سيارة')} وتأكدت تواريخ ${N} سيارة ✓`:`تأكدت تواريخ ${N} سيارة من منصة تم ✓`)},true);
+/* خالد بصلاحية فوريستا: زر «تحديث من منصة تم» في السيارات */
+{const _vh30=PAGES.vehicles;PAGES.vehicles=prm=>{const h=_vh30(prm);if(S.me!=='k'||!(typeof grants8==='function'&&grants8('k').foresta)||h.includes('go:tamimport')||h.includes('ما عندك صلاحية'))return h;
+ const t=document.createElement('template');t.innerHTML=h;const ph=t.content.querySelector('.ph');if(!ph)return h;let a=ph.querySelector('.acts');if(!a){a=document.createElement('div');a.className='acts';ph.appendChild(a)}a.insertAdjacentHTML('afterbegin',btn('تحديث من منصة تم','xls','','go:tamimport'));return t.innerHTML}}
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
