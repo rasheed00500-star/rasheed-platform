@@ -3505,7 +3505,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261127000421';
+const APPV18='20261127001120';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -5568,11 +5568,17 @@ function pv41(html){if(!html)return;const t=(html.match(/<title>([^<]*)<\/title>
  document.body.appendChild(d);const fr=d.querySelector('iframe');d._doc=doc;d._t=t;
  fr.onload=()=>{fit41(d)};fr.srcdoc=doc;addEventListener('resize',()=>fit41(d))}
 function fit41(d){try{if(!document.body.contains(d))return;const fr=d.querySelector('iframe'),wr=d.querySelector('.pv41w'),bx=d.querySelector('.pv41b');const W=820;const sc=Math.min(1,(bx.clientWidth-20)/W);const h=Math.max(fr.contentDocument.documentElement.scrollHeight,600);fr.style.width=W+'px';fr.style.height=h+'px';fr.style.transform=`scale(${sc})`;wr.style.width=(W*sc)+'px';wr.style.height=(h*sc)+'px'}catch(e){}}
+/* html2canvas يرسم بعض النصوص العربية المحاذاة لليسار بشكل مائل · نرسمها نحن على canvas */
+function fixTxt41(fd){fd.querySelectorAll('.hd .m,.ft span').forEach(m=>{try{const cs=fd.defaultView.getComputedStyle(m);const lines=m.innerText.split('\n').map(x=>x.trim()).filter(Boolean);if(!lines.length)return;
+ const fs=parseFloat(cs.fontSize)||12,lh=Math.round(fs*1.8),k=3;const c0=fd.createElement('canvas').getContext('2d');c0.font=`${cs.fontWeight} ${fs}px ${cs.fontFamily}`;const w=Math.ceil(Math.max(...lines.map(l=>c0.measureText(l).width)))+4;
+ const c=fd.createElement('canvas');c.width=w*k;c.height=lines.length*lh*k;c.style.width=w+'px';c.style.height=(lines.length*lh)+'px';c.style.display='block';const x=c.getContext('2d');x.scale(k,k);x.font=c0.font;x.fillStyle=cs.color;x.direction='rtl';x.textBaseline='middle';
+ const left=cs.textAlign==='left';lines.forEach((l,i)=>{x.textAlign=left?'left':'right';x.fillText(l,left?0:w,i*lh+lh/2)});
+ const wrap=fd.createElement('div');wrap.style.cssText=`display:flex;justify-content:${left?'flex-end':'flex-start'}`;wrap.appendChild(c);m.replaceWith(wrap)}catch(e){}})}
 function loadJs41(src){return new Promise((ok,no)=>{if(document.querySelector(`script[src="${src}"]`)){const w=setInterval(()=>{if(window.html2canvas&&window.jspdf){clearInterval(w);ok()}},100);setTimeout(()=>{clearInterval(w);ok()},8000);return}const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error('load'));document.head.appendChild(s)})}
 async function pdf41(d){const b=d.querySelector('[data-act="pv41d"]');const lb=b.innerHTML;b.disabled=true;b.textContent='جارٍ التجهيز…';
  try{await loadJs41('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');await loadJs41('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
   const f=document.createElement('iframe');f.style.cssText='position:fixed;left:-10000px;top:0;width:794px;height:1123px;border:0;visibility:hidden';document.body.appendChild(f);
-  await new Promise(r=>{f.onload=r;f.srcdoc=d._doc});const fd=f.contentDocument;try{await fd.fonts.ready}catch(e){}await new Promise(r=>setTimeout(r,400));
+  let cur=d._doc;try{cur='<!doctype html>'+d.querySelector('iframe').contentDocument.documentElement.outerHTML}catch(e){}await new Promise(r=>{f.onload=r;f.srcdoc=cur});const fd=f.contentDocument;try{await fd.fonts.ready}catch(e){}await new Promise(r=>setTimeout(r,400));fd.querySelectorAll('.nt.empty').forEach(x=>x.remove());fixTxt41(fd);
   const el=fd.querySelector('.pg')||fd.body;const cv=await html2canvas(el,{scale:2,backgroundColor:'#ffffff',windowWidth:794,useCORS:true});f.remove();
   const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});const pw=210,ph=297,m=8;const iw=pw-2*m;const pxPerMm=cv.width/iw;const pageH=Math.floor((ph-2*m)*pxPerMm);
   for(let y=0,i=0;y<cv.height;y+=pageH,i++){const h=Math.min(pageH,cv.height-y);const c=document.createElement('canvas');c.width=cv.width;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,h);x.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',m,m,iw,h/pxPerMm)}
