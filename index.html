@@ -1084,6 +1084,9 @@ tr.rx>td:first-child{box-shadow:inset -4px 0 0 #E8857D}tr.rs>td:first-child{box-
 th.th32{cursor:pointer;user-select:none;white-space:nowrap}th.th32:hover{color:var(--ink)}.so32{display:inline-flex;vertical-align:middle;margin-inline-start:4px;color:#B5BEB9}th.on32{color:var(--br)}th.on32 .so32{color:var(--br)}
 .sw32{position:relative;will-change:transform}.sw32::after{content:attr(data-sw);position:absolute;top:0;bottom:0;width:150px;display:flex;align-items:center;padding:0 16px;color:#fff;font-weight:700;font-size:14px;opacity:.75}
 .sw32.swl::after{left:100%;background:#17694A;justify-content:flex-start}.sw32.swr::after{right:100%;background:#E3A63B;justify-content:flex-end}.sw32.arm::after{opacity:1}
+html,body{overscroll-behavior-y:none}
+.body{overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+.top{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#fff!important}
 
 </style>
 </head>
@@ -3348,7 +3351,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261126161123';
+const APPV18='20261126163311';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>فيه نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الحين</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -4838,6 +4841,24 @@ document.addEventListener('touchend',e=>{if(!SW32)return;const s=SW32;SW32=null;
  if(s.dx<=-90){const b=document.createElement('button');b.dataset.act='done:'+s.id;b.hidden=true;document.body.appendChild(b);setTimeout(()=>{b.click();b.remove()},50)}
  else if(s.dx>=90){const d=new Date(TODAY);d.setDate(d.getDate()+1);const iso=ymd(d)+'T12:00:00Z';act(async()=>{await spPatch('Tasks',s.id,{DueDate:iso});const r=rawTask(s.id);if(r)r.DueDate=iso},'تأجّلت لبكرة')}});
 {const _r33=render;render=function(){_r33.apply(this,arguments);try{if(S.loaded)sortInit32()}catch(x){}}}
+
+/* ===================== v33 · سلاسة التمرير: ما تنقلب الصفحة ولا تتجمد وأنت تتصفح ===================== */
+let ACT33=0;const T33=Date.now();let TOUCHED33=false;
+['scroll','wheel','touchstart','touchmove','keydown','mousedown'].forEach(ev=>document.addEventListener(ev,()=>{ACT33=Date.now();TOUCHED33=true},{capture:true,passive:true}));
+const busy33=()=>Date.now()-ACT33<1500||!!(document.activeElement&&['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))||!!(document.getElementById('layer')||{}).innerHTML;
+/* 1) التحديثات اللي تصير بالخلفية ما ترسم الصفحة وأنت تمرّر · تنتظر لين توقف ثانية ونص وتحافظ على مكانك */
+let BG33=0,PEND33=null,FG33=0;
+{const _r=render;render=function(){if(BG33>0&&!FG33&&S.loaded&&busy33()){if(!PEND33){const tick=()=>{if(busy33()){PEND33=setTimeout(tick,700);return}PEND33=null;const m=document.getElementById('main');const y=m?m.scrollTop:0;render();const m2=document.getElementById('main');if(m2)m2.scrollTop=y};PEND33=setTimeout(tick,700)}return}return _r.apply(this,arguments)}}
+const bg33=f=>async function(){BG33++;try{return await f.apply(this,arguments)}finally{BG33--}};
+autoEngine=bg33(autoEngine);softReload=bg33(softReload);
+/* 2) «العاجل جداً» يفتح تلقائياً بس إذا فتحت المنصة بدون رابط صفحة وما لمست شي للحين */
+const HASH33=!!(location.hash&&location.hash.length>1);
+{const _go=go;go=function(r){if(r==='prio'&&BG33>0&&(HASH33||TOUCHED33||Date.now()-T33>12000)){render();return}FG33++;try{return _go.apply(this,arguments)}finally{FG33--}}}
+{const _a=act;act=async function(){FG33++;try{return await _a.apply(this,arguments)}finally{FG33--}}}
+window.addEventListener('click',()=>{FG33++;setTimeout(()=>FG33--,0)},true);
+/* 3) فحص صور المستندات: ينحفظ نص ساعة بدل ما يعيد 55 طلب مع كل فتحة */
+{const _s=scanImages;scanImages=bg33(async function(){const K='img33:'+(S.realMe||S.me||'');if(!window.__force33){try{const c=JSON.parse(localStorage.getItem(K)||'null');if(c&&c.d&&Date.now()-c.at<30*60e3){IMGCACHE=c;render();return}}catch(e){}}
+ const r=await _s.apply(this,arguments);try{if(IMGCACHE)localStorage.setItem(K,JSON.stringify(IMGCACHE))}catch(e){}return r})}
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
