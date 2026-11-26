@@ -1233,6 +1233,14 @@ b.kk35.b{color:#2364AA}b.kk35.v{color:#6B4FA8}b.kk35.t{color:#0F7C86}
 .idle38 span{color:var(--mute);font-size:13px}
 .ins38{display:grid;gap:12px}.ins38>div{border:1px solid var(--line);border-radius:14px;padding:12px 14px}.ins38>div.on{border-color:var(--br);background:#F4FAF6}
 .ins38 ol{margin:6px 0 0;padding-inline-start:20px;line-height:1.9;font-size:14px}.kb38{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:0 6px;font-size:12px}
+/* v41 */
+.pv41{position:fixed;inset:0;z-index:9998;background:#F5F7F5;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.pv41h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px max(14px,env(safe-area-inset-left,0px));background:#fff;border-bottom:1px solid var(--line)}
+.pv41h b{font-size:15px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
+.pv41b{flex:1;min-height:0;padding:10px;overflow:auto;-webkit-overflow-scrolling:touch}
+.pv41w{margin:0 auto;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff}
+.pv41b iframe{border:0;display:block;transform-origin:top right;background:#fff}
+@media (max-width:600px){.pv41h b{max-width:100%;flex:1 1 100%}}
 
 </style>
 </head>
@@ -3497,7 +3505,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261126222220';
+const APPV18='20261127000421';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -5547,6 +5555,36 @@ const vGap40=v=>[!v.user?'بدون مستخدم فعلي':'',!v.authType?'بدو
  visVeh().forEach(v=>{const g=vGap40(v);const since=X[v.id];if(!g.length||!since)return;const d=Math.round((TODAY-new Date(since+'T00:00:00'))/864e5);if(d<14)return;const key='v40:'+v.id+':'+since;if(snz28(key))return;
   L.push({lv:'i',key,i:'car',t:`السيارة ${v.l} ${v.n}: ${g.join(' و')}`,s:`منذ ${d} يوماً · احتمال مخالفة مرورية · حدّث بيانات المستخدم والتفويض`,go:'veh-'+v.id})});
  const or={u:0,i:1,f:2};L.sort((a,b)=>or[a.lv]-or[b.lv])}catch(e){}return L}}
+
+/* ===================== v41 · الطباعة وحفظ PDF من الجوال والتطبيق المثبّت (بدون نوافذ منبثقة) ===================== */
+const MOB41=()=>{try{if(localStorage.getItem('pv41')==='1')return true}catch(e){}try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true||(matchMedia('(pointer: coarse)').matches&&innerWidth<1100)}catch(e){return false}};
+const HIDE41='<style>.bar{display:none!important}.ft{position:static!important;margin-top:18px}body{background:#fff!important}.pg{margin:0 auto!important;box-shadow:none!important}</style>';
+{const _open=window.open.bind(window);window.open=function(u,t,f){if(MOB41()&&(!u||u==='about:blank')){let buf='';const fake={closed:false,opener:window,location:{href:'about:blank'},focus(){},blur(){},close(){},print(){},addEventListener(){},
+ document:{write(h){buf+=h},writeln(h){buf+=h+'\n'},open(){buf=''},close(){setTimeout(()=>pv41(buf),0)},title:''}};return fake}return _open(u,t,f)}}
+function pv41(html){if(!html)return;const t=(html.match(/<title>([^<]*)<\/title>/)||[])[1]||'تقرير';const doc=html.replace('</head>',HIDE41+'</head>');
+ const old=document.getElementById('pv41');if(old)old.remove();
+ const d=document.createElement('div');d.id='pv41';d.className='pv41';
+ d.innerHTML=`<div class="pv41h"><b>${esc(t)}</b><span class="sp35"></span><button class="btn sm pri" data-act="pv41p">${ic('print',15,'#fff')}طباعة / حفظ PDF</button><button class="btn sm" data-act="pv41d">${ic('file',15)}تنزيل PDF</button><button class="ib" data-act="pv41x" aria-label="إغلاق">${ic('x',18)}</button></div><div class="pv41b"><div class="pv41w"><iframe title="معاينة التقرير"></iframe></div></div>`;
+ document.body.appendChild(d);const fr=d.querySelector('iframe');d._doc=doc;d._t=t;
+ fr.onload=()=>{fit41(d)};fr.srcdoc=doc;addEventListener('resize',()=>fit41(d))}
+function fit41(d){try{if(!document.body.contains(d))return;const fr=d.querySelector('iframe'),wr=d.querySelector('.pv41w'),bx=d.querySelector('.pv41b');const W=820;const sc=Math.min(1,(bx.clientWidth-20)/W);const h=Math.max(fr.contentDocument.documentElement.scrollHeight,600);fr.style.width=W+'px';fr.style.height=h+'px';fr.style.transform=`scale(${sc})`;wr.style.width=(W*sc)+'px';wr.style.height=(h*sc)+'px'}catch(e){}}
+function loadJs41(src){return new Promise((ok,no)=>{if(document.querySelector(`script[src="${src}"]`)){const w=setInterval(()=>{if(window.html2canvas&&window.jspdf){clearInterval(w);ok()}},100);setTimeout(()=>{clearInterval(w);ok()},8000);return}const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error('load'));document.head.appendChild(s)})}
+async function pdf41(d){const b=d.querySelector('[data-act="pv41d"]');const lb=b.innerHTML;b.disabled=true;b.textContent='جارٍ التجهيز…';
+ try{await loadJs41('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');await loadJs41('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  const f=document.createElement('iframe');f.style.cssText='position:fixed;left:-10000px;top:0;width:794px;height:1123px;border:0;visibility:hidden';document.body.appendChild(f);
+  await new Promise(r=>{f.onload=r;f.srcdoc=d._doc});const fd=f.contentDocument;try{await fd.fonts.ready}catch(e){}await new Promise(r=>setTimeout(r,400));
+  const el=fd.querySelector('.pg')||fd.body;const cv=await html2canvas(el,{scale:2,backgroundColor:'#ffffff',windowWidth:794,useCORS:true});f.remove();
+  const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});const pw=210,ph=297,m=8;const iw=pw-2*m;const pxPerMm=cv.width/iw;const pageH=Math.floor((ph-2*m)*pxPerMm);
+  for(let y=0,i=0;y<cv.height;y+=pageH,i++){const h=Math.min(pageH,cv.height-y);const c=document.createElement('canvas');c.width=cv.width;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,h);x.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',m,m,iw,h/pxPerMm)}
+  const name=(d._t||'تقرير').replace(/[\\/:*?"<>|]/g,'-')+' '+fmt(new Date()).replace(/\//g,'-')+'.pdf';const blob=pdf.output('blob');const file=new File([blob],name,{type:'application/pdf'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:d._t});return}catch(e){if(e&&e.name==='AbortError')return}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);toast('تم تنزيل الملف ✓')}
+ catch(e){console.warn('pdf41',e);toast('تعذّر تجهيز الملف · استخدم «طباعة / حفظ PDF»')}
+ finally{b.disabled=false;b.innerHTML=lb}}
+window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act^="pv41"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();const d=document.getElementById('pv41');if(!d)return;const a=b.dataset.act;
+ if(a==='pv41x'){d.remove();return}
+ if(a==='pv41p'){const w=d.querySelector('iframe').contentWindow;try{w.focus();w.print()}catch(x){toast('تعذّرت الطباعة · استخدم «تنزيل PDF»')}return}
+ if(a==='pv41d'){pdf41(d);return}},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
