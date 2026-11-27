@@ -1233,6 +1233,12 @@ b.kk35.b{color:#2364AA}b.kk35.v{color:#6B4FA8}b.kk35.t{color:#0F7C86}
 .idle38 span{color:var(--mute);font-size:13px}
 .ins38{display:grid;gap:12px}.ins38>div{border:1px solid var(--line);border-radius:14px;padding:12px 14px}.ins38>div.on{border-color:var(--br);background:#F4FAF6}
 .ins38 ol{margin:6px 0 0;padding-inline-start:20px;line-height:1.9;font-size:14px}.kb38{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:0 6px;font-size:12px}
+
+/* اجتماع الأسبوع: تجاوب مع الجوال */
+.k36.m38k{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g36.m38g{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){.k36.m38k{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.g36.m38g{grid-template-columns:minmax(0,1fr)}}
 /* v41 · معاينة الطباعة: ورقة A4 على خلفية رمادية */
 .pv41{position:fixed;inset:0;z-index:9998;background:#E4E7E5;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
 .pv41h{display:flex;align-items:center;gap:8px;padding:10px max(14px,env(safe-area-inset-right,0px)) 10px max(14px,env(safe-area-inset-left,0px));background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 6px rgba(20,32,26,.06)}
@@ -2441,8 +2447,8 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  if(a==='aco8'){e.stopPropagation();ui.aco=decodeURIComponent(x);ui.af='all';render();return}
  if(a==='svc8wait'){e.stopPropagation();const s=S.services.find(q=>q.id==x);const it=s&&s.stepItems.find(q=>q.Status!=='منجز');if(!it)return;const v=it.Status==='ينتظر جهة'?'جاري':'ينتظر جهة';act(async()=>{await spPatch('Procedures',it.id,{Status:v});it.Status=v},v==='ينتظر جهة'?'تسجّل إن الخطوة عند الجهة':'عادت الخطوة إلينا');return}
  if(a==='svc8hold'){e.stopPropagation();const sc=RAW.ServiceCases.find(q=>q.id==x);if(!sc)return;const v=sc.Status==='متوقف'?'جاري':'متوقف';act(async()=>{await spPatch('ServiceCases',sc.id,{Status:v});sc.Status=v},v==='متوقف'?'تسجّل إن الطلب بانتظار العميل':'عاد الطلب جارياً');return}
- if(a==='pm8lvl'){e.stopPropagation();const r=teamRow8(x);if(!r){toast('ما لقيت '+PEOPLE[x].name+' في قائمة الفريق');return}const m=permMap8(r);m['x_'+y]=z;const pv=Object.entries(m).map(([k,v])=>k+'='+v).join(';');act(async()=>{await spPatch('Team',r.id,{Perms:pv});r.Perms=pv},`${PEOPLE[x].name}: ${z==='1'?'صلاحية كاملة':z==='v'?'عرض فقط':'انقفل القسم'}`);return}
- if(a==='pm8sec'){e.stopPropagation();const r=teamRow8(x);if(!r){toast('ما لقيت '+PEOPLE[x].name+' في قائمة الفريق');return}const g=grants8(x);g[y]=g[y]?0:1;const m=permMap8(r);m['x_'+y]=String(g[y]);const pv=Object.entries(m).map(([k,v])=>k+'='+v).join(';');act(async()=>{await spPatch('Team',r.id,{Perms:pv});r.Perms=pv},g[y]?`صار ${PEOPLE[x].name} يطّلع على القسم`:`انشالت الصلاحية من ${PEOPLE[x].name}`);return}
+ if(a==='pm8lvl'){e.stopPropagation();const r=teamRow8(x);if(!r){toast('لم يُعثر على '+PEOPLE[x].name+' في قائمة الفريق');return}const m=permMap8(r);m['x_'+y]=z;const pv=Object.entries(m).map(([k,v])=>k+'='+v).join(';');act(async()=>{await spPatch('Team',r.id,{Perms:pv});r.Perms=pv},`${PEOPLE[x].name}: ${z==='1'?'صلاحية كاملة':z==='v'?'عرض فقط':'أُغلق القسم'}`);return}
+ if(a==='pm8sec'){e.stopPropagation();const r=teamRow8(x);if(!r){toast('لم يُعثر على '+PEOPLE[x].name+' في قائمة الفريق');return}const g=grants8(x);g[y]=g[y]?0:1;const m=permMap8(r);m['x_'+y]=String(g[y]);const pv=Object.entries(m).map(([k,v])=>k+'='+v).join(';');act(async()=>{await spPatch('Team',r.id,{Perms:pv});r.Perms=pv},g[y]?`أصبح ${PEOPLE[x].name} يطّلع على القسم`:`أُزيلت الصلاحية من ${PEOPLE[x].name}`);return}
  if(a==='pm8acc'){e.stopPropagation();const co=decodeURIComponent(y),lvl=z,nm=PEOPLE[x].name;const L=(RAW.Accounts||[]).filter(q=>(q.Company||'فوريستا')===co);
   const upd=(s,on)=>{const arr=(s||'').split(',').map(q=>q.trim()).filter(q=>q&&q!==nm);if(on)arr.push(nm);return arr.join(',')};
   act(async()=>{for(const q of L){const f={ViewBy:upd(q.ViewBy,lvl!=='none'),EditBy:upd(q.EditBy,lvl==='edit')};if(f.ViewBy===(q.ViewBy||'')&&f.EditBy===(q.EditBy||''))continue;await spPatch('Accounts',q.id,f,{label:`صلاحية ${nm} · ${q.Title}`});Object.assign(q,f)}},`تم: ${nm} ${lvl==='none'?'لا يطّلع على':lvl==='view'?'يطّلع':'عرض وتعديل'} حسابات ${co}`);return}
@@ -2661,7 +2667,7 @@ function aySetModal10(){modal(`<div class="mh"><div><b>رقم واتساب أي�
 /* =========================================================
    6) إجراء نهاية فترة التجربة
    ========================================================= */
-const PROB10=[{t:'تقييم المدير المباشر للموظف',w:'شيخة',o:0,g:'اطلب من المدير المباشر تقييم الموظف: الالتزام بالدوام، جودة العمل، التعامل، وهل ينصح بالتثبيت. اكتب ملخص التقييم في الملاحظة أدناه.'},{t:'قرار فترة التجربة (تثبيت أو تمديد أو إنهاء)',w:'رشيد',o:3,g:'اقرأ ملاحظة التقييم واختر القرار.'},{t:'تحديث العقد في منصة قوى',w:'شيخة',o:6,g:'حسب القرار: التثبيت لا يحتاج تعديلاً، والتمديد يُوثّق باتفاق مكتوب مع الموظف (لا تتجاوز التجربة 180 يوماً بالمجموع.'},{t:'إبلاغ الموظف بالقرار',w:'شيخة',o:8}];
+const PROB10=[{t:'تقييم المدير المباشر للموظف',w:'شيخة',o:0,g:'اطلب من المدير المباشر تقييم الموظف: الالتزام بالدوام، جودة العمل، التعامل، وهل ينصح بالتثبيت. اكتب ملخص التقييم في الملاحظة أدناه.'},{t:'قرار فترة التجربة (تثبيت أو تمديد أو إنهاء)',w:'رشيد',o:3,g:'اقرأ ملاحظة التقييم واختر القرار.'},{t:'تحديث العقد في منصة قوى',w:'شيخة',o:6,g:'حسب القرار: التثبيت لا يحتاج تعديلاً، والتمديد يُوثّق باتفاق مكتوب مع الموظف (لا تتجاوز التجربة 180 يوماً بالمجموع)، والإنهاء يُفتح له إجراء إنهاء خدمة.'},{t:'إبلاغ الموظف بالقرار',w:'شيخة',o:8}];
 async function probEngine10(){let made=0;for(const e of RAW.Employees.filter(e=>e.EmpStatus!=='منتهي'&&e.ProbationEnd)){const pe=iso2(e.ProbationEnd);const n=days(pe);if(n>15||n<-5)continue;const key=`PROB:E${e.id}-${e.ProbationEnd.slice(0,10).replace(/-/g,'')}`;if(RAW.Tasks.some(t=>(t.LinkRef||'')===key))continue;
   const steps=PROB10.map((s,i)=>{const d=new Date(TODAY);d.setDate(d.getDate()+s.o);return{n:i+1,t:s.t,w:s.w,g:s.g||'',d:ymd(d),ok:false,by:'',on:''}});
   const it=await spCreate('Tasks',{Title:`نهاية فترة التجربة · ${e.Title}`,EmpName:e.Title,AssignedTo:steps[0].w,AssignedBy:'المنصة',DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:e.Company||'فوريستا',LinkRef:key,Status:'مفتوحة',Steps:JSON.stringify(steps)},{label:'نهاية فترة التجربة · '+e.Title});RAW.Tasks.push(it);made++;
@@ -2672,7 +2678,7 @@ const _ssV10=stepSpec;stepSpec=function(t){const s=_ssV10(t);if(/قرار فتر
 const _smV10=stepMsg;stepMsg=function(p,title,v){const emp=p.empName||'الموظف';const r=RAW.Employees.find(e=>e.Title===p.empName)||{};const pe=iso2(r.ProbationEnd);const ext=pe?fmt(new Date(+D(pe)+90*864e5)):'';
  if(/تقييم المدير المباشر/.test(title))return{to:'المدير المباشر',m:`السلام عليكم،\nفترة تجربة الموظف ${emp}${r.JobTitle?' ('+r.JobTitle+')':''} تنتهي بتاريخ ${pe||'…'}.\nنرجو تزويدنا بتقييمكم: الالتزام بالدوام، جودة العمل، التعامل مع الفريق، وهل تنصحون بتثبيته؟\nوشكراً لكم.`};
  if(/قرار فترة التجربة/.test(title)&&v.pdec)return{to:'شيخة',m:`شيخة، تقرر بخصوص فترة تجربة ${emp}: ${v.pdec}.${v.pdec==='تمديد 90 يوم'&&ext?' التجربة الجديدة تنتهي '+ext+'، ونحتاج اتفاق مكتوب مع الموظف.':v.pdec==='إنهاء العقد'?' نرجو البدء في إجراء إنهاء الخدمة.':' نرجو إبلاغ الموظف.'}`};
- if(/إبلاغ الموظف بالقرار/.test(title)&&/فترة التجربة/.test(p.title)){const d=v.pdec||'';return{to:emp,m:d==='إنهاء العقد'?`${emp}، السلام عليكم\nنشكرك على الفترة اللي قضيتها معنا، ونفيدك بأنه تقرر إنهاء عقد العمل خلال فترة التجربة. سيتم التواصل معك لترتيب استلام العهد والمستحقات.\nمع تمنياتنا لك بالتوفيق.`:d==='تمديد 90 يوم'?`${emp}، السلام عليكم\nنفيدك بتمديد فترة التجربة 90 يوماً إضافية${ext?' تنتهي بتاريخ '+ext:''}، ونأمل منك الموافقة على اتفاق التمديد المرسل لك.\nوشكراً لك.`:`${emp}، السلام عليكم\nيسعدنا إبلاغك باجتياز فترة التجربة بنجاح وتثبيتك في وظيفتك. نتمنى لك التوفيق.\nقسم الموارد البشرية`}}
+ if(/إبلاغ الموظف بالقرار/.test(title)&&/فترة التجربة/.test(p.title)){const d=v.pdec||'';return{to:emp,m:d==='إنهاء العقد'?`${emp}، السلام عليكم\nنشكرك على الفترة التي قضيتها معنا، ونفيدك بأنه تقرر إنهاء عقد العمل خلال فترة التجربة. سيتم التواصل معك لترتيب استلام العهد والمستحقات.\nمع تمنياتنا لك بالتوفيق.`:d==='تمديد 90 يوم'?`${emp}، السلام عليكم\nنفيدك بتمديد فترة التجربة 90 يوماً إضافية${ext?' تنتهي بتاريخ '+ext:''}، ونأمل منك الموافقة على اتفاق التمديد المرسل لك.\nوشكراً لك.`:`${emp}، السلام عليكم\nيسعدنا إبلاغك باجتياز فترة التجربة بنجاح وتثبيتك في وظيفتك. نتمنى لك التوفيق.\nقسم الموارد البشرية`}}
  if(/طلب المخالصة من أيهم/.test(title)){const ce=iso2(r.ContractEnd);return{to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنرجو تجهيز المخالصة النهائية ومستحقات نهاية الخدمة للموظف ${emp}${ce?'، وآخر يوم في العقد '+ce:''}.\nوشكراً لكم.`}}
  if(/إشعار الموظف بعدم تجديد العقد/.test(title)){const ce=iso2(r.ContractEnd);return{to:emp,m:`${emp}، السلام عليكم\nنفيدك بأنه تقرر عدم تجديد عقد العمل${ce?' المنتهي بتاريخ '+ce:''}، ونشكرك على جهودك خلال فترة عملك معنا. سيتم التواصل معك لترتيب إخلاء الطرف والمستحقات.\nقسم الموارد البشرية`}}
  return _smV10(p,title,v)};
@@ -2730,8 +2736,8 @@ function ramData10(){const H=hijri10();if(!H)return null;const inW=s=>{const d=D
  const svcs=S.me==='s'&&!grants8('s').clients?[]:S.services.filter(s=>!['منجزة','ملغي'].includes(s.status));return{H,items,procs,svcs}}
 const ramShow10=()=>{const H=hijri10();return H&&(H.inRam||(H.toRam>=0&&H.toRam<=100)||(TODAY>=H.eid&&TODAY<=H.eidEnd))};
 function ramStrip10(){if(!ramShow10())return '';const R=ramData10();if(!R)return '';const H=R.H;
- const head=H.inRam?`رمضان مبارك · متبقٍ <b>${H.toEid}</b> يوم على العيد`:H.toRam>=0?`متبقٍ <b>${H.toRam}</b> يوم على رمضان · <b>${H.toEid}</b> على العيد`:'عيدكم مبارك';
- return `<div class="ram10">${ic('cal',20,'#6650C2')}<div style="flex:1;min-width:200px"><b class="t">${head}</b><small>${R.items.length?R.items.length+' مستند ينتهي في رمضان أو العيد · ':''}${R.procs.length} إجراء جاري${R.svcs.length&&S.me!=='s'?' · '+R.svcs.length+' طلب عميل':''} · الأفضل تخلّصها قبل ${fmt(H.ram).slice(0,5)}</small></div>${btn('شوف الخطة','left','sm','go:ramadan')}</div>`}
+ const dW=n=>n===1?'يوم واحد':n===2?'يومان':n<=10?n+' أيام':n+' يوماً';const head=H.inRam?`رمضان مبارك · متبقٍ <b>${dW(H.toEid)}</b> على العيد`:H.toRam>=0?`متبقٍ <b>${dW(H.toRam)}</b> على رمضان · و<b>${dW(H.toEid)}</b> على العيد`:'عيدكم مبارك';
+ return `<div class="ram10">${ic('cal',20,'#6650C2')}<div style="flex:1;min-width:200px"><b class="t">${head}</b><small>${R.items.length?R.items.length+' مستند ينتهي في رمضان أو العيد · ':''}${R.procs.length?R.procs.length+' إجراء جاري':'لا توجد إجراءات جارية'}${R.svcs.length&&S.me!=='s'?' · '+R.svcs.length+' طلب عميل':''}${R.procs.length||R.svcs.length||R.items.length?' · يُفضَّل إنجازها قبل '+fmt(H.ram).slice(0,5):''}</small></div>${btn('عرض الخطة','left','sm','go:ramadan')}</div>`}
 PAGES.ramadan=()=>{const R=ramData10();if(!R)return `<div class="card empty" style="padding:30px">تعذّر حساب التاريخ الهجري في هذا المتصفح</div>`;const H=R.H;
  const rAct=r=>r.k==='iq'&&r.eid&&S.me!=='k'?btn('ابدأ بدري','layers','sm',`startiq:${r.eid}`):r.k==='ce'&&S.me==='r'?btn('قرار العقد','file','sm','go:contracts'):btn('افتح','left','sm',`go:${r.go}`);
  return `<div class="ph"><div><h1>قبل رمضان والعيد</h1><p>رمضان يبدأ تقريباً ${fmt(H.ram)} (${hdate10(H.ram)}) · العيد ${fmt(H.eid)} · تتباطأ الجهات الحكومية في هذه الفترة</p></div></div>
@@ -3518,7 +3524,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261127003044';
+const APPV18='20261127144505';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -4227,13 +4233,13 @@ const G26=[
  [/تحديث بيانات الجواز في مقيم/,null,{w:'مقيم',s:['ادخل مقيم ← الموظف ← تحديث بيانات الجواز','أدخل رقم الجواز الجديد وتاريخ انتهائه وأرفق صورته'],t:'لا يمكن تجديد الإقامة دون تحديث الجواز في مقيم'}],
  [/تحديث تاريخ (الجواز|الاستمارة|الفحص|التأمين|كرت التشغيل|نهاية العقد)|تحديث المستخدم وتاريخ التفويض/,null,{w:'المنصة',s:['اختر التاريخ الجديد (المنصة تقترح لك)','اضغط «حدّث في المنصة»','بعدها «تمّت الخطوة»'],t:''}],
  [/منصة تم/,/(تجديد الاستمارة|إصدار التفويض)/,{w:'منصة تم',s:['ادخل منصة تم بحساب المنشأة','اختر المركبة','نفّذ الخدمة (تجديد الاستمارة / إصدار التفويض) وحمّل الإثبات'],t:'لا تُجدَّد الاستمارة إلا إذا كان الفحص والتأمين ساريين'}],
- [/الفحص الدوري والتأمين ساريين/,null,{w:'منصة تم',s:['شوف تاريخ الفحص والتأمين في صفحة السيارة','إذا كان أحدها منتهياً: ابدأ «فحص دوري» أو «تأمين مركبة» أولاً'],t:''}],
+ [/الفحص الدوري والتأمين ساريين/,null,{w:'منصة تم',s:['راجع تاريخ الفحص والتأمين في صفحة السيارة','إذا كان أحدها منتهياً: ابدأ «فحص دوري» أو «تأمين مركبة» أولاً'],t:''}],
  [/حجز موعد الفحص/,null,{w:'الفحص الدوري',s:['احجز موعد من موقع الفحص الدوري (مركز قريب)','بلّغ مستخدم السيارة بالموعد'],t:''}],
  [/تذكير أيهم بالرواتب/,null,{w:'واتساب',s:['اجمع تغييرات الشهر: إجازات، غياب، خصومات، موظفين جدد أو منتهين','أرسل لأيهم الرسالة الجاهزة (فيها الإجازات تلقائي)'],t:'يحوّل أيهم الرواتب في أول أيام الشهر القادم'}],
  [/أيهم حوّل الرواتب/,null,{w:'واتساب',s:['اسأل أيهم عن تحويل الرواتب','إذا لم يتم التحويل: سجّل تذكيراً واختر موعد المتابعة'],t:'يتم التحويل عادةً في أول أيام الشهر'}],
  [/استلام ملف حماية الأجور/,null,{w:'قروب الشركة',s:['يحوّل أيهم الرواتب بنفسه، ويرسل ملف حماية الأجور في مجموعة الشركة خلال أول 10 أيام من الشهر','عند وصول الملف: حمّله وأرفقه في «مرفقات هذه الخطوة»','اضغط «تمّت الخطوة»'],t:'إذا لم يصل الملف حتى يوم 10: أرسل له الرسالة الجاهزة وسجّل التذكير'}],
  [/رفع الملف في منصة مدد|رفع ملف حماية الأجور في منصة مدد/,null,{w:'مدد',s:['ادخل منصة مدد بحساب المنشأة','افتح «حماية الأجور» وارفع الملف','قارن عدد الموظفين في الملف مع عدد من صُرفت لهم رواتب'],t:'إذا العدد مختلف (مثلاً 20 موظف و19 انصرف لهم) يحتاج «تبرير» للموظف الناقص'}],
- [/هل فيه موظفين يحتاجون (تبرير|مبررات)/,null,{w:'مدد',s:['شوف نتيجة الرفع في مدد','إذا كانت أوضاع جميع الموظفين سليمة: اختر «لا»','إذا كان هناك موظف لم يُصرف له راتب: اختر «نعم» ثم اختر الموظفين'],t:'يجب إنهاء التبرير خلال 10 أيام من رفع الملف · وبعدها يُعد مخالفة'}],
+ [/هل فيه موظفين يحتاجون (تبرير|مبررات)/,null,{w:'مدد',s:['راجع نتيجة الرفع في مدد','إذا كانت أوضاع جميع الموظفين سليمة: اختر «لا»','إذا كان هناك موظف لم يُصرف له راتب: اختر «نعم» ثم اختر الموظفين'],t:'يجب إنهاء التبرير خلال 10 أيام من رفع الملف · وبعدها يُعد مخالفة'}],
  [/رفع التبرير في منصة مدد/,null,{w:'مدد',s:['ادخل مدد ← حماية الأجور ← المبررات','اختر الموظف ونوع التبرير (حسب المتفق عليه معه)','أرسل التبرير'],t:'ثم يجب أن يوافق الموظف على التبرير من حسابه في مدد'}],
  [/يوافق على التبرير/,null,{w:'مدد',s:['أرسل للموظف الرسالة الجاهزة: يدخل حسابه في مدد ويوافق على التبرير','سجّل كل تذكير','عند تأكيده الموافقة: اضغط «وصل من الموظف · أكمل»'],t:''}],
  [/تأكيد انتهاء تبرير/,null,{w:'مدد',s:['تأكد في مدد أن حالة التبرير «مقبول»','اضغط «تمّت الخطوة» · يُبلَّغ رشيد بانتهاء التبرير'],t:''}],
@@ -4727,7 +4733,7 @@ window.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.closes
  if(a==='print'&&view.route==='reports'){ev.stopImmediatePropagation();ev.preventDefault();try{repPrint29()}catch(e){console.warn(e);toast('تعذّر تجهيز التقرير')}return}
  if(a==='ex22p'&&view.route==='expiry'){ev.stopImmediatePropagation();ev.preventDefault();try{expPrint29()}catch(e){console.warn(e);toast('تعذّر تجهيز التقرير')}}},true);
 /* التقرير الشهري: نفس الهوية */
-{const o=mrHtml10;mrHtml10=function(M,n){let h=o(M,n);h=h.replace(/<div><b>شركة فوريستا<\/b><span>[^<]*<\/span><\/div>/,`<div><img src="${LOGO29}" style="height:54px" alt="فوريستا"><span style="display:block;margin-top:4px">قسم الموارد البشرية</span></div>`);h=h.replace(/>(\d+) يوم</g,(m,x)=>'>'+dd29(+x)+'<');[['الوثائق التي جُدّدت خلال الشهر','الوثائق التي تم تجديدها خلال الشهر'],['ينتهي الشهر القادم','لا ينتهي خلال الشهر القادم'],['منتهي ويحتاج متابعة','وثائق منتهية تحتاج متابعة'],['>منتهي حالياً<','>منتهية حالياً<'],['>وثيقة تجدّدت<','>وثيقة تم تجديدها<'],['>ينتهي الجديد<','>تاريخ الانتهاء الجديد<'],['>منتهي من<','>منتهية منذ<'],['>إجراء ومهمة منجزة<','>إجراءات ومهام منجزة<']].forEach(([x,y])=>{h=h.split(x).join(y)});return h}}
+{const o=mrHtml10;mrHtml10=function(M,n){let h=o(M,n);h=h.replace(/<div><b>شركة فوريستا<\/b><span>[^<]*<\/span><\/div>/,`<div><img src="${LOGO29}" style="height:54px" alt="فوريستا"><span style="display:block;margin-top:4px">قسم الموارد البشرية</span></div>`);h=h.replace(/>(\d+) يوم</g,(m,x)=>'>'+dd29(+x)+'<');[['الوثائق التي جُدّدت خلال الشهر','الوثائق التي تم تجديدها خلال الشهر'],['ينتهي الشهر القادم','وثائق تنتهي خلال الشهر القادم'],['منتهي ويحتاج متابعة','وثائق منتهية تحتاج متابعة'],['>منتهي حالياً<','>منتهية حالياً<'],['>وثيقة تجدّدت<','>وثيقة تم تجديدها<'],['>ينتهي الجديد<','>تاريخ الانتهاء الجديد<'],['>منتهي من<','>منتهية منذ<'],['>إجراء ومهمة منجزة<','>إجراءات ومهام منجزة<']].forEach(([x,y])=>{h=h.split(x).join(y)});return h}}
 
 /* ===================== واتساب: تذكير الفريق · ملخص العاجل · تنبيه عند التحويل ===================== */
 const URL29=h=>location.origin+location.pathname+(h?'#'+h:'');
@@ -4960,7 +4966,7 @@ function today32(){const me=S.me;const it=[];
  const lt=S.tasks.filter(t=>!t.done&&t.who===me&&t.due&&days(t.due)<0&&canSeeTask(t)).length;if(lt)it.push(['clock','#FDECEA','#C23B32',cnt32(lt,'مهمة متأخرة','مهمتان متأخرتان','مهام متأخرة','مهمة متأخرة'),'tasks']);
  try{if(S.me!=='k'||grants8('k').foresta){const wk=expRows().filter(r=>r.n>=0&&r.n<=7).length;if(wk)it.push(['file','#EAF1FB','#2364AA',cnt32(wk,'وثيقة تنتهي هذا الأسبوع','وثيقتين تنتهي هذا الأسبوع','وثائق تنتهي هذا الأسبوع','وثيقة تنتهي هذا الأسبوع'),'expiry'])}}catch(e){}
  try{const W=(SET10&&SET10.wait31)||{};const wn=S.tasks.filter(t=>{const w=wOf31(t);return w&&t.who===me&&w.f&&days(fdate31(w.f))<=0}).length;if(wn)it.push(['inbox','#E3F4F5','#0F7C86',cnt32(wn,'معاملة تحتاج متابعة','معاملتين تحتاج متابعة','معاملات تحتاج متابعة','معاملة تحتاج متابعة'),'tasks'])}catch(e){}
- const y=new Date(TODAY);y.setDate(y.getDate()-1);const yd=RAW.Tasks.filter(r=>r.Status==='منجزة'&&r.DoneOn&&ymd(new Date(r.DoneOn))===ymd(y)&&KEY[r.AssignedTo]===me).length;if(yd)it.push(['tick','#E6F4EC','#17694A',`${yd===1?'خلّصت مهمة أمس':yd===2?'أنجزت مهمتين أمس':'خلّصت '+yd+' مهام أمس'}`,'tasks']);
+ const y=new Date(TODAY);y.setDate(y.getDate()-1);const yd=RAW.Tasks.filter(r=>r.Status==='منجزة'&&r.DoneOn&&ymd(new Date(r.DoneOn))===ymd(y)&&KEY[r.AssignedTo]===me).length;if(yd)it.push(['tick','#E6F4EC','#17694A',`${yd===1?'أنجزت مهمة أمس':yd===2?'أنجزت مهمتين أمس':'أنجزت '+yd+' مهام أمس'}`,'tasks']);
  const nm=PEOPLE[me].name;const head=it.length?'مهام اليوم':'يومك هادئ';
  return `<div class="td32"><b>${head}</b>${it.length?it.map(x=>`<button class="tc32" style="background:${x[1]};color:${x[2]}" data-go="${x[4]}">${ic(x[0],16)}${x[3]}</button>`).join(''):`<span class="mini">لا يوجد ما هو عاجل أو متأخر · ${S.me==='s'?'تقدرين':'يمكنك'} تعمل على المهام القادمة بهدوء</span>`}</div>`}
 function trend32(){const d=TODAY.getDate();const m0=new Date(TODAY.getFullYear(),TODAY.getMonth(),1),p0=new Date(TODAY.getFullYear(),TODAY.getMonth()-1,1);const pE=new Date(p0.getFullYear(),p0.getMonth(),Math.min(d,new Date(p0.getFullYear(),p0.getMonth()+1,0).getDate()),23,59);
@@ -5050,7 +5056,7 @@ sumTxt29=function(){const me=S.me;const nm=PEOPLE[me].name;const L=prio28();cons
  const day=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'][TODAY.getDay()];const ls=(A,f)=>A.slice(0,5).map(f).join('\n')+(A.length>5?`\n• و${A.length-5} غيرها`:'');
  let t=`☀️ *صباح الخير ${nm}* · ${day} ${fmt(TODAY)}\n`;
  if(U.length)t+=`\n🔴 *عاجل: ${U.length}*\n${ls(U,x=>'• '+x.t)}\n`;if(I2.length)t+=`\n🟠 *مهم: ${I2.length}*\n${ls(I2,x=>'• '+x.t)}\n`;
- if(td.length)t+=`\n📅 *موعدها اليوم: ${td.length}*\n${ls(td,x=>'• '+x.title)}\n`;if(lt.length)t+=`\n⏰ متأخرة: ${lt.length}\n`;if(yd)t+=`\n✅ خلّصت أمس: ${yd}\n`;
+ if(td.length)t+=`\n📅 *موعدها اليوم: ${td.length}*\n${ls(td,x=>'• '+x.title)}\n`;if(lt.length)t+=`\n⏰ متأخرة: ${lt.length}\n`;if(yd)t+=`\n✅ المنجز أمس: ${yd}\n`;
  if(!U.length&&!I2.length&&!td.length&&!lt.length)t+=`\nيومك هادئ · لا يوجد ما هو عاجل ✓\n`;return t+`\n👉 افتح المنصة:\n${URL29('prio')}`};
 {const _t34=today32;today32=function(){let h=_t34.apply(this,arguments);try{const b=waA29(S.me,sumTxt29(),'أرسل ملخص اليوم لواتسابي','');return h.replace(/<\/div>$/,`<span style="margin-inline-start:auto">${b}</span></div>`)}catch(x){return h}}}
 /* م3 · رسالة حالة للعميل (بدون ملاحظاتكم الداخلية) */
@@ -5382,8 +5388,8 @@ PAGES.meeting=()=>{const M=meetData38();const li=(a,f,e)=>a.length?a.slice(0,8).
  const tl=t=>`<button class="r35 b" data-go="${t.steps?'proc':'task'}-${t.id}"><span class="tx35"><b>${esc(t.title)}</b><small>${esc(nm35(t.curWho||t.who))}${t.due?' · '+t.due:''}</small></span>${ic('left',14)}</button>`;
  const K=kc36('check','#17694A','#EAF4EE','المنجز هذا الأسبوع',M.done.length,'منذ الأحد','')+kc36('alert','#C23B32','#FDECEA','المتأخر',M.late.length,'يحتاج قراراً أو متابعة','',null,1)+kc36('clock','#0F7C86','#E3F4F5','بانتظار رد',M.waits.length,'من جهة أو عميل أو سداد','')+kc36('brief','#6B4FA8','#F1ECFA','قرارات مطلوبة',M.dec.length,'تحتاج اعتماداً','');
  return `<div class="ph"><div><h1>اجتماع الأسبوع</h1><p>${dmy38(M.ws)} – ${dmy38(M.we)} · يُجهَّز تلقائياً كل أسبوع من بيانات المنصة</p></div><div class="acts"><button class="btn sm" data-act="mt38p">${ic('print',15)}اطبع</button><button class="btn sm" data-act="mt38c">${ic('file',15)}انسخ</button><a class="btn sm" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(meetTxt38(M))}">${ic('wa',15)}واتساب</a></div></div>
- <div class="k36" style="grid-template-columns:repeat(4,minmax(0,1fr))">${K}</div>
- <div class="g36" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+ <div class="k36 m38k">${K}</div>
+ <div class="g36 m38g">
   <section class="cd18 c35"><div class="h18">${ic('brief',18,'#6B4FA8')}<b>قرارات مطلوبة</b></div>${li(M.dec,x=>`<button class="r35 b" data-go="${x.go}"><span class="tx35"><b>${esc(x.t)}</b></span>${ic('left',14)}</button>`,'لا توجد قرارات معلّقة')}</section>
   <section class="cd18 c35"><div class="h18">${ic('alert',18,'#C23B32')}<b>المتأخر حسب المسؤول</b></div>${Object.keys(M.lateBy).length?Object.entries(M.lateBy).map(([p,a])=>`<div class="sb36">${esc(nm35(p))} · ${a.length}</div>${a.slice(0,4).map(tl).join('')}`).join(''):`<div class="em35">${ic('ok',18,'var(--br)')} لا يوجد متأخر</div>`}</section>
   <section class="cd18 c35"><div class="h18">${ic('clock',18,'#0F7C86')}<b>بانتظار رد</b></div>${li(M.waits,x=>`<button class="r35 b" data-go="${x.t.steps?'proc':'task'}-${x.t.id}"><b class="kk35 t">${esc(wLab31(x.w))}</b><span class="tx35"><b>${esc(x.t.title)}</b></span></button>`,'لا يوجد ما ننتظره')}</section>
@@ -5480,8 +5486,10 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form=
 
 /* ---------- 5) خروج تلقائي بعد ساعة دون استخدام ---------- */
 let IDLE38=Date.now(),WARN38=false;const IDLEMAX38=60*60e3;
-['mousemove','keydown','touchstart','scroll','click'].forEach(ev=>window.addEventListener(ev,()=>{IDLE38=Date.now();if(WARN38){WARN38=false;const w=document.getElementById('idle38');if(w)w.remove()}},{passive:true,capture:true}));
-setInterval(()=>{try{if(!S||!S.loaded||typeof msalApp==='undefined')return;const idle=Date.now()-IDLE38;
+/* النشاط مشترك بين كل نوافذ المنصة المفتوحة: لا تُسجَّل الخروج نافذة خاملة وأنت تعمل في نافذة أخرى */
+const idleSh38=()=>{try{return +localStorage.getItem('idle38')||0}catch(e){return 0}};let IDLEW38=0;
+['mousemove','keydown','touchstart','scroll','click'].forEach(ev=>window.addEventListener(ev,()=>{IDLE38=Date.now();if(IDLE38-IDLEW38>15e3){IDLEW38=IDLE38;try{localStorage.setItem('idle38',String(IDLE38))}catch(e){}}if(WARN38){WARN38=false;const w=document.getElementById('idle38');if(w)w.remove()}},{passive:true,capture:true}));
+setInterval(()=>{try{if(!S||!S.loaded||typeof msalApp==='undefined')return;const idle=Date.now()-Math.max(IDLE38,idleSh38());if(WARN38&&idle<IDLEMAX38-60e3){WARN38=false;const w=document.getElementById('idle38');if(w)w.remove()}
  if(idle>=IDLEMAX38){const b=document.createElement('button');b.dataset.act='logout';b.hidden=true;document.body.appendChild(b);b.click();return}
  if(idle>=IDLEMAX38-60e3&&!WARN38){WARN38=true;const d=document.createElement('div');d.id='idle38';d.className='idle38';d.innerHTML=`<div>${ic('clock',22,'var(--br)')}<b>سيتم تسجيل الخروج خلال دقيقة لعدم الاستخدام</b><span>حفاظاً على الحسابات وكلمات المرور</span><button class="btn pri">ما زلت هنا</button></div>`;document.body.appendChild(d)}}catch(e){}},20e3);
 
@@ -5628,7 +5636,7 @@ async function boot(reload){
     await loadAll();
     const em=(ACC.username||'').toLowerCase();const tm=RAW.Team.find(t=>(t.Email||'').toLowerCase()===em);
     const byMail=em.startsWith('rasheed@')?'r':em.startsWith('sheikha@')?'s':em.startsWith('khalid@')?'k':null;const me=(tm&&(KEY[tm.Title]||KEY[(tm.Title||'').trim().split(' ')[0]]))||byMail;
-    if(!me){splash('حسابك ('+esc(ACC.username)+') مب مضاف في «الفريق والصلاحيات». كلّم رشيد يضيفك.',`<button class="btn" data-act="logout" style="margin-top:6px">تسجيل خروج</button>`);return}
+    if(!me){splash('حسابك ('+esc(ACC.username)+') غير مضاف في «الفريق والصلاحيات». تواصل مع رشيد لإضافتك.',`<button class="btn" data-act="logout" style="margin-top:6px">تسجيل خروج</button>`);return}
     if(!reload){S.realMe=me;S.me=me}
     build();
     if(!reload){autoEngine().then(n=>{if(n){build();render();toast(`بدأت ${n} إجراءات/مهام تلقائياً`)}}).catch(e=>console.warn('auto',e))}
