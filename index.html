@@ -1260,6 +1260,28 @@ b.kk35.b{color:#2364AA}b.kk35.v{color:#6B4FA8}b.kk35.t{color:#0F7C86}
  .pv41h [data-act="pv41z"] .lg41{display:none}
  .pv41b{padding:8px 8px 28px}
 }
+/* v44 · تعدد الشركات */
+.co44{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 12px;border:1.5px solid var(--br,#17694A);border-radius:12px;background:#F4FAF6;color:var(--ink,#14201A);font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap;flex:none;max-width:170px}
+.co44 span{overflow:hidden;text-overflow:ellipsis}.co44 i{font-style:normal;font-size:11px;color:var(--mute)}
+@media (max-width:600px){.co44{height:34px;padding:0 9px;font-size:12.5px;max-width:110px}.co44 svg{display:none}}
+.co44l{display:grid;gap:8px}
+.co44r{display:flex;align-items:center;gap:12px;width:100%;text-align:right;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;font:inherit;cursor:pointer}
+.co44r.on{border-color:var(--br,#17694A);background:#F4FAF6}
+.co44r .lg{width:64px;height:40px;display:grid;place-items:center;flex:none}.co44r .lg img{max-width:64px;max-height:40px;object-fit:contain}.co44r .lg b{font-size:15px}
+.co44r .tx{display:flex;flex-direction:column;flex:1;min-width:0}.co44r .tx small{color:var(--mute);font-size:12px}
+.co44w{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.co44c{padding:18px 20px}
+.co44h{display:flex;align-items:center;gap:14px}.co44h .tx{flex:1;min-width:0;display:flex;flex-direction:column}.co44h .tx b{font-size:18px}.co44h .tx small{color:var(--mute);font-size:12.5px}
+.co44lg{width:150px;height:60px;display:grid;place-items:center;flex:none}.co44lg img{max-width:150px;max-height:60px;object-fit:contain}
+.ph44{width:100%;height:100%;display:grid;place-items:center;border:1.5px dashed #B9C4BD;border-radius:10px;color:var(--mute);font-size:12px}
+.co44g{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin-top:16px}.co44g small{display:block;color:var(--mute);font-size:12px}.co44g b{font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.sw44{width:16px;height:16px;border-radius:5px;display:inline-block}
+.co44t{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.co44up{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.co44pal{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.co44pal input[type=color]{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;padding:2px;background:#fff}
+.sw44b{cursor:pointer}.sw44b input{position:absolute;opacity:0;pointer-events:none}.sw44b i{display:block;width:32px;height:32px;border-radius:9px;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}.sw44b input:checked+i{box-shadow:0 0 0 2px var(--ink,#14201A)}
+@media (max-width:600px){.co44g{grid-template-columns:1fr}.co44lg{width:120px}}
+@media (min-width:901px){.top .crumb{flex-shrink:0}}
 
 </style>
 </head>
@@ -1311,7 +1333,13 @@ const hue=s=>HUE[[...String(s)].reduce((a,c)=>a+c.charCodeAt(0),0)%HUE.length];
 /* ===================== state & loading ===================== */
 let S={me:'r',realMe:'r',loaded:false},RAW={};
 let view={route:'home',params:{}};let ui={notif:false,side:false,rf:{cat:'veh',rep:'insp',st:'exp',win:60},vf:'all',ef:'all',tf:'today',df:'iq'};
-const isFor=co=>co==='فوريستا';
+/* v44 · تعدد الشركات: الشركات المسجلة في الإعدادات (فوريستا افتراضياً) والشركة المختارة حالياً */
+function HRS44(){try{const L=(typeof SET10!=='undefined'&&SET10&&SET10.cos44)||[];if(L.length)return L.map(c=>c.n)}catch(e){}return ['فوريستا']}
+let CO44C=null;function CUR44(){if(CO44C)return CO44C;let c='';try{c=localStorage.getItem('co44')||''}catch(e){}const L=HRS44();CO44C=L.includes(c)?c:L[0];return CO44C}
+const isCur44=co=>(co||HRS44()[0])===CUR44();
+const isHR44=co=>HRS44().includes(co);
+/* isFor = شركات الموارد البشرية لنطاق المهام والصلاحيات · «أركان» تبقى شركتنا في تبويب أركان حتى لو أُضيفت كشركة موارد بشرية */
+const isFor=co=>isHR44(co)&&co!=='أركان';
 async function loadAll(){
   const L=['Team','Employees','Documents','Vehicles','Tasks','Messages','Notifications','Clients','ServiceCases','Procedures','Recurring','Travel','Leaves','AuditLog','Accounts','Requests','LettersLog'];
   const res=await Promise.all(L.map(n=>all(n).catch(e=>{console.warn(n,e);return[]})));L.forEach((n,i)=>RAW[n]=res[i]);
@@ -1369,8 +1397,8 @@ const rawTask=id=>RAW.Tasks.find(t=>t.id==id);
 /* ===================== layout ===================== */
 const myTasks=()=>S.tasks.filter(t=>t.who===S.me&&!t.done);
 const canSeeTask=t=>S.me==='r'||(S.me==='s'?(isFor(t.co)||t.chain.includes('s')):(!isFor(t.co)||t.chain.includes('k')||(typeof hOf14==='function'&&!t.steps&&!!hOf14(t))));
-const visEmp=()=>S.employees.filter(e=>S.me==='r'||isFor(e.co));
-const visVeh=()=>S.vehicles.filter(v=>S.me==='r'||isFor(v.co)||!v.co);
+const visEmp=()=>S.employees.filter(e=>(S.me==='r'||isHR44(e.co))&&isCur44(e.co));
+const visVeh=()=>S.vehicles.filter(v=>(S.me==='r'||isHR44(v.co)||!v.co)&&isCur44(v.co));
 const NAV={
  r:[['home','الرئيسية','home'],['check','مهامي','tasks',()=>myTasks().length],['cal','التقويم','calendar'],['layers','الإجراءات','procs',()=>S.procs.filter(p=>p.done<p.steps.length).length],'فوريستا',['users','الموظفين','employees'],['file','الوثائق','docs',()=>docsAlert(),1],['car','السيارات','vehicles',()=>vehAlert().length,1],'العملاء الخارجيين',['brief','العملاء','clients',()=>S.clients.length],['inbox','طلبات الخدمات','services',()=>S.services.filter(s=>s.status!=='منجزة').length],'الإدارة',['chart','مركز التقارير','reports'],['repeat','التلقائي والمتكرر','auto']],
  s:[['home','الرئيسية','home'],['check','مهامي','tasks',()=>myTasks().length,1],['cal','التقويم','calendar'],['layers','الإجراءات','procs',()=>S.procs.filter(p=>p.done<p.steps.length&&isFor(p.co)).length],'فوريستا',['users','الموظفين','employees'],['file','الوثائق','docs',()=>docsAlert(),1],['car','السيارات','vehicles',()=>vehAlert().length,1],'أدوات',['chart','مركز التقارير','reports'],['repeat','التلقائي والمتكرر','auto']],
@@ -1632,7 +1660,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form]
    const tk=await spCreate('Tasks',{Title:`${nsSel} · ${c.name}`,AssignedTo:PEOPLE[owner].name,AssignedBy:PEOPLE[S.me].name,DueDate:due?due+'T12:00:00Z':null,Company:c.name,Status:'مفتوحة',LinkRef:'CASE:'+sc.id,Notes:'الخطوة 1: '+T.steps[0],Chain:[S.me].concat(owner!==S.me?[owner]:[]).join(',')});RAW.Tasks.push(tk);
    if(owner!==S.me)await notify(PEOPLE[owner].name,`طلب خدمة جديد: ${nsSel} · ${c.name}`,'الخطوات جاهزة',`client-${c.id}`,'brief');closeModal();setTimeout(()=>go('client-'+c.id),0)},'تمت إضافة الطلب بخطواته');return}
  if(a==='newproc'){const tpl=S.templates.find(t=>t.id==document.getElementById('np-t').value);const who=document.getElementById('np-w').value.trim();
-  act(async()=>{const steps=tpl.steps.map((s,i)=>{const d=new Date(TODAY);d.setDate(d.getDate()+(s.o||0));return{n:i+1,t:s.t,w:s.w||'شيخة',g:s.g||'',d:toIso(d).slice(0,10),ok:false,by:'',on:''}});const it=await spCreate('Tasks',{Title:tpl.title+(who?' · '+who:''),AssignedTo:steps[0].w,AssignedBy:PEOPLE[S.me].name,DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:'فوريستا',LinkRef:`REC:${tpl.id}:M${Date.now()}`,Status:'مفتوحة',Steps:JSON.stringify(steps)});RAW.Tasks.push(it);closeModal();setTimeout(()=>go('proc-'+it.id),0)},'بدأ الإجراء');return}
+  act(async()=>{const steps=tpl.steps.map((s,i)=>{const d=new Date(TODAY);d.setDate(d.getDate()+(s.o||0));return{n:i+1,t:s.t,w:s.w||'شيخة',g:s.g||'',d:toIso(d).slice(0,10),ok:false,by:'',on:''}});const it=await spCreate('Tasks',{Title:tpl.title+(who?' · '+who:''),AssignedTo:steps[0].w,AssignedBy:PEOPLE[S.me].name,DueDate:steps[steps.length-1].d+'T12:00:00Z',Company:CUR44(),LinkRef:`REC:${tpl.id}:M${Date.now()}`,Status:'مفتوحة',Steps:JSON.stringify(steps)});RAW.Tasks.push(it);closeModal();setTimeout(()=>go('proc-'+it.id),0)},'بدأ الإجراء');return}
  if(a==='transfer'){const t=S.tasks.find(q=>q.id==x);const to=f.querySelector('input[name=to]:checked').value;const m=document.getElementById('tr-m').value.trim();
   act(async()=>{const chain=t.chain.concat(to);await spPatch('Tasks',t.id,{AssignedTo:PEOPLE[to].name,Chain:chain.join(',')});Object.assign(rawTask(t.id),{AssignedTo:PEOPLE[to].name,Chain:chain.join(',')});await addMsg(t.id,m||'حوّلت إليك هذه المهمة.','حوّل المهمة إلى '+PEOPLE[to].name);await notify(PEOPLE[to].name,`${PEOPLE[S.me].name} ${S.me==='s'?'حوّلت':'حوّل'} لك «${t.title}»`,m||'افتح المهمة',`task-${t.id}`,'inbox');closeModal()},'تحوّلت المهمة لـ '+PEOPLE[to].name);return}
 });
@@ -1649,8 +1677,8 @@ const lateBack=()=>S.travel.filter(t=>t.status==='سافر'&&t.ret&&days(t.ret)<
 NAV.r.splice(NAV.r.indexOf('العملاء الخارجيين'),0,['plane','الإجازات والسفر','leaves',()=>S.leaves.filter(l=>l.status==='بانتظار الاعتماد').length+lateBack(),1]);
 NAV.s.splice(NAV.s.indexOf('أدوات'),0,['plane','الإجازات والسفر','leaves',()=>S.leaves.filter(l=>l.status==='بانتظار الاعتماد').length+lateBack(),1]);
 Object.assign(ROUTEBASE,{veh:'vehicles'});Object.assign(CR,{leaves:['الإجازات والسفر'],veh:['السيارات','ملف سيارة']});
-const visLeaves=()=>S.leaves.filter(l=>S.me==='r'||isFor(l.co)||visEmp().some(e=>e.name===l.emp));
-const visTravel=()=>S.travel.filter(t=>S.me==='r'||isFor(t.co)||visEmp().some(e=>e.name===t.emp));
+const visLeaves=()=>S.leaves.filter(l=>(S.me==='r'||isHR44(l.co)||visEmp().some(e=>e.name===l.emp))&&isCur44(l.co));
+const visTravel=()=>S.travel.filter(t=>(S.me==='r'||isHR44(t.co)||visEmp().some(e=>e.name===t.emp))&&isCur44(t.co));
 const empLink=(n,id)=>id?`<button class="lnk" data-go="emp-${id}" style="background:none;border:0;padding:0;font-weight:600;color:var(--ink)">${esc(n)}</button>`:`<b style="font-weight:600">${esc(n)}</b>`;
 PAGES.leaves=()=>{if(S.me==='k')return noAccess();const L=visLeaves(),T=visTravel();const tab=ui.lt||'lv';
  const now=visEmp().filter(e=>e.leave),out=T.filter(t=>t.status==='سافر');
@@ -1810,7 +1838,7 @@ function procVals(p){const v={};p.task.steps.forEach(s=>Object.assign(v,s.v||{})
 function newIqDate(p,v){const e=S.employees.find(e=>e.id===p.emp);if(!e||!v.iqm)return '';const base=e.iq&&D(e.iq)>TODAY?D(e.iq):TODAY;return fmt(addMonths(base,v.iqm))}
 var stepMsg=function(p,title,v){const emp=p.empName||'الموظف';const nx=newIqDate(p,v);
  const mon=(p.title.split('·')[1]||'').trim()||MONN[TODAY.getMonth()];
- if(/تذكير أيهم بالرواتب/.test(title)){const [y,mo]=(()=>{const x=mon.match(/(\S+)\s+(\d{4})/);return x?[+x[2],MONN.indexOf(x[1])]:[TODAY.getFullYear(),TODAY.getMonth()]})();const a=new Date(y,mo,1),b=new Date(y,mo+1,0);const lv=S.leaves.filter(l=>l.status==='معتمد'&&isFor(l.co)&&D(l.from)&&D(l.from)<=b&&(!l.to||D(l.to)>=a));
+ if(/تذكير أيهم بالرواتب/.test(title)){const [y,mo]=(()=>{const x=mon.match(/(\S+)\s+(\d{4})/);return x?[+x[2],MONN.indexOf(x[1])]:[TODAY.getFullYear(),TODAY.getMonth()]})();const a=new Date(y,mo,1),b=new Date(y,mo+1,0);const lv=S.leaves.filter(l=>l.status==='معتمد'&&isCur44(l.co)&&D(l.from)&&D(l.from)<=b&&(!l.to||D(l.to)>=a));
   return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنذكّركم بموعد رواتب شهر ${mon}.\nالتغييرات لهذا الشهر:\n• الإجازات: ${lv.length?lv.map(l=>`${l.emp} (${l.type} ${l.from.slice(0,5)}–${(l.to||'').slice(0,5)})`).join('، '):'لا يوجد'}\n• الغياب والخصومات: لا يوجد\n• موظفين جدد أو منتهين: لا يوجد\nونرجو إرسال ملف حماية الأجور بعد التحويل. وشكراً لكم.`}}
  if(/التأكد إن أيهم حوّل الرواتب/.test(title))return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nهل تم تحويل رواتب شهر ${mon}؟ نحتاج ملف حماية الأجور لرفعه في منصة مدد. وشكراً.`};
  if(/استلام ملف حماية الأجور/.test(title))return {to:'أيهم',m:`أستاذ أيهم، السلام عليكم\nنرجو إرسال ملف حماية الأجور لرواتب شهر ${mon} لرفعه في منصة مدد. وشكراً لكم.`};
@@ -2185,7 +2213,7 @@ function printAdv(a){const e=S.employees.find(x=>x.name===a.emp)||{};const sched
  printHtml('نموذج طلب سلفة',`<h2>نموذج طلب سلفة</h2>${kv([['اسم الموظف',a.emp],['المهنة',e.job||''],['مبلغ السلفة',a.amount.toLocaleString('en')+' ريال'],['عدد الأقساط',a.months],['القسط الشهري',a.per.toLocaleString('en')+' ريال'],['يبدأ الخصم',a.startL],['السبب',a.reason],['الحالة',a.stL]])}<h3 style="margin:18px 0 0">جدول الخصم</h3><table><tr><th>#</th><th>الشهر</th><th>القسط</th></tr>${sched.map((s,i)=>`<tr><td>${i+1}</td><td>${s[0]}</td><td>${s[1].toLocaleString('en')} ريال</td></tr>`).join('')}</table><p style="font-size:13px;line-height:1.9;margin-top:16px">أقر أنا الموظف الموضح اسمه أعلاه باستلام مبلغ السلفة، وأوافق على خصمها من راتبي حسب الجدول أعلاه، وفي حال انتهاء خدمتي يُخصم المتبقي من مستحقاتي.</p>${sigs(['توقيع الموظف','الموارد البشرية','المحاسب','الإدارة'])}`)}
 function printWarn(w){const e=S.employees.find(x=>x.name===w.emp)||{};printHtml(w.level,`<div style="display:flex;justify-content:space-between;font-size:13px;color:#555"><span>الرقم: ${esc(w.no)}</span><span>التاريخ: ${w.date}</span></div><h2 style="text-align:center;margin:18px 0">${esc(w.level)}</h2><p style="font-size:14px;line-height:2">المكرم / ${esc(w.emp)}${e.job?' — '+esc(e.job):''}، المحترم<br>السلام عليكم ورحمة الله وبركاته،<br>نحيطكم علماً بأنه قد لوحظ عليكم <b>${esc(w.reason)}</b>${w.incident?' بتاريخ '+d2f(w.incident):''}${w.details?'، وذلك '+esc(w.details):''}.<br>وحيث إن ذلك يُعد مخالفة لنظام العمل ولائحة تنظيم العمل في المنشأة، فإننا نوجه لكم <b>${esc(w.level)}</b>، ونأمل منكم الالتزام وعدم تكرار ذلك، وفي حال التكرار سيتم اتخاذ الإجراءات النظامية وفق نظام العمل.</p><p style="font-size:14px">وتقبلوا تحياتنا،</p>${sigs(['الموارد البشرية','الإدارة','استلمت · توقيع الموظف والتاريخ'])}`)}
 /* ---------- forms page ---------- */
-PAGES.forms=()=>{if(S.me==='k')return noAccess();const tab=ui.ft||'adv';const A=advRows().filter(a=>S.me==='r'||isFor(a.co)),W=warnRows().filter(w=>S.me==='r'||isFor(w.co)),L=visLeaves();
+PAGES.forms=()=>{if(S.me==='k')return noAccess();const tab=ui.ft||'adv';const A=advRows().filter(a=>(S.me==='r'||isHR44(a.co))&&isCur44(a.co)),W=warnRows().filter(w=>(S.me==='r'||isHR44(w.co))&&isCur44(w.co)),L=visLeaves();
  const body=tab==='adv'?`<div class="tbl"><table><thead><tr><th>الموظف</th><th>المبلغ</th><th>القسط</th><th>الخصم</th><th>المتبقي</th><th>الحالة</th><th></th></tr></thead><tbody>${A.map(a=>`<tr><td><b style="font-weight:600">${esc(a.emp)}</b><span class="sub">${esc(a.reason)}</span></td><td>${a.amount.toLocaleString('en')} ريال</td><td>${a.per.toLocaleString('en')} × ${a.months}</td><td>${a.startL} ← ${a.endL}</td><td>${a.status==='قيد التنفيذ'?a.left.toLocaleString('en')+' ريال':'—'}</td><td>${pill(a.stL,a.stK)}${a.deductNow?`<span class="sub" style="margin-top:3px;color:var(--amb)">يُخصم هذا الشهر</span>`:''}</td><td style="white-space:nowrap">${a.status==='جديد'&&S.me==='r'?btn('اعتماد','tick','sm pri',`advset:${a.id}:قيد التنفيذ`)+' '+btn('رفض','x','sm',`advset:${a.id}:ينتظر جهة`):''}${a.status==='قيد التنفيذ'?btn('تم السداد','ok','sm',`advset:${a.id}:مكتمل`):''} ${btn('طباعة','print','sm',`advprint:${a.id}`)}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">لا توجد سلف</td></tr>'}</tbody></table></div>`
  :tab==='warn'?`<div class="tbl"><table><thead><tr><th>الموظف</th><th>الدرجة</th><th>السبب</th><th>التاريخ</th><th>الرقم</th><th></th></tr></thead><tbody>${W.map(w=>`<tr><td><b style="font-weight:600">${esc(w.emp)}</b></td><td>${pill(w.level,/نهائي|ثالث/.test(w.level)?'exp':'soon',0)}</td><td>${esc(w.reason)}<span class="sub">${esc(w.details)}</span></td><td>${w.date}</td><td class="mini">${esc(w.no)}</td><td>${btn('طباعة','print','sm',`warnprint:${w.id}`)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا توجد إنذارات</td></tr>'}</tbody></table></div>`
  :`<div class="tbl"><table><thead><tr><th>الموظف</th><th>النوع</th><th>من</th><th>إلى</th><th>الحالة</th><th></th></tr></thead><tbody>${L.map(l=>`<tr><td><b style="font-weight:600">${esc(l.emp)}</b></td><td>${esc(l.type)}</td><td>${l.from}</td><td>${l.to}</td><td>${pill(l.status,lvK(l.status))}</td><td>${btn('طباعة النموذج','print','sm',`lvform:${l.id}`)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا توجد إجازات · يمكنك طباعة نموذج فارغ</td></tr>'}</tbody></table></div>`;
@@ -2193,9 +2221,9 @@ PAGES.forms=()=>{if(S.me==='k')return noAccess();const tab=ui.ft||'adv';const A=
  <div class="grid g4">${kpi('wallet','soon','سلف بانتظار الاعتماد',A.filter(a=>a.status==='جديد').length,S.me==='r'?'تحتاج قرارك':'عند رشيد','')}${kpi('wallet','info','سلف تُخصم هذا الشهر',A.filter(a=>a.deductNow).length,A.filter(a=>a.deductNow).reduce((s,a)=>s+a.per,0).toLocaleString('en')+' ريال','')}${kpi('alert','exp','إنذارات هذه السنة',W.filter(w=>w.date&&w.date.endsWith(String(TODAY.getFullYear()))).length,'كل الموظفين','')}${kpi('cal','gray','نماذج إجازات',L.length,'','')}</div>
  <section class="card" style="overflow:hidden"><div style="display:flex;gap:8px;padding:14px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap">${[['adv','السلف','wallet',A.length],['warn','الإنذارات','alert',W.length],['lv','نماذج الإجازات','cal',L.length]].map(t=>`<button class="chip ${tab===t[0]?'on':''}" data-act="ft:${t[0]}">${ic(t[2],16)}${t[1]} <span class="c">${t[3]}</span></button>`).join('')}</div>${body}</section>`};
 /* payroll message: add advance deductions */
-const _smV6=stepMsg;stepMsg=function(p,title,v){const m=_smV6(p,title,v);if(m&&/تذكير أيهم بالرواتب/.test(title)){const A=advRows().filter(a=>a.deductNow&&isFor(a.co||'فوريستا'));m.m=m.m.replace('• الغياب والخصومات: لا يوجد',`• الغياب والخصومات: لا يوجد\n• أقساط السلف: ${A.length?A.map(a=>`${a.emp} ${a.per.toLocaleString('en')} ريال`).join('، '):'لا يوجد'}`)}return m};
+const _smV6=stepMsg;stepMsg=function(p,title,v){const m=_smV6(p,title,v);if(m&&/تذكير أيهم بالرواتب/.test(title)){const A=advRows().filter(a=>a.deductNow&&isHR44(a.co||'فوريستا'));m.m=m.m.replace('• الغياب والخصومات: لا يوجد',`• الغياب والخصومات: لا يوجد\n• أقساط السلف: ${A.length?A.map(a=>`${a.emp} ${a.per.toLocaleString('en')} ريال`).join('، '):'لا يوجد'}`)}return m};
 /* nav */
-['r','s'].forEach(r=>{const i=NAV[r].findIndex(n=>Array.isArray(n)&&n[2]==='leaves');NAV[r].splice(i+1,0,['print','النماذج والخطابات','forms',()=>advRows().filter(a=>a.status==='جديد'&&(r==='s'||true)).length,1])});
+['r','s'].forEach(r=>{const i=NAV[r].findIndex(n=>Array.isArray(n)&&n[2]==='leaves');NAV[r].splice(i+1,0,['print','النماذج والخطابات','forms',()=>advRows().filter(a=>a.status==='جديد'&&isCur44(a.co)).length,1])});
 NAV.r.push(['key','حسابات المنصات','accounts']);NAV.s.push(['key','حسابات المنصات','accounts']);NAV.k.push(['key','حسابات المنصات','accounts']);
 Object.assign(CR,{accounts:['حسابات المنصات'],forms:['النماذج والخطابات']});Object.assign(SECT,{accounts:'a',forms:'t'});Object.assign(PAGEI,{accounts:'key',forms:'print'});
 /* handlers */
@@ -2319,7 +2347,7 @@ function procs7(){const L=visProcs7().map(p=>({p,a:procAge7(p)})).sort((x,y)=>y.
  <div class="v7t"><table style="min-width:640px"><tbody>${L.map(({p,a})=>{const cw=p.steps[p.done][2]||'s';return `<tr class="cl" data-go="proc-${p.id}"><td style="width:210px;white-space:normal"><span class="v7nm"><span><b>${esc(p.title.split('·')[0].trim())}</b><small>${esc(p.empName||(p.title.split('·')[1]||'').trim())}</small></span></span></td><td>${steps7(p)}</td><td>${who7(cw)}</td><td>${pill(a===0?'اليوم':a===1?'من يوم':a===2?'من يومين':`من ${a} أيام`,a>=3?'exp':a>=2?'soon':'ok')}</td></tr>`}).join('')||'<tr><td class="empty">لا توجد إجراءات جارية</td></tr>'}</tbody></table></div></div>`}
 function team7(){return `<div class="v7c">${head7('users','الفريق','إنجاز هذا الشهر ومهام كل واحد')}<div class="v7list">${['r','s','k'].map(p=>{const o=S.tasks.filter(t=>t.who===p&&!t.done);const late=o.filter(t=>dueOf17(t)&&days(dueOf17(t))<0).length;const dn=doneMonth(p);const pc=dn+o.length?Math.round(dn/(dn+o.length)*100):0;
  return `<button class="rw" data-act="agfor:${p}">${av(p)}<div class="tx"><b>${PEOPLE[p].name}</b><small>${o.length} مفتوحة${late?` · <span style="color:var(--red)">${late} متأخرة</span>`:''}</small></div><div style="width:44%;min-width:120px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-bottom:5px"><span>أنجز ${dn}</span><b style="color:var(--ink)">${pc}%</b></div><div class="v7bar"><i style="width:${pc}%;background:${PEOPLE[p].c}"></i></div></div></button>`}).join('')}</div></div>`}
-function away7(){const E=visEmp();const out=S.travel.filter(t=>t.status==='سافر'&&(S.me==='r'||isFor(t.co)));const lv=S.leaves.filter(l=>(S.me==='r'||isFor(l.co))&&(l.status==='بانتظار الاعتماد'||(l.status==='معتمد'&&!l.back&&l.to&&days(l.to)>=-3)));
+function away7(){const E=visEmp();const out=S.travel.filter(t=>t.status==='سافر'&&(S.me==='r'||isHR44(t.co))&&isCur44(t.co));const lv=S.leaves.filter(l=>(S.me==='r'||isHR44(l.co))&&isCur44(l.co)&&(l.status==='بانتظار الاعتماد'||(l.status==='معتمد'&&!l.back&&l.to&&days(l.to)>=-3)));
  return `<div class="v7c">${head7('plane','الإجازات والسفر','من خارج المملكة، ومن سيعود قريباً',lnk7('الكل','leaves'))}<div class="v7list">${[...out.map(t=>`<button class="rw" data-go="leaves">${ti7('plane','#2D69B0','#E9F1FA')}<div class="tx"><b>${esc(t.emp)}</b><small>خارج المملكة · ${t.ret?'العودة قبل '+fmtL7(t.ret):''}</small></div>${t.ret?left7(days(t.ret)):''}</button>`),...lv.map(l=>`<button class="rw" data-go="leaves">${ti7('cal','#12705E','#E4F2EE')}<div class="tx"><b>${esc(l.emp)}</b><small>${esc(l.type)} · ${l.from?fmtL7(l.from):''}${l.to?' إلى '+fmtL7(l.to):''}</small></div>${pill(l.status,l.status==='معتمد'?'ok':'soon')}</button>`)].join('')||'<div class="empty">الكل على رأس العمل</div>'}</div></div>`}
 function gov7(){const E=visEmp();const iqx=E.filter(e=>e.iq&&days(e.iq)<0).length,wpx=E.filter(e=>e.wp&&!e._wpL&&days(e.wp)<0).length,medm=E.filter(e=>!e.med||days(e.med)<0).length,va=vehAlert().length;
  const pay=S.procs.filter(p=>/حماية الأجور|الرواتب/.test(p.title)&&(S.me==='r'||isFor(p.co))).sort((a,b)=>b.id-a.id)[0];
@@ -2693,12 +2721,12 @@ const _procV10=PAGES.proc;PAGES.proc=prm=>{let h=_procV10(prm);const p=S.procs.f
    ========================================================= */
 function mrData10(k){const t=new Date(TODAY);const a=k==='lm'?new Date(t.getFullYear(),t.getMonth()-1,1):new Date(t.getFullYear(),t.getMonth(),1);const b=new Date(a.getFullYear(),a.getMonth()+1,0);const inR=s=>{if(!s)return false;const d=new Date(s);return d>=a&&d<=new Date(b.getTime()+864e5-1)};
  const na=new Date(b.getTime()+864e5),nb=new Date(na.getFullYear(),na.getMonth()+1,0);
- const ren=RAW.Documents.filter(d=>d.RenewedOn&&inR(d.RenewedOn)&&isFor(d.Company||'فوريستا')).map(d=>({t:d.DocType,o:d.BelongsTo,x:iso2(d.ExpiryDate),on:iso2(d.RenewedOn)})).sort((x,y)=>D(x.on)-D(y.on));
- const pd=RAW.Tasks.filter(r=>r.Steps&&r.Status==='منجزة'&&inR(r.DoneOn)&&isFor(r.Company||'فوريستا')).map(r=>({t:r.Title,on:iso2(r.DoneOn)}));
- const td=RAW.Tasks.filter(r=>!r.Steps&&r.Status==='منجزة'&&r.ReqType!=='تذكير'&&inR(r.DoneOn)&&isFor(r.Company||'فوريستا')).length;
+ const ren=RAW.Documents.filter(d=>d.RenewedOn&&inR(d.RenewedOn)&&isCur44(d.Company||'فوريستا')).map(d=>({t:d.DocType,o:d.BelongsTo,x:iso2(d.ExpiryDate),on:iso2(d.RenewedOn)})).sort((x,y)=>D(x.on)-D(y.on));
+ const pd=RAW.Tasks.filter(r=>r.Steps&&r.Status==='منجزة'&&inR(r.DoneOn)&&isCur44(r.Company||'فوريستا')).map(r=>({t:r.Title,on:iso2(r.DoneOn)}));
+ const td=RAW.Tasks.filter(r=>!r.Steps&&r.Status==='منجزة'&&r.ReqType!=='تذكير'&&inR(r.DoneOn)&&isCur44(r.Company||'فوريستا')).length;
  const E=expRows().filter(r=>r.date);const exp=E.filter(r=>r.n<0&&r.k!=='pe');const nxt=E.filter(r=>{const d=D(r.date);return d>=na&&d<=nb}).sort((x,y)=>D(x.date)-D(y.date));
- const miss=missingRows().reduce((s,r)=>s+r.m.length,0);const pay=S.procs.filter(p=>/رواتب|حماية الأجور/.test(p.title)&&isFor(p.co||'فوريستا')).filter(p=>p.task.steps.some(s=>s.on&&inR(s.on))||p.done<p.steps.length);
- const open=S.procs.filter(p=>p.done<p.steps.length&&isFor(p.co||'فوريستا'));const E2=visEmp().filter(e=>isFor(e.co||'فوريستا'));
+ const miss=missingRows().reduce((s,r)=>s+r.m.length,0);const pay=S.procs.filter(p=>/رواتب|حماية الأجور/.test(p.title)&&isCur44(p.co||'فوريستا')).filter(p=>p.task.steps.some(s=>s.on&&inR(s.on))||p.done<p.steps.length);
+ const open=S.procs.filter(p=>p.done<p.steps.length&&isFor(p.co||'فوريستا'));const E2=visEmp().filter(e=>isHR44(e.co||'فوريستا'));
  return{a,b,na,nb,label:MONN[a.getMonth()]+' '+a.getFullYear(),nlabel:MONN[na.getMonth()],ren,pd,td,exp,nxt,miss,pay,open,emp:E2.length,veh:visVeh().length}}
 function mrHtml10(M,notes){const T=(h,rows,cols)=>rows.length?`<table class="mr10t"><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`:`<div class="mr10e">لا يوجد</div>`;
  return `<div class="mr10h"><div><b>شركة فوريستا</b><span>قسم الموارد البشرية والخدمات</span></div><div style="text-align:left"><b>التقرير الشهري</b><span>${M.label} · صدر ${TODAYS}</span></div></div>
@@ -3233,7 +3261,7 @@ function recs15(){const G=[];const canFor=S.me!=='k'||grants8('k').foresta;
   G.push(['السيارات',visVeh().map(v=>{const r=(RAW.Vehicles||[]).find(x=>x.id===v.id)||{};
    const f=[['رقم اللوحة',`${v.l} ${v.n}`]].concat(docNos15(v.title)).concat([['المفوّض',r.AuthHolder]]);
    return{i:'car',t:`${v.l} ${v.n} · ${v.m}`,s:`المستخدم: ${v.user||'غير محدد'} · الفحص ${dstat(v.insp)[0]}`,go:'vehicles',txt:[v.l,v.l.replace(/\s/g,''),v.n,v.m,v.t,v.user,v.co,r.AuthHolder],f}})]);
-  G.push(['مستندات الشركة',(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&(S.me==='r'||isFor(d.Company||d.BelongsTo||''))).map(d=>({i:'file',t:`${d.DocType||d.Title} · ${d.BelongsTo||d.Company||''}`,s:d.ExpiryDate?'ينتهي '+iso2(d.ExpiryDate):'',go:'docs',txt:[d.DocType,d.Title,d.BelongsTo,d.Company],f:[[DOCL15[d.DocType]||'الرقم',d.DocNo]]}))])}
+  G.push(['مستندات الشركة',(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&(S.me==='r'||isHR44(d.Company||d.BelongsTo||''))).map(d=>({i:'file',t:`${d.DocType||d.Title} · ${d.BelongsTo||d.Company||''}`,s:d.ExpiryDate?'ينتهي '+iso2(d.ExpiryDate):'',go:'docs',txt:[d.DocType,d.Title,d.BelongsTo,d.Company],f:[[DOCL15[d.DocType]||'الرقم',d.DocNo]]}))])}
  if(S.me!=='s'||grants8('s').clients){
   G.push(['العملاء',S.clients.map(c=>{const r=(RAW.Clients||[]).find(x=>x.id===c.id)||{};return{i:'bldg',t:c.name,s:`التواصل: ${c.contact}`,go:`client-${c.id}`,txt:[c.name,r.Contact,r.Notes],f:[['رقم السجل التجاري',r.CRNo],['الرقم الموحد',r.UnifiedNo],['الجوال',r.Phone]]}})]);
   G.push(['طلبات الخدمات',S.services.map(s=>{const r=(RAW.ServiceCases||[]).find(x=>x.id===s.id)||{};return{i:'brief',t:s.svc,s:s.clientName||'',go:`client-${s.client}`,txt:[s.svc,s.clientName,r.ServiceType],f:[['رقم الطلب',r.CaseNo],['جوال العميل',r.ClientPhone]]}})])}
@@ -3524,7 +3552,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261128135800';
+const APPV18='20261128152209';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -3663,7 +3691,7 @@ const _dashV19=PAGES.dash;PAGES.dash=prm=>{let h=_dashV19(prm);if(S.me==='k')ret
  try{Object.assign(CR,{weekly:['ملخص الأسبوع'],stale:['لوحة التحكم','قيد التجديد من زمان'],ppfirst:['لوحة التحكم','الجواز قبل الإقامة'],tamimport:['السيارات','تحديث من منصة تم']});Object.assign(SECT,{weekly:'g',stale:'t',ppfirst:'t',tamimport:'b'});Object.assign(PAGEI,{weekly:'cal',stale:'hist',ppfirst:'pass',tamimport:'xls'})}catch(x){}})();
 
 /* 6) الموظفين: تبويب «انتهت خدمتهم» */
-const ended19=()=>RAW.Employees.filter(e=>e.EmpStatus==='منتهي'&&(S.me==='r'||isFor(e.Company||''))).sort((a,b)=>(a.Title||'').localeCompare(b.Title||'','ar'));
+const ended19=()=>RAW.Employees.filter(e=>e.EmpStatus==='منتهي'&&(S.me==='r'||isHR44(e.Company||''))&&isCur44(e.Company||'')).sort((a,b)=>(a.Title||'').localeCompare(b.Title||'','ar'));
 const _empsV19=PAGES.employees;PAGES.employees=prm=>{if(S.me==='k'&&!(typeof grants8==='function'&&grants8('k').foresta))return _empsV19(prm);const N=ended19();const on=ui.ee19==='end';
  const tabs=`<div class="tb18 ee19" role="tablist"><button role="tab" aria-selected="${!on}" class="${on?'':'on'}" data-act="ee19:act">${ic('users',17)}على رأس العمل<span class="c">${visEmp().length}</span></button><button role="tab" aria-selected="${on}" class="${on?'on':''}" data-act="ee19:end">${ic('x',17)}انتهت خدمتهم<span class="c">${N.length}</span></button></div>`;
  if(!on){const h=_empsV19(prm);return /ما عندك صلاحية|ليس لديك صلاحية/.test(h)?h:tplIns19(h,'.ph',tabs)}
@@ -4259,7 +4287,7 @@ async function wpsMigrate26(){const r=(RAW.Tasks||[]).find(t=>/^REC:1:\d{4}-\d{2
  const base=/تذكير أيهم بالرواتب/.test(st[0].t||'')?new Date((st[0].d||ymd(TODAY))+'T00:00:00'):new Date(TODAY.getFullYear(),TODAY.getMonth(),25);const ns=WPS26.map((s,i)=>{const d=new Date(base);d.setDate(d.getDate()+s[2]);return{n:i+1,t:s[0],w:s[1],g:'',d:ymd(d),ok:false,by:'',on:''}});const f={Steps:JSON.stringify(ns),DueDate:ns[ns.length-1].d+'T12:00:00Z'};await spPatch('Tasks',r.id,f,{noAudit:true});Object.assign(r,f)}
 const MON26=t=>{const m=(t||'').split('·')[1];return m?m.trim():''};
 const MONJ26=t=>{const a=(t||'').split('·');return a.length>2?a[a.length-1].trim():''};
-function wpsjModal26(p){const E=visEmp().filter(e=>isFor(e.co));ui.wj26={pid:p.id,sel:[]};const draw=()=>{const s=ui.wj26;modal(`<div class="mh"><div><b>من الموظفون الذين يحتاجون تبريراً؟</b><div class="mini" style="margin-top:2px">لكل موظف تنفتح متابعة: رفع التبرير ← موافقة الموظف ← التأكيد · خلال 10 أيام</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div>
+function wpsjModal26(p){const E=visEmp().filter(e=>isHR44(e.co));ui.wj26={pid:p.id,sel:[]};const draw=()=>{const s=ui.wj26;modal(`<div class="mh"><div><b>من الموظفون الذين يحتاجون تبريراً؟</b><div class="mini" style="margin-top:2px">لكل موظف تنفتح متابعة: رفع التبرير ← موافقة الموظف ← التأكيد · خلال 10 أيام</div></div><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div>
  <div class="mb"><div class="wj26">${E.map(e=>`<button type="button" class="chip ${s.sel.includes(e.id)?'on':''}" data-act="wj26t:${e.id}">${esc(e.name)}</button>`).join('')}</div></div>
  <div class="mf"><button class="btn pri" data-act="wj26s">${ic('tick',16,'#fff')}افتح المتابعات (${s.sel.length})</button><button class="btn" data-act="closeov">لاحقاً</button></div>`)};ui.wj26draw=draw;draw()}
 async function wpsjCreate26(p,ids){const mon=MON26(p.title);const up=new Date(TODAY);const dl=new Date(up.getTime()+10*864e5);
@@ -4616,7 +4644,7 @@ function match28(rows,src){const hi=rows.findIndex(r=>(r||[]).some(c=>/رقم\s*
  const H=rows[hi].map(c=>String(c||'').trim());const f=re=>H.findIndex(h=>re.test(h));
  const c={id:f(/رقم\s*(الإقامة|الاقامة|الهوية|هوية)/),name:f(/الاسم/),iq:f(/(انتهاء|نهاية).*(الإقامة|الاقامة|الهوية)|(الإقامة|الاقامة).*(انتهاء|نهاية)/),pp:f(/(انتهاء|نهاية).*الجواز|الجواز.*(انتهاء|نهاية)/),ce:f(/(انتهاء|نهاية).*العقد|العقد.*(انتهاء|نهاية)/)};
  if(c.iq<0&&c.pp<0&&c.ce<0)throw new Error('لم يتم العثور على أعمدة تواريخ (انتهاء الإقامة / الجواز / العقد)');
- const dg=s=>String(s||'').replace(/[٠-٩]/g,x=>'٠١٢٣٤٥٦٧٨٩'.indexOf(x)).replace(/\D/g,'');const E=visEmp().filter(e=>isFor(e.co||'فوريستا'));const byId={};E.forEach(e=>{const r=RAW.Employees.find(x=>x.id===e.id)||{};const id=dg(r.IdNo||(e._d.iq&&e._d.iq.DocNo));if(id)byId[id]=e});
+ const dg=s=>String(s||'').replace(/[٠-٩]/g,x=>'٠١٢٣٤٥٦٧٨٩'.indexOf(x)).replace(/\D/g,'');const E=visEmp().filter(e=>isHR44(e.co||'فوريستا'));const byId={};E.forEach(e=>{const r=RAW.Employees.find(x=>x.id===e.id)||{};const id=dg(r.IdNo||(e._d.iq&&e._d.iq.DocNo));if(id)byId[id]=e});
  const ch=[],newIn=[],seen=new Set();rows.slice(hi+1).forEach(r=>{if(!r||!r.length)return;const id=dg(r[c.id]);if(!id)return;const e=byId[id];const nm=c.name>=0?String(r[c.name]||'').trim():id;if(!e){newIn.push(nm);return}seen.add(e.id);
   [['iq','الإقامة',c.iq],['pp','الجواز',c.pp],['ce','نهاية العقد',c.ce]].forEach(([k,l,ci])=>{if(ci<0)return;const nv=dt28(r[ci]);if(!nv)return;const old=k==='ce'?iso2((RAW.Employees.find(x=>x.id===e.id)||{}).ContractEnd):e[k];if(old!==nv)ch.push({e,k,l,old:old||'غير مسجل',nv,on:true})})});
  const notIn=src==='مقيم'?E.filter(e=>!e.saudi&&!seen.has(e.id)).map(e=>e.name):[];return{src,cols:c,ch,newIn,notIn,rows:rows.length-hi-1}}
@@ -4678,7 +4706,7 @@ const LOGO29='data:image/webp;base64,UklGRp6xAABXRUJQVlA4WAoAAAAQAAAABwIAtwAAQUx
 const P29={reg:'الاستمارات',insp:'الفحوصات الدورية',ins:'وثائق تأمين المركبات',op:'كروت التشغيل',auth:'تفويضات القيادة',iq:'الإقامات',wp:'رخص العمل',pp:'جوازات السفر',med:'وثائق التأمين الطبي',ce:'العقود',pe:'فترات التجربة'};
 const dd29=n=>n===1?'يوم واحد':n===2?'يومين':n<=10?n+' أيام':n+' يوماً';
 const cnt29=(n,u)=>{const U={veh:['سيارة واحدة','سيارتين','سيارات','سيارة'],emp:['موظفاً واحداً','موظفَين','موظفين','موظفاً']}[u];return n===0?'لا شيء':n===1?U[0]:n===2?U[1]:n<=10?n+' '+U[2]:n+' '+U[3]};
-function fst29(r,W){if(!r.date){if(r.k==='op'&&r.n<0)return['لا يوجد كرت تشغيل','e'];if(r.note==='قيد التجديد')return['قيد التجديد (التاريخ غير مسجل)','s'];if(r.n<0)return[r.note||'منتهية','e'];return['سارية'+(r.note&&r.note!=='ساري حسب أبشر'?'':r.note?' (حسب أبشر)':''),'g']}
+function fst29(r,W){if(!r.date){if(r.k==='op'&&r.n<0)return['لا يوجد كرت تشغيل','e'];if(r.note==='قيد التجديد')return['قيد التجديد (التاريخ غير مسجل)','s'];if(r.n<0)return[(/^(ما فيه|لا يوجد)$/.test(r.note||'')?(r.k==='ins'?'لا يوجد تأمين':'غير مسجّل'):r.note)||'منتهية','e'];return['سارية'+(r.note&&r.note!=='ساري حسب أبشر'?'':r.note?' (حسب أبشر)':''),'g']}
  const rn=r.note==='قيد التجديد'?' · قيد التجديد':'';if(r.n<0)return['منتهية منذ '+dd29(-r.n)+rn,'e'];if(r.n===0)return['تنتهي اليوم'+rn,'s'];if(r.n<=W)return['تنتهي بعد '+dd29(r.n)+rn,'s'];return['سارية'+rn,'g']}
 function title29(k,st,W){const P=P29[k]||'';return st==='exp'?`تقرير ${P} المنتهية`:st==='soon'?`تقرير ${P} التي تنتهي خلال ${W} يوماً`:st==='both'?`تقرير ${P} المنتهية والقريبة من الانتهاء`:st==='ok'?`تقرير ${P} السارية`:`تقرير جميع ${P}`}
 const hij29=d=>{try{return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'}).format(d).replace(' هـ','هـ')}catch(e){return ''}};
@@ -4705,12 +4733,12 @@ h3{display:flex;align-items:center;gap:8px;margin:20px 0 8px;page-break-after:av
 function printDoc29(o){const w=window.open('','_blank');if(!w){toast('اسمح بالنوافذ المنبثقة للطباعة');return}const now=new Date();const me=PEOPLE[S.me]?PEOPLE[S.me].name:'';
  const kp=o.boxes?`<div class="kp">${o.boxes.map(b=>`<div class="${b.on?'on':'off'}"><small>${b.l}</small><b style="color:${/ساري/.test(b.l)?'#17694A':/منته/.test(b.l)?'#C23B32':/قرب|تنتهي|خلال/.test(b.l)?'#B4690E':b.c}">${b.n}</b>${b.on?'':'<em class="nt" style="font-style:normal">للعلم · غير مشمولة في الكشف</em>'}</div>`).join('')}</div>`:'';
  const tbl=s=>`${s.head?`<h3>${esc(s.head)}</h3>`:''}<table class="c${s.cols.length}${s.cols[0]==='#'?' n1':''}"><thead><tr>${s.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${s.rows.length?s.rows.map(r=>`<tr>${r.map((c,i)=>`<td${c&&c.p?' class="st"':/^(\d{1,2}\/\d{1,2}\/\d{4}|—)$/.test(String(c??''))?' class="dt"':''}>${c&&c.p?`<span class="p ${c.c}">${esc(c.p)}</span>`:i===1?`<b>${esc(String(c??''))}</b>`:esc(String(c??''))}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${s.cols.length}" style="text-align:center;color:#8A7D68;padding:18px">لا توجد بيانات</td></tr>`}</tbody></table>`;
- w.document.write(`<html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>${esc(o.title)}</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap"><style>${CSS29}</style></head><body>
+ w.document.write(`<html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>${esc(o.title)}</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap"><style>${css44(CSS29)}</style></head><body>
  <div class="bar"><button onclick="window.print()">طباعة / حفظ PDF</button><button class="g" onclick="window.close()">إغلاق</button><span>يمكنك كتابة ملاحظة في خانة «ملاحظات» قبل الطباعة · وإذا تُركت فارغة لا تظهر</span></div>
- <div class="pg"><div class="hd"><img src="${LOGO29}" alt="فوريستا"><div class="m">شركة فوريستا · قسم الموارد البشرية<br>${greg29(now)}${hij29(now)?' · '+hij29(now):''}</div></div><div class="rule"></div>
+ <div class="pg"><div class="hd">${logoTag44(58)}<div class="m">${esc(coInfo44().full)} · ${esc(coInfo44().dept)}<br>${greg29(now)}${hij29(now)?' · '+hij29(now):''}</div></div><div class="rule"></div>
  <h1>${esc(o.title)}</h1>${o.sub?`<div class="sub">${esc(o.sub)}</div>`:''}${kp}${o.sections.map(tbl).join('')}
  <div class="nt empty" id="nt"><b>ملاحظات:</b> <span contenteditable="true" id="nte" oninput="document.getElementById('nt').classList.toggle('empty',!this.textContent.trim())"></span></div>
- <div class="ft"><span>أعدّه: ${esc(me)} · قسم الموارد البشرية</span><span>التوقيع: ____________</span><span>${fmt(now)}</span></div></div></body></html>`);w.document.close()}
+ <div class="ft"><span>أعدّه: ${esc(me)} · ${esc(coInfo44().dept)}</span><span>التوقيع: ____________</span><span>${fmt(now)}</span></div></div></body></html>`);w.document.close()}
 /* تقرير من مركز التقارير */
 function repPrint29(){const f=ui.rf||{};const VK=['reg','insp','op','ins'],EK=['iq','wp','pp','med'];const W=f.win||30;
  if((f.cat==='veh'&&VK.includes(f.rep))||(f.cat==='emp'&&EK.includes(f.rep))){const all=expRows().filter(r=>r.k===f.rep);const pick=n=>f.st==='exp'?n<0:f.st==='soon'?n>=0&&n<=W:f.st==='ok'?n>W:f.st==='all'?true:n<=W;
@@ -4733,7 +4761,7 @@ window.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.closes
  if(a==='print'&&view.route==='reports'){ev.stopImmediatePropagation();ev.preventDefault();try{repPrint29()}catch(e){console.warn(e);toast('تعذّر تجهيز التقرير')}return}
  if(a==='ex22p'&&view.route==='expiry'){ev.stopImmediatePropagation();ev.preventDefault();try{expPrint29()}catch(e){console.warn(e);toast('تعذّر تجهيز التقرير')}}},true);
 /* التقرير الشهري: نفس الهوية */
-{const o=mrHtml10;mrHtml10=function(M,n){let h=o(M,n);h=h.replace(/<div><b>شركة فوريستا<\/b><span>[^<]*<\/span><\/div>/,`<div><img src="${LOGO29}" style="height:54px" alt="فوريستا"><span style="display:block;margin-top:4px">قسم الموارد البشرية</span></div>`);h=h.replace(/>(\d+) يوم</g,(m,x)=>'>'+dd29(+x)+'<');[['الوثائق التي جُدّدت خلال الشهر','الوثائق التي تم تجديدها خلال الشهر'],['ينتهي الشهر القادم','وثائق تنتهي خلال الشهر القادم'],['منتهي ويحتاج متابعة','وثائق منتهية تحتاج متابعة'],['>منتهي حالياً<','>منتهية حالياً<'],['>وثيقة تجدّدت<','>وثيقة تم تجديدها<'],['>ينتهي الجديد<','>تاريخ الانتهاء الجديد<'],['>منتهي من<','>منتهية منذ<'],['>إجراء ومهمة منجزة<','>إجراءات ومهام منجزة<']].forEach(([x,y])=>{h=h.split(x).join(y)});return h}}
+{const o=mrHtml10;mrHtml10=function(M,n){let h=o(M,n);h=h.replace(/<div><b>شركة فوريستا<\/b><span>[^<]*<\/span><\/div>/,`<div>${logoTag44(54)}<span style="display:block;margin-top:4px">${esc(coInfo44().dept)}</span></div>`);h=h.replace(/>(\d+) يوم</g,(m,x)=>'>'+dd29(+x)+'<');[['الوثائق التي جُدّدت خلال الشهر','الوثائق التي تم تجديدها خلال الشهر'],['ينتهي الشهر القادم','وثائق تنتهي خلال الشهر القادم'],['منتهي ويحتاج متابعة','وثائق منتهية تحتاج متابعة'],['>منتهي حالياً<','>منتهية حالياً<'],['>وثيقة تجدّدت<','>وثيقة تم تجديدها<'],['>ينتهي الجديد<','>تاريخ الانتهاء الجديد<'],['>منتهي من<','>منتهية منذ<'],['>إجراء ومهمة منجزة<','>إجراءات ومهام منجزة<']].forEach(([x,y])=>{h=h.split(x).join(y)});return h}}
 
 /* ===================== واتساب: تذكير الفريق · ملخص العاجل · تنبيه عند التحويل ===================== */
 const URL29=h=>location.origin+location.pathname+(h?'#'+h:'');
@@ -4819,7 +4847,8 @@ window.addEventListener('click',e=>{const el=e.target.closest('[data-act^="nt30d
 /* ===================== v30.3 · وثائق الشركة (فوريستا) + إغلاق الحسابات ===================== */
 const CODF30='مرفقات المنصة/وثائق الشركة';
 const coCan30=()=>S.me!=='k'||grants8('k').foresta;
-const coDocs30=()=>coCan30()?(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&isFor(d.Company||'')):[];
+const coDocs30=()=>coCan30()?(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&isCur44(d.Company||'')):[];
+const coDocsAll30=()=>coCan30()?(RAW.Documents||[]).filter(d=>d.Category==='الشركة'&&isHR44(d.Company||'')):[];
 const coN30=d=>d.ExpiryDate?days(iso2(d.ExpiryDate)):null;
 const coSoon30=()=>coDocs30().filter(d=>{const n=coN30(d);return n!==null&&n<=60}).length;
 const COT30=['السجل التجاري','اشتراك الغرفة التجارية','رخصة البلدية','ترخيص نقل','شهادة الزكاة','شهادة التأمينات الاجتماعية','شهادة السعودة','العنوان الوطني'];
@@ -4829,7 +4858,7 @@ PAGES.codocs=()=>{if(!coCan30())return noAccess();const L=coDocs30().sort((a,b)=
  const st=n=>n===null?pill('بدون تاريخ انتهاء','gray'):n<0?pill('منتهية','exp'):n<=60?pill(`تنتهي بعد ${n===0?'اليوم':n===1?'يوم':n===2?'يومين':n<=10?n+' أيام':n+' يوم'}`,'soon'):pill('سارية','ok');
  const row=d=>{const n=coN30(d);return `<div class="co30"><span class="ico">${ic('file',20,'var(--br)')}</span><div class="tx"><b>${esc(d.DocType||d.Title)}</b><small>${d.DocNo?`الرقم ${esc(d.DocNo)}`:'الرقم غير مسجل'}${d.ExpiryDate?` · تنتهي ${iso2(d.ExpiryDate)}`:''}</small>${d.Notes?`<small class="nt">${esc(String(d.Notes).replace(/\s*·\s*$/,''))}</small>`:''}</div><div class="ac">${st(n)}<span data-cof30="${d.id}"></span>${ed?`<label class="btn sm" style="cursor:pointer">${ic('upload',14)}ارفع ملف<input type="file" hidden data-up="codoc30:${d.id}"></label><button class="ib" data-act="co30e:${d.id}" aria-label="تعديل" title="تعديل">${ic('edit',16)}</button>`:''}</div></div>`};
  const S2=L.filter(d=>{const n=coN30(d);return n!==null&&n<=60}).length;
- return `<div class="ph"><div><h1>وثائق الشركة</h1><p>شركة فوريستا · ${L.length?`${L.length===1?'وثيقة واحدة':L.length===2?'وثيقتين':L.length<=10?L.length+' وثائق':L.length+' وثيقة'}${S2?` · ${S2===1?"واحدة تحتاج":S2+" تحتاج"} تجديد`:' · كلها سارية'}`:'لا توجد وثائق مسجلة'} · التي تنتهي خلال 60 يوماً تظهر في «العاجل جداً»</p></div>${ed?`<div class="acts"><button class="btn pri" data-act="co30e:0">${ic('plus',16,'#fff')}وثيقة جديدة</button></div>`:''}</div>
+ return `<div class="ph"><div><h1>وثائق الشركة</h1><p>${esc(coInfo44().full)} · ${L.length?`${L.length===1?'وثيقة واحدة':L.length===2?'وثيقتين':L.length<=10?L.length+' وثائق':L.length+' وثيقة'}${S2?` · ${S2===1?"واحدة تحتاج":S2+" تحتاج"} تجديد`:' · كلها سارية'}`:'لا توجد وثائق مسجلة'} · التي تنتهي خلال 60 يوماً تظهر في «العاجل جداً»</p></div>${ed?`<div class="acts"><button class="btn pri" data-act="co30e:0">${ic('plus',16,'#fff')}وثيقة جديدة</button></div>`:''}</div>
  <section class="card" style="overflow:hidden">${L.length?L.map(row).join(''):`<div class="empty" style="padding:30px">لا توجد وثائق · أضف السجل التجاري والغرفة التجارية وغيرها</div>`}</section>`};
 CR.codocs=['فوريستا','وثائق الشركة'];
 ['r','s'].forEach(u=>{const N=NAV[u];if(!N||N.some(n=>Array.isArray(n)&&n[2]==='codocs'))return;const i=N.findIndex(n=>Array.isArray(n)&&n[2]==='vehicles');if(i>=0)N.splice(i+1,0,['file','وثائق الشركة','codocs',()=>{try{return coSoon30()}catch(e){return 0}}])});
@@ -4844,15 +4873,15 @@ function coModal30(id){const d=id?(RAW.Documents||[]).find(x=>x.id==id)||{}:{};c
 window.addEventListener('click',e=>{const el=e.target.closest('[data-act^="co30e:"]');if(!el)return;e.stopImmediatePropagation();e.preventDefault();coModal30(+el.dataset.act.split(':')[1]||0)},true);
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="co30:"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const id=+f.dataset.form.split(':')[1]||0;
  const V=x=>(document.getElementById(x)||{}).value||'';const type=V('co-t').trim();if(!type){toast('اكتب نوع الوثيقة');return}const x=V('co-x');
- const fl={DocType:type,DocNo:V('co-n').trim(),Notes:V('co-m').trim(),ExpiryDate:x?x+'T12:00:00Z':null,Title:`${type} - شركة فوريستا`};
- act(async()=>{if(id){await spPatch('Documents',id,fl,{label:fl.Title});Object.assign((RAW.Documents||[]).find(d=>d.id==id)||{},fl)}else{const it=await spCreate('Documents',{...fl,Company:'فوريستا',Category:'الشركة',BelongsTo:'شركة فوريستا',RenewStatus:'ساري'});RAW.Documents.push(it)}closeModal()},id?'تم حفظ التعديل ✓':'تمت إضافة الوثيقة ✓')},true);
+ const fl={DocType:type,DocNo:V('co-n').trim(),Notes:V('co-m').trim(),ExpiryDate:x?x+'T12:00:00Z':null,Title:`${type} - ${coInfo44().full}`};
+ act(async()=>{if(id){await spPatch('Documents',id,fl,{label:fl.Title});Object.assign((RAW.Documents||[]).find(d=>d.id==id)||{},fl)}else{const it=await spCreate('Documents',{...fl,Company:CUR44(),Category:'الشركة',BelongsTo:coInfo44().full,RenewStatus:'ساري'});RAW.Documents.push(it)}closeModal()},id?'تم حفظ التعديل ✓':'تمت إضافة الوثيقة ✓')},true);
 document.addEventListener('change',e=>{const inp=e.target.closest('input[data-up^="codoc30:"]');if(!inp||!inp.files.length)return;e.stopImmediatePropagation();const file=inp.files[0];inp.value='';if(file.size>4*1024*1024){toast('الملف أكبر من 4MB');return}
  const id=inp.dataset.up.split(':')[1];const d=(RAW.Documents||[]).find(x=>x.id==id)||{};const clean=file.name.replace(/["*:<>?\/\\|#%]/g,'_');
- act(async()=>{await drivePut(`${CODF30}/${id} - ${clean}`,file,file.type);AUDIT_HOOK('رفع ملف','Documents',+id,null,{file:clean},{Title:d.Title,Company:'فوريستا'})},'انرفع الملف ✓')},true);
+ act(async()=>{await drivePut(`${CODF30}/${id} - ${clean}`,file,file.type);AUDIT_HOOK('رفع ملف','Documents',+id,null,{file:clean},{Title:d.Title,Company:d.Company||CUR44()})},'انرفع الملف ✓')},true);
 /* «العاجل جداً»: وثائق الشركة التي تنتهي خلال 60 يوماً */
 {const _pc30=prio28;prio28=function(){const L=_pc30.apply(this,arguments);if(L._c30)return L;L._c30=1;
- try{coDocs30().forEach(d=>{const n=coN30(d);if(n===null||n>60)return;const lv=n<0||n<=14?'u':'i';const key='co:'+d.id+':'+lv+':'+String(d.ExpiryDate).slice(0,10);if(snz28(key))return;
-  L.push({lv,key,i:'file',t:`${d.DocType} · شركة فوريستا ${n<0?'منتهية':n===0?'تنتهي اليوم':'تنتهي بعد '+(n===1?'يوم':n===2?'يومين':n<=10?n+' أيام':n+' يوم')}`,s:`تنتهي ${iso2(d.ExpiryDate)}${d.DocNo?' · الرقم '+d.DocNo:''}`,go:'codocs'})});
+ try{coDocsAll30().forEach(d=>{const n=coN30(d);if(n===null||n>60)return;const lv=n<0||n<=14?'u':'i';const key='co:'+d.id+':'+lv+':'+String(d.ExpiryDate).slice(0,10);if(snz28(key))return;
+  L.push({lv,key,i:'file',t:`${d.DocType} · ${esc(coInfo44(d.Company||CUR44()).full)} ${n<0?'منتهية':n===0?'تنتهي اليوم':'تنتهي بعد '+(n===1?'يوم':n===2?'يومين':n<=10?n+' أيام':n+' يوم')}`,s:`تنتهي ${iso2(d.ExpiryDate)}${d.DocNo?' · الرقم '+d.DocNo:''}`,go:'codocs'})});
   const o={u:0,i:1,f:2};L.sort((a,b)=>o[a.lv]-o[b.lv])}catch(e){}return L}}
 /* الحسابات: «الحساب مغلق» يخفيه من القائمة (لا يُحذف، ويُحفظ في السجل) */
 const accClosed30=a=>/^\[مغلق/.test(a.Notes||'');
@@ -4975,7 +5004,7 @@ function trend32(){const d=TODAY.getDate();const m0=new Date(TODAY.getFullYear()
  const T=RAW.Tasks.filter(r=>r.Status==='منجزة'&&mine(r)&&vis(r));const a=T.filter(r=>inR(r.DoneOn,m0,now)).length,b=T.filter(r=>inR(r.DoneOn,p0,pE)).length;
  const cards=[[S.me==='r'?'مهام خلصها الفريق هذا الشهر':'المهام المنجزة هذا الشهر',a,b,1]];
  const canF=S.me!=='k'||(typeof grants8==='function'&&grants8('k').foresta);
- if(canF){const Dc=(RAW.Documents||[]).filter(x=>isFor(x.Company||''));cards.push(['وثائق تجددت هذا الشهر',Dc.filter(x=>inR(x.RenewedOn,m0,now)).length,Dc.filter(x=>inR(x.RenewedOn,p0,pE)).length,1]);
+ if(canF){const Dc=(RAW.Documents||[]).filter(x=>isCur44(x.Company||''));cards.push(['وثائق تجددت هذا الشهر',Dc.filter(x=>inR(x.RenewedOn,m0,now)).length,Dc.filter(x=>inR(x.RenewedOn,p0,pE)).length,1]);
   const E=visEmp();const st=e=>e.start?D(e.start):null;const nw=E.filter(e=>{const s=st(e);return s&&s>=m0}).length;cards.push(['الموظفين',E.length,E.length-nw,1])}
  const chip=(x,y,good)=>{const df=x-y;if(!df)return `<span class="tr32 n">نفس ${pm}</span>`;const up=df>0;const ok=good?up:!up;return `<span class="tr32 ${ok?'g':'r'}">${ic(up?'up32':'down32',13,'currentColor',2.4)}${Math.abs(df)} عن ${pm}</span>`};
  return `<div class="ts32"><div class="h">${ic('chart',16)}هذا الشهر <span class="mini">· مقارنة بنفس الفترة من ${pm} (حتى ${d} ${pm})</span></div><div class="ks32">${cards.map(c=>`<div class="k32"><small>${c[0]}</small><b>${c[1]}</b>${chip(c[1],c[2],c[3])}</div>`).join('')}</div></div>`}
@@ -5470,7 +5499,7 @@ async function mailToken38(interactive){try{return (await msalApp.acquireTokenSi
 async function sendMr38(k,interactive){const c=mrCfg38();const to=c.to.split(/[,،;\s]+/).map(x=>x.trim()).filter(x=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x));if(!to.length){if(interactive)toast('أضف بريد المستلم أولاً');return false}
  const tk=await mailToken38(interactive);if(!tk){if(interactive)toast('يلزم منح صلاحية إرسال البريد');return false}
  const M=mrData10(k);const html=`<html dir="rtl"><head><meta charset="utf-8"><style>${MRCSS38}</style></head><body>${mrHtml10(M,'')}<p style="font-size:12px;color:#5F6B65">أُرسل تلقائياً من منصة رشيد</p></body></html>`;
- const r=await fetch('https://graph.microsoft.com/v1.0/me/sendMail',{method:'POST',headers:{Authorization:'Bearer '+tk,'Content-Type':'application/json'},body:JSON.stringify({message:{subject:`التقرير الشهري · ${M.label} · شركة فوريستا`,body:{contentType:'HTML',content:html},toRecipients:to.map(a=>({emailAddress:{address:a}}))},saveToSentItems:true})});
+ const r=await fetch('https://graph.microsoft.com/v1.0/me/sendMail',{method:'POST',headers:{Authorization:'Bearer '+tk,'Content-Type':'application/json'},body:JSON.stringify({message:{subject:`التقرير الشهري · ${M.label} · ${coInfo44().full}`,body:{contentType:'HTML',content:html},toRecipients:to.map(a=>({emailAddress:{address:a}}))},saveToSentItems:true})});
  if(!r.ok){if(interactive)toast('تعذّر إرسال البريد');return false}
  await updSet10(s=>{s.mrmail38=Object.assign(mrCfg38(),s.mrmail38||{},{last:ymd35(new Date()).slice(0,7),lastSent:new Date().toISOString(),lastLabel:M.label})});return true}
 {const o=PAGES.mreport;PAGES.mreport=prm=>{let h=o(prm);try{if(S.me==='k'||/ليس لديك صلاحية|ما عندك صلاحية/.test(h))return h;const c=mrCfg38();
@@ -5562,9 +5591,9 @@ function repLogCard40(){const L=repLog40().filter(x=>S.me==='r'||x.by===S.me).sl
 
 /* ---------- 3) مقارنة بالشهر السابق في التقرير الشهري ---------- */
 function mrCmp40(M){const a=new Date(M.a.getFullYear(),M.a.getMonth()-1,1),b=new Date(M.a.getFullYear(),M.a.getMonth(),0);const inR=s=>{if(!s)return false;const d=new Date(s);return d>=a&&d<=new Date(b.getTime()+864e5-1)};
- const ren=RAW.Documents.filter(d=>d.RenewedOn&&inR(d.RenewedOn)&&isFor(d.Company||'فوريستا')).length;
- const pd=RAW.Tasks.filter(r=>r.Steps&&r.Status==='منجزة'&&inR(r.DoneOn)&&isFor(r.Company||'فوريستا')).length;
- const td=RAW.Tasks.filter(r=>!r.Steps&&r.Status==='منجزة'&&r.ReqType!=='تذكير'&&inR(r.DoneOn)&&isFor(r.Company||'فوريستا')).length;
+ const ren=RAW.Documents.filter(d=>d.RenewedOn&&inR(d.RenewedOn)&&isCur44(d.Company||'فوريستا')).length;
+ const pd=RAW.Tasks.filter(r=>r.Steps&&r.Status==='منجزة'&&inR(r.DoneOn)&&isCur44(r.Company||'فوريستا')).length;
+ const td=RAW.Tasks.filter(r=>!r.Steps&&r.Status==='منجزة'&&r.ReqType!=='تذكير'&&inR(r.DoneOn)&&isCur44(r.Company||'فوريستا')).length;
  return{label:MONN[a.getMonth()],done:pd+td,ren}}
 {const o=mrHtml10;mrHtml10=function(M,n){let h=o(M,n);try{const P=mrCmp40(M);const d1=M.pd.length+M.td,d2=M.ren.length;
  const df=(x,y)=>x===y?'<span style="color:#5F6B65">بدون تغيير</span>':x>y?`<span style="color:#17694A">▲ ${x-y}</span>`:`<span style="color:#C23B32">▼ ${y-x}</span>`;
@@ -5623,6 +5652,113 @@ window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('
  if(a==='pv41p'){const w=d.querySelector('iframe').contentWindow;try{w.focus();w.print()}catch(x){toast('تعذّرت الطباعة · استخدم «تنزيل PDF»')}return}
  if(a==='pv41d'){pdf41(d);return}
  if(a==='pv41z'){d._z=!d._z;fit41(d);return}},true);
+
+/* ===================== v44 · تعدد الشركات: سجل الشركات، اختيار الشركة، الشعار في التقارير، إضافة موظف وسيارة ===================== */
+const CODEF44={'فوريستا':{n:'فوريستا',full:'شركة فوريستا',dept:'قسم الموارد البشرية',city:'الرياض',color:'#A39274',logo:''}};
+const cos44=()=>{let L=[];try{L=(SET10&&SET10.cos44)||[]}catch(e){}return L.length?L:[CODEF44['فوريستا']]};
+function coInfo44(n){n=n||CUR44();const c=cos44().find(x=>x.n===n)||{};const o=Object.assign({n,dept:'قسم الموارد البشرية',color:'#17694A'},CODEF44[n]||{},c);
+ if(!o.logo&&n==='فوريستا')o.logo=LOGO29;o.full=o.full||n;o.dept=o.dept||'قسم الموارد البشرية';o.color=/^#[0-9a-fA-F]{6}$/.test(o.color||'')?o.color:'#17694A';return o}
+function logoTag44(h){const c=coInfo44();return c.logo?`<img src="${c.logo}" alt="${esc(c.n)}" style="height:${h}px;max-width:260px;object-fit:contain">`:`<div style="min-height:${h}px;display:flex;align-items:center;font-size:${Math.round(h*.36)}px;font-weight:700;color:${c.color}">${esc(c.full)}</div>`}
+/* ألوان التقرير حسب لون الشركة (فوريستا تبقى كما هي حرفياً) */
+const mix44=(hex,to,t)=>{const a=hex.match(/\w\w/g).map(x=>parseInt(x,16)),b=to.match(/\w\w/g).map(x=>parseInt(x,16));return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,'0')).join('')};
+function css44(css){const c=coInfo44().color;if(c.toUpperCase()==='#A39274')return css;const W='#ffffff',K='#000000';
+ const M={'#A39274':c,'#6E5F45':mix44(c,K,.35),'#F8F5EF':mix44(c,W,.94),'#E7DFD1':mix44(c,W,.8),'#FBF8F3':mix44(c,W,.96),'#CDBF9F':mix44(c,W,.5),'#D9CDB8':mix44(c,W,.62),'#DCD3C2':mix44(c,W,.68),'#E8E4DD':'#E9ECEA','#8A7D68':'#6B756F','#9A9286':'#7E8782'};
+ return Object.keys(M).reduce((s,k)=>s.split(k).join(M[k]),css)}
+const coSw44=()=>S.me==='r'||S.me==='s'||(S.me==='k'&&typeof grants8==='function'&&grants8('k').foresta);
+function setCo44(n){try{localStorage.setItem('co44',n)}catch(e){}CO44C=null;closeModal();build();render();toast('تم التبديل إلى '+n)}
+/* التبديل يُعيد ضبط الشركة الحالية إذا تغيّر سجل الشركات */
+{const o=updSet10;updSet10=async function(){const r=await o.apply(this,arguments);CO44C=null;return r}}
+
+/* ---------- زر الشركة في الشريط العلوي ---------- */
+{const o=topbar;topbar=function(){let h=o.apply(this,arguments);try{if(!coSw44())return h;const n=CUR44();
+ h=h.replace('<button class="srch"',`<button class="co44" data-act="co44m" aria-label="الشركة الحالية: ${esc(n)} · اضغط للتبديل">${ic('bldg',15)}<span>${esc(n)}</span><i>▾</i></button><button class="srch"`)}catch(e){}return h}}
+/* اسم مجموعة القائمة الجانبية = اسم الشركة الحالية */
+{const o=side;side=function(){let h=o.apply(this,arguments);try{const n=CUR44();if(n!=='فوريستا')h=h.split('>فوريستا<').join('>'+esc(n)+'<')}catch(e){}return h}}
+
+function coMenu44(){const cur=CUR44();const L=cos44();const cnt=n=>S.employees.filter(e=>(e.co||HRS44()[0])===n).length;
+ modal(`<div class="mh"><b>اختر الشركة</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb"><div class="co44l">
+ ${L.map(c=>{const i=coInfo44(c.n);return `<button class="co44r ${c.n===cur?'on':''}" data-act="co44s:${esc(c.n)}"><span class="lg">${i.logo?`<img src="${i.logo}" alt="">`:`<b style="color:${i.color}">${esc(c.n.slice(0,2))}</b>`}</span><span class="tx"><b>${esc(c.n)}</b><small>${cnt(c.n)} موظفاً · ${S.vehicles.filter(v=>(v.co||HRS44()[0])===c.n).length} سيارة</small></span>${c.n===cur?'<span class="pill ok">الحالية</span>':''}</button>`}).join('')}
+ </div><p class="mini" style="margin:12px 2px 0">الموظفون والسيارات والانتهاءات والتقارير تتبدّل لبيانات الشركة المختارة · وكل تقرير يطلع بشعارها</p></div>
+ ${S.me==='r'?`<div class="mf"><button class="btn" data-act="co44go">${ic('edit',15)}إدارة الشركات</button></div>`:''}`)}
+
+/* ---------- صفحة الشركات (رشيد فقط) ---------- */
+PAGES.companies=()=>{if(S.me!=='r')return noAccess();const L=cos44();
+ const card=c=>{const i=coInfo44(c.n);const ne=S.employees.filter(e=>(e.co||HRS44()[0])===c.n).length,nv=S.vehicles.filter(v=>(v.co||HRS44()[0])===c.n).length;
+  return `<section class="cd18 co44c"><div class="co44h"><span class="co44lg">${i.logo?`<img src="${i.logo}" alt="شعار ${esc(c.n)}">`:`<span class="ph44">بدون شعار</span>`}</span><div class="tx"><b>${esc(c.n)}</b><small>${c.n===CUR44()?'الشركة المختارة حالياً':'—'}</small></div><button class="btn sm" data-act="co44e:${esc(c.n)}">${ic('edit',15)}تعديل</button></div>
+  <div class="co44g"><div><small>الاسم الرسمي في التقارير</small><b>${esc(i.full)}</b></div><div><small>السطر تحت الشعار</small><b>${esc(i.dept)}</b></div><div><small>المدينة</small><b>${esc(i.city||'—')}</b></div><div><small>لون التقارير</small><b><i class="sw44" style="background:${i.color}"></i>${i.color}</b></div></div>
+  <div class="co44t"><span class="pill info">${ne} موظفاً</span><span class="pill info">${nv} سيارة</span>${i.logo?'<span class="pill ok">التقارير بشعارها</span>':'<span class="pill soon">ارفع الشعار لتكتمل التقارير</span>'}${c.n!==CUR44()?`<button class="btn sm" data-act="co44s:${esc(c.n)}">اختيارها الآن</button>`:''}</div></section>`};
+ return `<div class="ph"><div><h1>الشركات</h1><p>كل شركة لها شعارها واسمها وبياناتها · ترفع الشعار مرة واحدة ويظهر في جميع تقاريرها</p></div><div class="acts"><button class="btn pri" data-act="co44e:">${ic('plus',16,'#fff')}إضافة شركة</button></div></div>
+ <div class="co44w">${L.map(card).join('')}</div>
+ <div class="em35" style="margin-top:12px">الشعار يُصغَّر تلقائياً ويُحفظ داخل المنصة · عند اختيار شركة من أعلى الصفحة تظهر بياناتها فقط</div>`};
+CR.companies=['الإعدادات','الشركات'];
+['r'].forEach(u=>{const N=NAV[u];if(!N||N.some(n=>Array.isArray(n)&&n[2]==='companies'))return;N.push(['bldg','الشركات','companies'])});
+{const g=GRP35.find(x=>x[0]==='الإعدادات والمراجعة');if(g&&!g[1].includes('companies'))g[1].unshift('companies')}
+
+let LOGO44N=null;
+function coEdit44(n){const c=n?coInfo44(n):{n:'',full:'',dept:'قسم الموارد البشرية',city:'الرياض',color:'#17694A',logo:''};const own=n?(cos44().find(x=>x.n===n)||{}):{};LOGO44N=own.logo||'';
+ const PAL=['#17694A','#2364AA','#A39274','#6B4FA8','#B4690E','#0F7C86','#C23B32','#3E4A44'];
+ modal(`<div class="mh"><b>${n?'تعديل شركة · '+esc(n):'إضافة شركة'}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="co44f:${esc(n||'')}"><div class="mb">
+ <div class="co44up"><span class="co44lg" id="co44pv">${c.logo?`<img src="${c.logo}" alt="">`:`<span class="ph44">بدون شعار</span>`}</span><div><label class="btn sm" for="co44file">${ic('file',15)}${c.logo?'تغيير الشعار':'رفع الشعار'}</label><input id="co44file" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display:none">${own.logo?'<button type="button" class="btn sm" data-act="co44rm" style="margin-inline-start:6px">حذف الشعار</button>':''}<div class="mini" style="margin-top:6px">PNG بخلفية شفافة أفضل · يُصغَّر تلقائياً</div></div></div>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px">
+ <div class="field"><label for="co44n">اسم الشركة المختصر</label><input id="co44n" class="inp" required value="${esc(c.n)}" ${n?'readonly title="لا يمكن تغيير الاسم المختصر بعد الإضافة لأنه مرتبط بالبيانات"':''} placeholder="مثال: أركان"></div>
+ <div class="field"><label for="co44f">الاسم الرسمي في التقارير</label><input id="co44f" class="inp" required value="${esc(n?c.full:'')}" placeholder="مثال: شركة أركان المهنية المحدودة"></div>
+ <div class="field"><label for="co44d">السطر تحت الشعار</label><input id="co44d" class="inp" value="${esc(c.dept)}"></div>
+ <div class="field"><label for="co44c">المدينة</label><input id="co44c" class="inp" value="${esc(c.city||'')}"></div></div>
+ <div class="field" style="margin-top:12px"><label>لون التقارير</label><div class="co44pal">${PAL.map(x=>`<label class="sw44b"><input type="radio" name="co44col" value="${x}" ${x.toUpperCase()===String(c.color).toUpperCase()?'checked':''}><i style="background:${x}"></i></label>`).join('')}<input type="color" id="co44cc" value="${c.color}" aria-label="لون آخر"></div></div>
+ </div><div class="mf"><button class="btn pri" type="submit">احفظ</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`)}
+/* تصغير الشعار قبل الحفظ */
+function logoShrink44(file){return new Promise((ok,no)=>{const r=new FileReader();r.onerror=()=>no(new Error('read'));r.onload=()=>{const im=new Image();im.onerror=()=>no(new Error('img'));im.onload=()=>{const H=180,Wm=640;let w=im.naturalWidth||im.width||Wm,h=im.naturalHeight||im.height||H;const k=Math.min(1,H/h,Wm/w);w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(im,0,0,w,h);let u=cv.toDataURL('image/webp',.92);if(!/^data:image\/webp/.test(u))u=cv.toDataURL('image/png');ok(u)};im.src=r.result};r.readAsDataURL(file)})}
+document.addEventListener('change',async e=>{if(e.target.id!=='co44file')return;const f=e.target.files&&e.target.files[0];if(!f)return;if(f.size>5e6){toast('الملف كبير · اختر صورة أصغر من 5 ميجا');return}
+ try{LOGO44N=await logoShrink44(f);const pv=document.getElementById('co44pv');if(pv)pv.innerHTML=`<img src="${LOGO44N}" alt="">`}catch(x){toast('تعذّرت قراءة الصورة')}},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form^="co44f:"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const old=f.dataset.form.slice(6);
+ const V=id=>(document.getElementById(id)||{}).value||'';const n=V('co44n').trim(),full=V('co44f').trim();if(!n||!full){toast('اكتب اسم الشركة');return}
+ if(!old&&cos44().some(c=>c.n===n)){toast('هذه الشركة مضافة مسبقاً');return}
+ const col=(f.querySelector('input[name="co44col"]:checked')||{}).value||V('co44cc')||'#17694A';
+ const rec={n,full,dept:V('co44d').trim()||'قسم الموارد البشرية',city:V('co44c').trim(),color:col,logo:LOGO44N||''};
+ act(async()=>{await updSet10(s=>{let L=(s.cos44&&s.cos44.length)?s.cos44:[Object.assign({},CODEF44['فوريستا'])];const i=L.findIndex(c=>c.n===(old||n));if(i>=0)L[i]=Object.assign({},L[i],rec);else L.push(rec);s.cos44=L});CO44C=null;closeModal()},old?'تم حفظ التعديل ✓':'تمت إضافة الشركة ✓')},true);
+document.addEventListener('input',e=>{if(e.target.id==='co44cc'){document.querySelectorAll('input[name="co44col"]').forEach(r=>r.checked=false)}},true);
+
+/* ---------- إضافة موظف / سيارة للشركة المختارة ---------- */
+function newEmp44(){const n=CUR44();modal(`<div class="mh"><b>موظف جديد · ${esc(n)}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="ne44"><div class="mb"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+ <div class="field"><label for="ne44n">الاسم الكامل</label><input id="ne44n" class="inp" required></div>
+ <div class="field"><label for="ne44j">المسمى الوظيفي</label><input id="ne44j" class="inp"></div>
+ <div class="field"><label for="ne44t">الجنسية</label><input id="ne44t" class="inp" list="ne44tl" placeholder="سعودي، هندي…"><datalist id="ne44tl">${[...new Set(S.employees.map(e=>e.nat).filter(Boolean))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></div>
+ <div class="field"><label for="ne44p">الجوال</label><input id="ne44p" class="inp" dir="ltr" inputmode="tel" placeholder="05xxxxxxxx"></div>
+ <div class="field"><label for="ne44d">تاريخ المباشرة</label><input id="ne44d" class="inp" type="date"></div>
+ <div class="field"><label for="ne44g">الجنس</label><select id="ne44g" class="inp"><option>ذكر</option><option>أنثى</option></select></div></div>
+ <p class="mini" style="margin:12px 2px 0">يُضاف إلى ${esc(coInfo44().full)} · بعدها تضيف وثائقه (الإقامة، الجواز…) من صفحته</p></div>
+ <div class="mf"><button class="btn pri" type="submit">أضف الموظف</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`);setTimeout(()=>document.getElementById('ne44n')?.focus(),30)}
+function newVeh44(){const n=CUR44();modal(`<div class="mh"><b>سيارة جديدة · ${esc(n)}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="nv44"><div class="mb"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+ <div class="field"><label for="nv44p">رقم اللوحة</label><input id="nv44p" class="inp" required placeholder="ر ح ط 1234"></div>
+ <div class="field"><label for="nv44m">الموديل والسنة</label><input id="nv44m" class="inp" placeholder="تويوتا كامري 2024"></div>
+ <div class="field"><label for="nv44t">نوع التسجيل</label><select id="nv44t" class="inp"><option>خاص</option><option>نقل خاص</option><option>نقل عام</option></select></div>
+ <div class="field"><label for="nv44u">المستخدم الفعلي</label><input id="nv44u" class="inp" list="nv44ul"><datalist id="nv44ul">${visEmp().map(e=>`<option value="${esc(e.name)}">`).join('')}</datalist></div></div>
+ <p class="mini" style="margin:12px 2px 0">تُضاف إلى ${esc(coInfo44().full)} · بعدها تحدّث الاستمارة والفحص والتأمين من صفحتها</p></div>
+ <div class="mf"><button class="btn pri" type="submit">أضف السيارة</button><button class="btn" type="button" data-act="closeov">إلغاء</button></div></form>`);setTimeout(()=>document.getElementById('nv44p')?.focus(),30)}
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="ne44"],form[data-form="nv44"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const V=id=>((document.getElementById(id)||{}).value||'').trim();const co=CUR44();
+ if(f.dataset.form==='ne44'){const name=V('ne44n').replace(/\s+/g,' ');if(!name)return;if(S.employees.some(x=>x.name===name)){toast('يوجد موظف بنفس الاسم');return}
+  act(async()=>{const it=await spCreate('Employees',{Title:name,Company:co,JobTitle:V('ne44j'),Nationality:V('ne44t'),Phone:V('ne44p'),JoinDate:V('ne44d')?V('ne44d')+'T12:00:00Z':null,Gender:V('ne44g'),EmpStatus:'على رأس العمل'});RAW.Employees.push(it);closeModal();build();setTimeout(()=>go('emp-'+it.id),30)},'تمت إضافة الموظف ✓')}
+ else{const plate=V('nv44p').replace(/\s+/g,' ');if(!plate)return;if(S.vehicles.some(x=>x.title===plate)){toast('هذه اللوحة مسجلة مسبقاً');return}const u=V('nv44u');
+  act(async()=>{const it=await spCreate('Vehicles',{Title:plate,Company:co,VehicleType:[V('nv44m'),V('nv44t')].filter(Boolean).join(' · '),Driver:u||null,AuthType:u?'داخلي':null});RAW.Vehicles.push(it);closeModal();build();setTimeout(()=>go('veh-'+it.id),30)},'تمت إضافة السيارة ✓')}},true);
+{const o=PAGES.employees;PAGES.employees=p=>{let h=o(p);try{if(S.me==='r'||S.me==='s')h=h.replace('<div class="acts">',`<div class="acts"><button class="btn" data-act="ne44">${ic('plus',16)}موظف جديد</button>`)}catch(e){}return h}}
+{const o=PAGES.vehicles;PAGES.vehicles=p=>{let h=o(p);try{if(S.me==='r'||S.me==='s')h=h.replace('<div class="acts">',`<div class="acts"><button class="btn" data-act="nv44">${ic('plus',16)}سيارة جديدة</button>`)}catch(e){}return h}}
+
+/* ---------- نماذج الموارد البشرية المطبوعة (إجازة، إنذار، سلفة) بترويسة الشركة ---------- */
+let COPR44=0;
+['printLeaveForm','printWarn','printAdv'].forEach(fn=>{const o=window[fn];if(typeof o!=='function')return;window[fn]=function(){COPR44++;try{return o.apply(this,arguments)}finally{COPR44--}}});
+{const o=printHtml;printHtml=function(title,html){if(!COPR44)return o.apply(this,arguments);const c=coInfo44();const w=window.open('','_blank');if(!w){toast('اسمح بالنوافذ المنبثقة للطباعة');return}
+ w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>${esc(title)}</title><style>body{font-family:Tahoma,sans-serif;padding:28px;color:#14201A}.lh{display:flex;align-items:center;gap:16px;border-bottom:3px solid ${c.color};padding-bottom:12px;margin-bottom:18px}.lh img{height:56px;max-width:230px;object-fit:contain}.lh b{font-size:18px;display:block}.lh span{color:#6E7A73;font-size:12px}.lh .d{margin-inline-start:auto;text-align:left;font-size:12px;color:#6E7A73}h2{margin:0 0 4px}table{width:100%;border-collapse:collapse;margin-top:12px}td,th{border:1px solid #ccc;padding:6px 8px;font-size:12px;text-align:right}th{background:${mix44(c.color,'#ffffff',.88)}}.ft{margin-top:30px;border-top:1px solid #ddd;padding-top:8px;font-size:11px;color:#888;display:flex;justify-content:space-between}</style></head><body><div class="lh">${c.logo?`<img src="${c.logo}" alt="${esc(c.n)}">`:''}<div><b>${esc(c.full)}</b><span>${esc(c.dept)}</span></div><div class="d">${fmt(TODAY)}<br>${PEOPLE[S.realMe].full}</div></div>${html}<div class="ft"><span>${esc(c.full)} · ${esc(c.dept)}</span><span>صفحة 1</span></div></body></html>`);w.document.close();w.print()}}
+
+/* ---------- النقرات ---------- */
+window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act^="co44"],[data-act="ne44"],[data-act="nv44"]');if(!b)return;const a=b.dataset.act;
+ if(a==='co44m'){e.preventDefault();e.stopImmediatePropagation();coMenu44();return}
+ if(a.startsWith('co44s:')){e.preventDefault();e.stopImmediatePropagation();setCo44(a.slice(6));return}
+ if(a==='co44go'){e.preventDefault();e.stopImmediatePropagation();closeModal();go('companies');return}
+ if(a.startsWith('co44e:')){e.preventDefault();e.stopImmediatePropagation();coEdit44(a.slice(6));return}
+ if(a==='co44rm'){e.preventDefault();e.stopImmediatePropagation();LOGO44N='';const pv=document.getElementById('co44pv');if(pv)pv.innerHTML='<span class="ph44">بدون شعار</span>';b.remove();return}
+ if(a==='ne44'){e.preventDefault();e.stopImmediatePropagation();newEmp44();return}
+ if(a==='nv44'){e.preventDefault();e.stopImmediatePropagation();newVeh44();return}},true);
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
