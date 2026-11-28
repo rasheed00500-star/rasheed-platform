@@ -1304,6 +1304,11 @@ b.kk35.b{color:#2364AA}b.kk35.v{color:#6B4FA8}b.kk35.t{color:#0F7C86}
 /* v48 · التقرير الشهري على التابلت: الجدول يتمرر داخل بطاقته بدل أن يخرج عن الشاشة */
 .mr10{overflow-x:auto;max-width:100%}
 
+/* v51 · الصوت: أولوية وتنبيه الوثيقة */
+.vc46u{display:flex;gap:8px;align-items:flex-start;background:#FFF6E8;border:1px solid #F1DDB8;color:#7A5212;border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.7}
+.vc46k{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px}
+.vc46s small{font-size:12px;color:var(--mute)}
+
 </style>
 </head>
 <body>
@@ -3577,7 +3582,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261128165943';
+const APPV18='20261128173917';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -5811,6 +5816,7 @@ function vcParse46(raw){const t=nz46(raw);const me=S.me;const R={raw,type:'task'
  /* الموظف */
  let best=null,bs=0;const tk=new Set(t.split(' '));(S.employees||[]).forEach(e=>{const w=nz46(e.name).split(' ').filter(x=>x.length>1);let sc=0;w.forEach((x,i)=>{if(tk.has(x)||tk.has('ل'+x)||tk.has('و'+x))sc+=i===0?1.2:1});if(sc>bs){bs=sc;best=e}});
  if(best&&bs>=2.2)R.emp=best;
+ else{const one=[...tk].filter(a=>a.length>2).map(a=>a.replace(/^(ل|و)/,'')).map(a=>(S.employees||[]).filter(e=>nz46(e.name).split(' ')[0]===a)).find(L=>L.length===1);if(one&&!/^(موعد|اجتماع)$/.test(nz46(one[0].name).split(' ')[0]))R.emp=one[0]}
  /* الشركة أو العميل */
  const cos=[...new Set([...HRS44(),'أركان',...((S.clients||[]).map(c=>c.name))])];let co=cos.filter(c=>t.includes(nz46(c).replace(/^(شركه|مؤسسه) /,''))).sort((a,b)=>b.length-a.length)[0];
  R.co=co||(R.emp?R.emp.co:(S.me==='k'?'':CUR44()));
@@ -5822,26 +5828,68 @@ function vcParse46(raw){const t=nz46(raw);const me=S.me;const R={raw,type:'task'
  x=x.replace(/\s*(يوم\s+)?(الأحد|الاحد|الإثنين|الاثنين|الثلاثاء|الأربعاء|الاربعاء|الخميس|الجمعة|السبت)\s*/g,' ').replace(/\s*الساعة\s+\S+(\s+(و?نص|ونصف|وربع|الصبح|صباحاً|صباحا|العصر|المغرب|الظهر|بالليل|الليل|مساءً|مساء))*\s*/g,' ');
  if(co)x=x.replace(new RegExp('(\\s*[،,]\\s*(ل|لشركة |لمؤسسة |شركة |مؤسسة )?|\\s+(ل|لشركة |لمؤسسة ))'+co.replace(/^(شركة|مؤسسة) /,'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*$'),'');
  x=x.replace(/^\s*(أن|ان)\s+/,'').replace(/\s+/g,' ').replace(/^[،,.\s]+|[،,.\s]+$/g,'');
- R.title=x||String(raw).trim();return R}
+ R.title=x||String(raw).trim();return vcPolish46(R)}
+
+/* v51 · صياغة المطلوب بشكل رسمي + ربط الموظف + الأولوية حسب قرب انتهاء وثيقته */
+const DOC51=[[/رخصه (ال)?عمل|رخصه العمل|كرت العمل/,'رخصة العمل','wp'],[/اقامه|الاقامه|هويه مقيم/,'الإقامة','iq'],[/جواز|الجواز/,'جواز السفر','pp'],[/عقد|العقد/,'عقد العمل','ce'],[/تامين طبي|التامين الطبي/,'التأمين الطبي','med'],[/تامين|التامين/,'التأمين',''],[/استماره|الاستماره/,'الاستمارة',''],[/فحص|الفحص/,'الفحص الدوري',''],[/السجل التجاري|سجل تجاري|السجل/,'السجل التجاري',''],[/رخصه|الرخصه/,'الرخصة','']];
+const VERB51=[[/^(يتابع|تتابع|تابع|اتابع|نتابع|متابعه)$/,'متابعة'],[/^(يراجع|تراجع|راجع|اراجع|نراجع|مراجعه)$/,'مراجعة'],[/^(يرفع|ترفع|ارفع|نرفع)$/,'رفع'],[/^(يسدد|تسدد|سدد|اسدد|نسدد)$/,'سداد'],[/^(يجهز|تجهز|جهز|اجهز|نجهز)$/,'تجهيز'],[/^(يرسل|ترسل|ارسل|نرسل)$/,'إرسال'],[/^(يطلع|تطلع|طلع|يستخرج|تستخرج|استخرج|نستخرج)$/,'استخراج'],[/^(يكلم|تكلم|كلم|اكلم|نكلم|يتصل|تتصل|اتصل|نتصل|يتواصل|تتواصل|تواصل)$/,'التواصل مع'],[/^(يصدر|تصدر|اصدر|نصدر)$/,'إصدار'],[/^(يحدث|تحدث|حدث|احدث|نحدث)$/,'تحديث'],[/^(ينقل|تنقل|انقل|ننقل)$/,'نقل'],[/^(يلغي|تلغي|الغي|نلغي)$/,'إلغاء'],[/^(يسجل|تسجل|سجل|اسجل|نسجل)$/,'تسجيل'],[/^(يطبع|تطبع|اطبع|نطبع)$/,'طباعة'],[/^(يحجز|تحجز|احجز|نحجز)$/,'حجز'],[/^(يخلص|تخلص|اخلص|نخلص|يكمل|تكمل|كمل|اكمل|نكمل)$/,'استكمال'],[/^(يشيك|تشيك|شيك|اشيك|يتاكد|تتاكد|تاكد|اتاكد|نتاكد)$/,'التأكد من'],[/^(يجدد|تجدد|جدد|اجدد|نجدد)$/,'تجديد'],[/^(يدفع|تدفع|ادفع|ندفع)$/,'دفع'],[/^(يسوي|تسوي|سوي|اسوي|نسوي)$/,'إعداد'],[/^(يطلب|تطلب|اطلب|نطلب)$/,'طلب'],[/^(يعطي|تعطي|اعطي|نعطي)$/,'تسليم']];
+function vcPolish46(R){try{
+ let x=String(R.title||'').trim();
+ /* حذف الحشو في البداية والنهاية */
+ x=x.replace(/^\s*(يا\s+)?(انه|إنه|انها|إنها|بانه|بأنه|بانها|بأنها|ان|أن)?\s*(لازم|ضروري|المفروض|يبي|يبغى|تبي|تبغى|ابيه|ابيها)?\s*(انه|إنه|ان|أن)?\s*/,'').replace(/\s*(أنا\s+)?(خلصت|انتهيت|بس|شكرا|شكراً|الله يعافيك|الله يعطيك العافيه|الله يعطيك العافية)\s*[.!]?\s*$/,'').trim();
+ const fill=v=>v.replace(/^\s*(يا\s+)?(انه|إنه|انها|إنها|بانه|بأنه|ان|أن)?\s*(لازم|ضروري|المفروض|يبي|يبغى|تبي|تبغى)?\s*(انه|إنه|ان|أن)?\s*/,'');x=fill(fill(x).replace(/^(ل?شيخة|ل?خالد|ل?رشيد)\s+/,''));
+ const t=nz46(R.raw||x);const e=R.emp;
+ /* تجديد وثيقة */
+ let doc=null;if(/(تجدد|يجدد|نجدد|جدد|تجديد|يجددون|ينتهي|تنتهي|منتهي|منتهيه)/.test(t)){for(const d of DOC51){if(d[0].test(t)){doc=d;break}}}
+ if(doc&&e&&/(تجدد|يجدد|نجدد|جدد|تجديد|يجددون)/.test(t)){let dn=doc[1];if(dn==='الرخصة'&&e&&!e.saudi)dn='رخصة العمل';x='تجديد '+dn+(e?' · '+e.name:'')}
+ else{
+  /* الفعل العامي في أول الجملة يتحول لمصدر رسمي */
+  const w=x.split(/\s+/);const w0=nz46(w[0]||'');for(const [re,m] of VERB51){if(re.test(w0)){w[0]=m;break}}x=w.join(' ');
+  /* اسم الموظف كاملاً بدل الجزء المذكور */
+  if(e&&!x.includes(e.name)){const tk=e.name.split(' ').filter(a=>a.length>1);const ws=x.split(/\s+/);const keep=ws.filter(a=>{const b=nz46(a).replace(/^(ل|و|لل)/,'');return !tk.some(k=>nz46(k)===b||nz46(k)===nz46(a))});x=keep.join(' ').replace(/\s+(ل|لـ|حق|تبع|الخاص ب)\s*$/,'').trim()+' · '+e.name}
+ }
+ x=x.replace(/\s+/g,' ').replace(/^[،,.\s]+|[،,.\s]+$/g,'').trim();if(x)R.title=x;
+ /* الأولوية: وثيقة الموظف تنتهي خلال 30 يوماً أو منتهية */
+ if(e){const L=[['الإقامة','iq'],['رخصة العمل','wp'],['جواز السفر','pp'],['عقد العمل','ce'],['التأمين الطبي','med']].filter(([n,k])=>e[k]).map(([n,k])=>({n,k,d:e[k],left:days(e[k])})).filter(o=>o.left!==null);
+  let pick=doc&&doc[2]?L.find(o=>o.k===doc[2]):null;if(!pick)pick=L.filter(o=>o.left<=30).sort((a,b)=>a.left-b.left)[0];
+  if(pick&&pick.left<=30){R.urgent=true;R.urgNote=pick.left<0?`${pick.n} للموظف ${e.name} منتهية منذ ${dd29(-pick.left)}`:pick.left===0?`${pick.n} للموظف ${e.name} تنتهي اليوم`:`${pick.n} للموظف ${e.name} تنتهي بعد ${dd29(pick.left)} (${pick.d})`;
+   const ex=pick.d.split('/').reverse().join('-');const today=ymd35(new Date(TODAY));if(pick.left<0){if(!R.date||R.date>today)R.date=today}else if(!R.date||R.date>ex)R.date=ex}}
+ }catch(err){console.warn(err)}return R}
+
 
 /*FUSHA-ON*/
 /* ---------- واجهة التسجيل ---------- */
 let VC46=null;
 const SR46=()=>window.SpeechRecognition||window.webkitSpeechRecognition||null;
-function vcOpen46(){try{VC46&&VC46.abort&&VC46.abort()}catch(e){}VC46=null;const can=!!SR46();
+function vcOpen46(){vcKill46();const can=!!SR46();
  modal(`<div class="mh"><b>${ic('mic46',18,'var(--br)')} إضافة بالصوت</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb vc46">
  ${can?`<button class="vc46m" data-act="vc46r" aria-label="ابدأ التسجيل">${ic('mic46',38,'#fff')}</button><div class="vc46s" id="vc46s">اضغط الميكروفون وتحدّث بشكل طبيعي</div>`:`<div class="vc46s">اضغط ميكروفون لوحة المفاتيح 🎤 وتحدّث ليُكتب كلامك هنا</div>`}
  <textarea id="vc46t" class="inp" rows="3" placeholder="مثال: ذكّر شيخة بكرة تجدد إقامة أحمد السيراوي"></textarea>
  <div class="vc46ex"><b>أمثلة:</b> «خالد يتابع السجل التجاري لشركة فراس نهاية الأسبوع» · «موعد مع أيهم الثلاثاء الساعة عشر» · «ذكّرني بكرة أراجع مسير الرواتب»</div></div>
- <div class="mf"><button class="btn pri" data-act="vc46p">${ic('tick',15,'#fff')}فهم الطلب</button><button class="btn" data-act="closeov">إلغاء</button></div>`);
+ <div class="mf"><button class="btn pri" id="vc46x" data-act="vc46x" style="display:none">${ic('tick',15,'#fff')}انتهيت</button><button class="btn pri" data-act="vc46p">${ic('tick',15,'#fff')}فهم الطلب</button><button class="btn" data-act="closeov">إلغاء</button></div>`);
  if(!can)setTimeout(()=>document.getElementById('vc46t')?.focus(),50)}
-function vcRec46(btn){const C=SR46();if(!C)return;if(VC46){try{VC46.stop()}catch(e){}return}
- const r=new C();VC46=r;r.lang='ar-SA';r.interimResults=true;r.continuous=false;r.maxAlternatives=1;let fin='';const st=document.getElementById('vc46s'),ta=document.getElementById('vc46t');
- btn.classList.add('on');if(st)st.textContent='أستمع إليك… تحدّث الآن';
- r.onresult=e=>{let s='';for(let i=0;i<e.results.length;i++){s+=e.results[i][0].transcript;if(e.results[i].isFinal)fin=s}if(ta)ta.value=s};
- r.onerror=e=>{if(st)st.textContent=/not-allowed|service-not-allowed/.test(e.error)?'الميكروفون غير مسموح · اسمح به من إعدادات المتصفح، أو استخدم ميكروفون لوحة المفاتيح':e.error==='no-speech'?'لم يصل أي صوت · حاول مرة أخرى':'تعذّر التسجيل · استخدم ميكروفون لوحة المفاتيح'};
- r.onend=()=>{VC46=null;btn.classList.remove('on');const v=(ta&&ta.value||'').trim();if(v){if(st)st.textContent='تم · راجع النص ثم اضغط «فهم الطلب»';vcShow46(vcParse46(v))}else if(st&&/أستمع إليك/.test(st.textContent))st.textContent='اضغط الميكروفون وتحدّث بشكل طبيعي'};
- try{r.start()}catch(e){VC46=null;btn.classList.remove('on')}}
+/*FUSHA-OFF*/
+/* v51 · تسجيل مستمر: لا يتوقف عند السكوت · ينتهي فقط بزر «انتهيت» أو بقول «أنا خلصت» */
+let VCS46=null;
+function vcUi46(on){const st=document.getElementById('vc46s'),p=document.querySelector('[data-act="vc46p"]'),x=document.getElementById('vc46x'),m=document.querySelector('.vc46m');
+ if(m)m.classList.toggle('on',on);if(p)p.style.display=on?'none':'';if(x)x.style.display=on?'':'none';
+ if(st)st.innerHTML=on?'أستمع إليك… خذ وقتك في الكلام<br><small>عند الانتهاء اضغط «انتهيت» أو قل «أنا خلصت»</small> <b id="vc46c" style="font-variant-numeric:tabular-nums">0:00</b>':'اضغط الميكروفون وتحدّث بشكل طبيعي'}
+function vcRec46(btn){const C=SR46();if(!C)return;if(VCS46&&VCS46.on){vcStop46();return}
+ const ta=document.getElementById('vc46t');VCS46={on:true,done:false,base:ta&&ta.value.trim()?ta.value.trim()+' ':'',t0:Date.now()};vcUi46(true);
+ VCS46.timer=setInterval(()=>{const c=document.getElementById('vc46c');if(!c||!VCS46){return}const sec=Math.floor((Date.now()-VCS46.t0)/1000);c.textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')},500);vcStart46()}
+function vcStart46(){const C=SR46();const s=VCS46;if(!C||!s||!s.on)return;const r=new C();VC46=r;r.lang='ar-SA';r.interimResults=true;r.continuous=true;r.maxAlternatives=1;
+ r.onresult=e=>{let cur='';for(let i=0;i<e.results.length;i++)cur+=e.results[i][0].transcript+' ';const ta=document.getElementById('vc46t');let full=(s.base+cur).replace(/\s+/g,' ').trim();
+  const stop=/(^|\s)(أنا\s+خلصت|انا\s+خلصت|خلاص\s+انتهيت|انتهيت)\s*[.!،]?$/;
+  if(stop.test(full)){full=full.replace(stop,'').trim();if(ta)ta.value=full;s.base=full?full+' ':'';vcStop46();return}if(ta)ta.value=full};
+ r.onerror=e=>{if(/not-allowed|service-not-allowed|audio-capture/.test(e.error)){s.on=false;const st=document.getElementById('vc46s');if(st)st.textContent='الميكروفون غير مسموح · اسمح به من إعدادات المتصفح، أو استخدم ميكروفون لوحة المفاتيح'}};
+ r.onend=()=>{if(VC46===r)VC46=null;const ta=document.getElementById('vc46t');s.base=ta&&ta.value.trim()?ta.value.trim()+' ':'';
+  if(s.on&&ta){setTimeout(()=>{if(s.on&&document.getElementById('vc46t'))vcStart46();else vcFinish46()},150)}else vcFinish46()};
+ try{r.start()}catch(e){if(VC46===r)VC46=null;setTimeout(()=>{if(s.on)vcStart46()},400)}}
+function vcStop46(){const s=VCS46;if(!s)return;s.on=false;const r=VC46;if(r){try{r.stop()}catch(e){vcFinish46()}setTimeout(()=>vcFinish46(),1500)}else vcFinish46()}
+function vcFinish46(){const s=VCS46;if(!s||s.done)return;s.done=true;s.on=false;clearInterval(s.timer);VCS46=null;VC46=null;const ta=document.getElementById('vc46t');if(!ta)return;const v=ta.value.trim();vcUi46(false);if(v)vcShow46(vcParse46(v))}
+function vcKill46(){const s=VCS46;if(s){s.on=false;s.done=true;clearInterval(s.timer)}VCS46=null;try{VC46&&VC46.abort()}catch(e){}VC46=null}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act="closeov"]');if(b&&VCS46)vcKill46()},true);
+/*FUSHA-ON*/
 function vcShow46(R){const who=['r','s','k'].filter(p=>PEOPLE[p]);const cos=[...new Set([...HRS44(),'أركان',...((S.clients||[]).map(c=>c.name))])];
  modal(`<div class="mh"><b>هذا ما فهمته · راجع واحفظ</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="vc46"><div class="mb">
  <div class="vc46q">«${esc(R.raw)}»</div>
@@ -5853,6 +5901,8 @@ function vcShow46(R){const who=['r','s','k'].filter(p=>PEOPLE[p]);const cos=[...
  <div class="field" id="vc46tf"><label for="vc46h">الوقت</label><input id="vc46h" class="inp" type="time" value="${R.time}"></div>
  <div class="field"><label for="vc46c">الشركة أو العميل</label><input id="vc46c" class="inp" list="vc46cl" value="${esc(R.co||'')}"><datalist id="vc46cl">${cos.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>
  ${R.emp?`<div class="field"><label>مرتبط بالموظف</label><div class="vc46e">${esc(R.emp.name)}</div></div>`:''}
+ ${R.urgNote?`<div class="vc46u" style="grid-column:1/-1">${ic('alert',16,'#B4690E')}<span>${esc(R.urgNote)}</span></div>`:''}
+ <label class="vc46k" style="grid-column:1/-1"><input type="checkbox" id="vc46g" ${R.urgent?'checked':''}> أولوية عاجلة</label>
  </div><p class="mini" style="margin:12px 2px 0">تُحفظ باسمك (${PEOPLE[S.me].name}) مثل ما تضيفها بيدك · عدّل أي خانة قبل الحفظ</p></div>
  <div class="mf"><button class="btn pri" type="submit">${ic('tick',15,'#fff')}احفظ</button><button class="btn" type="button" data-act="vc46b">${ic('mic46',15)}سجّل من جديد</button></div></form>`);
  ui.vc46=R;vcType46()}
@@ -5862,18 +5912,22 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form=
  const y=V('vc46y'),t=V('vc46n'),d=V('vc46d'),h=V('vc46h'),co=V('vc46c');const R=ui.vc46||{};if(!t){toast('اكتب المطلوب');return}
  if(y==='appt'){if(!d){toast('حدّد تاريخ الموعد');return}act(async()=>{await apSave35(L=>{L.push({id:Date.now(),t,d,tm:h,n:'أُضيف بالصوت',with:'',by:S.me,at:new Date().toISOString()})});closeModal()},'تم حفظ الموعد ✓');return}
  const who=V('vc46w')||S.me;
- act(async()=>{const chain=[S.me].concat(who!==S.me?[who]:[]);const f={Title:t,AssignedTo:PEOPLE[who].name,AssignedBy:PEOPLE[S.me].name,DueDate:d?d+'T12:00:00Z':null,Company:co,Status:'مفتوحة',Notes:'أُضيفت بالصوت: «'+(R.raw||t)+'»',Chain:chain.join(',')};if(y==='rem')f.ReqType='تذكير';if(R.emp)f.EmpName=R.emp.name;
+ act(async()=>{const chain=[S.me].concat(who!==S.me?[who]:[]);const f={Title:t,AssignedTo:PEOPLE[who].name,AssignedBy:PEOPLE[S.me].name,DueDate:d?d+'T12:00:00Z':null,Company:co,Status:'مفتوحة',Notes:'أُضيفت بالصوت: «'+(R.raw||t)+'»',Chain:chain.join(',')};if(y==='rem')f.ReqType='تذكير';f.Priority=(document.getElementById('vc46g')||{}).checked?'عاجل':'عادي';if(R.emp)f.EmpName=R.emp.name;
   let it;try{it=await spCreate('Tasks',f)}catch(x){if(f.EmpName){delete f.EmpName;it=await spCreate('Tasks',f)}else throw x}RAW.Tasks.push(it);
   if(who!==S.me)await notify(PEOPLE[who].name,`${PEOPLE[S.me].name} ${S.me==='s'?'أعطتك':'أعطاك'} ${y==='rem'?'تذكيراً':'مهمة'}: ${t}`,d?'الموعد '+d.split('-').reverse().join('/'):'',`task-${it.id}`,'check');closeModal()},y==='rem'?'تم حفظ التذكير ✓':'تمت إضافة المهمة ✓')},true);
 window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act^="vc46"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();const a=b.dataset.act;
  if(a==='vc46o'||a==='vc46b'){vcOpen46();return}
  if(a==='vc46r'){vcRec46(b);return}
- if(a==='vc46p'){const v=((document.getElementById('vc46t')||{}).value||'').trim();if(!v){toast('سجّل أو اكتب الطلب أولاً');return}try{VC46&&VC46.abort()}catch(x){}VC46=null;vcShow46(vcParse46(v));return}},true);
+ if(a==='vc46x'){vcStop46();return}
+ if(a==='vc46p'){const v=((document.getElementById('vc46t')||{}).value||'').trim();if(!v){toast('سجّل أو اكتب الطلب أولاً');return}vcKill46();vcShow46(vcParse46(v));return}},true);
 /* أيقونة الميكروفون */
 try{P.mic46="<rect x='9' y='2' width='6' height='12' rx='3'/><path d='M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8'/>"}catch(e){}
 /* زر في الشريط العلوي + داخل نافذة «مهمة جديدة» */
 {const o=topbar;topbar=function(){let h=o.apply(this,arguments);try{h=h.replace('<button class="ib" data-act="newtask"',`<button class="ib vc46tb" data-act="vc46o" aria-label="إضافة بالصوت" title="إضافة بالصوت">${ic('mic46',19)}</button><button class="ib" data-act="newtask"`)}catch(e){}return h}}
 {const o=newTask;newTask=function(){const r=o.apply(this,arguments);try{const mh=document.querySelector('.ov .mh');if(mh&&!mh.querySelector('[data-act="vc46o"]')){const b=document.createElement('button');b.type='button';b.className='btn sm';b.dataset.act='vc46o';b.innerHTML=ic('mic46',15)+'بالصوت';b.style.marginInlineStart='auto';const x=mh.querySelector('[data-act="closeov"]');if(x){x.style.marginInlineStart='8px';mh.insertBefore(b,x)}else mh.appendChild(b)}}catch(e){}return r}}
+/* v51 · المهام ذات الأولوية العاجلة تظهر في «العاجل جداً» */
+{const o=prio28;prio28=function(){const had=PR28C&&PR28C.k===S.me;const L=o.apply(this,arguments);if(had)return L;try{const me=S.me;S.tasks.forEach(t=>{if(t.done||!t.raw||t.raw.Priority!=='عاجل')return;if(t.who!==me)return;if(typeof canSeeTask==='function'&&!canSeeTask(t))return;const key='urg:'+t.id;if(typeof snz28==='function'&&snz28(key))return;const g=goOf28(t);if(L.some(x=>x.go===g&&x.lv==='u'))return;const d=dueOf17(t);const n=d?days(d):null;
+ L.unshift({lv:'u',key,i:'alert',t:t.title.slice(0,70),s:'أولوية عاجلة'+(t.raw.EmpName?' · '+t.raw.EmpName:'')+(n===null?'':n<0?` · متأخرة ${dd29(-n)}`:n===0?' · موعدها اليوم':` · موعدها بعد ${dd29(n)}`),go:g})})}catch(e){console.warn(e)}return L}}
 
 /* ===================== v47 · طلبات الإجازة من الموظفين: الرصيد، التعارض، مراجعة شيخة، اعتماد رشيد، واتساب + PDF ===================== */
 /*FUSHA-OFF*/
