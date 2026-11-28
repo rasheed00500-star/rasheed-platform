@@ -3524,7 +3524,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261127144505';
+const APPV18='20261128135800';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -5311,7 +5311,7 @@ function saud36(E,X){const ok=X.filter(x=>x.n>W18).length,so=X.filter(x=>x.n>=0&
  <div class="sd36"><svg viewBox="0 0 140 140" aria-hidden="true"><circle cx="70" cy="70" r="${r}" fill="none" stroke="#E9ECEA" stroke-width="16"/>${seg(ok,'#17694A',0)}${seg(so,'#E3A63B',ok)}${seg(ex,'#E0574C',ok+so)}<text x="70" y="70" text-anchor="middle" class="big">${p}%</text><text x="70" y="90" text-anchor="middle" class="sm">وثائق سارية</text></svg>
  <div class="sl36"><div><i style="background:#17694A"></i>سارية<b>${ok}</b></div><div><i style="background:#E3A63B"></i>قريبة الانتهاء<b>${so}</b></div><div><i style="background:#E0574C"></i>منتهية<b>${ex}</b></div></div></div>
  <div class="st36"><button data-act="kx16:soon" class="s">${ic('clock',16)}ابدأ تجديد القريب<b>${so}</b></button><button data-act="kx16:exp" class="e">${ic('alert',16)}عالج المنتهي<b>${ex}</b></button></div></section>`}
-const GOV36=[['مقيم','#2F6FC2','https://muqeem.sa'],['قوى','#0E9384','https://www.qiwa.sa/ar'],['التأمينات','#8A5CC7','https://www.gosi.gov.sa'],['مدد','#B7791F','https://mudad.com.sa'],['تم','#17694A',''],['أبشر','#3E7C52','https://www.absher.sa'],['مركز الأعمال','#55625B','https://business.sa'],['بلدي','#2364AA','https://balady.gov.sa']];
+const GOV36=[['مقيم','#2F6FC2','https://muqeem.sa'],['قوى','#0E9384','https://www.qiwa.sa/ar'],['التأمينات','#8A5CC7','https://www.gosi.gov.sa'],['مدد','#B7791F','https://mudad.com.sa'],['تم','#17694A',''],['أبشر','#3E7C52','https://www.absher.sa'],['مركز الأعمال','#55625B','https://e.business.sa/'],['بلدي','#2364AA','https://balady.gov.sa']];
 function gov36(){const A=(RAW.Accounts||[]);const url=n=>{const a=A.find(x=>(x.Title||'').trim()===n&&x.Url);let u=a?String(a.Url).trim():'';if(u&&!/^https?:\/\//.test(u))u='https://'+u;return u};
  const L=GOV36.map(g=>[g[0],g[1],url(g[0])||g[2]]).filter(g=>g[2]);
  return `<section class="cd18 c35"><div class="h18">${ic('bank',18,'var(--br)')}<b>المنصات الحكومية</b><small>تفتح في صفحة جديدة</small></div><div class="gv36">${L.map(g=>`<a href="${esc(g[2])}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"><i style="background:${g[1]}">${g[0].replace(/^ال/,'').slice(0,1)}</i><span>${g[0]}</span>${ic('ext',14)}</a>`).join('')}</div></section>`}
