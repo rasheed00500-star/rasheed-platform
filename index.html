@@ -1282,6 +1282,24 @@ b.kk35.b{color:#2364AA}b.kk35.v{color:#6B4FA8}b.kk35.t{color:#0F7C86}
 .sw44b{cursor:pointer}.sw44b input{position:absolute;opacity:0;pointer-events:none}.sw44b i{display:block;width:32px;height:32px;border-radius:9px;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}.sw44b input:checked+i{box-shadow:0 0 0 2px var(--ink,#14201A)}
 @media (max-width:600px){.co44g{grid-template-columns:1fr}.co44lg{width:120px}}
 @media (min-width:901px){.top .crumb{flex-shrink:0}}
+/* v46 · الإضافة بالصوت */
+.vc46{display:flex;flex-direction:column;align-items:center;gap:12px}
+.vc46m{width:92px;height:92px;border-radius:50%;border:0;background:var(--br,#17694A);display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 12px #E7F3EC,0 0 0 24px #F3FAF6;margin:22px 0 14px;transition:transform .15s}
+.vc46m.on{animation:vc46p 1.2s ease-in-out infinite;background:#C23B32;box-shadow:0 0 0 12px #FDECEA,0 0 0 24px #FEF6F5}
+@keyframes vc46p{50%{transform:scale(1.08)}}
+.vc46s{font-size:13.5px;color:var(--mute);text-align:center;min-height:20px}
+.vc46 textarea{width:100%}
+.vc46ex{font-size:12.5px;color:var(--mute);line-height:1.8;align-self:stretch}
+.vc46q{background:#F4FAF6;border:1px solid #D6E9DD;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.8}
+.vc46e{height:40px;display:flex;align-items:center;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:#F7FAF8;font-weight:600}
+/* v47 · طلبات الإجازة */
+.lv47h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line)}.lv47h b{display:inline-flex;align-items:center;gap:8px;font-size:15px}
+.lv47 .sub{display:block;font-size:11.5px;color:var(--mute);margin-top:2px}
+.lv47b{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.lv47b>div{background:#F7FAF8;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.lv47b small{display:block;color:var(--mute);font-size:12px}.lv47b b{font-size:16px}
+.lv47a{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-start;min-width:150px}.lv47a .btn{white-space:nowrap}
+/* شريط علوي مضغوط للجوالات الصغيرة بعد إضافة زر الصوت */
+@media (max-width:430px){.top{gap:7px;padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}.top .ib,.top .srch{width:38px;height:38px;border-radius:11px}.co44{height:36px;padding:0 8px;max-width:96px}}
+@media (max-width:370px){.top{gap:5px}.top .ib,.top .srch{width:35px;height:35px}.co44{max-width:80px;font-size:12px}}
 
 </style>
 </head>
@@ -3552,7 +3570,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261128152209';
+const APPV18='20261128160452';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -5759,6 +5777,185 @@ window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('
  if(a==='co44rm'){e.preventDefault();e.stopImmediatePropagation();LOGO44N='';const pv=document.getElementById('co44pv');if(pv)pv.innerHTML='<span class="ph44">بدون شعار</span>';b.remove();return}
  if(a==='ne44'){e.preventDefault();e.stopImmediatePropagation();newEmp44();return}
  if(a==='nv44'){e.preventDefault();e.stopImmediatePropagation();newVeh44();return}},true);
+
+/* ===================== v46 · إضافة مهمة أو تذكير أو موعد بالصوت ===================== */
+/*FUSHA-OFF*/
+const nz46=s=>String(s||'').replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,' ').trim();
+const WD46=['الاحد','الاثنين','الثلاثاء','الاربعاء','الخميس','الجمعه','السبت'];
+const NUMW46={'واحد':1,'وحده':1,'ثنتين':2,'اثنين':2,'ثنين':2,'ثلاث':3,'ثلاثه':3,'اربع':4,'اربعه':4,'خمس':5,'خمسه':5,'ست':6,'سته':6,'سبع':7,'سبعه':7,'ثمان':8,'ثمانيه':8,'ثمنيه':8,'تسع':9,'تسعه':9,'عشر':10,'عشره':10,'احدعشر':11,'احدى عشر':11,'حداش':11,'اثنعشر':12,'اثنا عشر':12,'اثني عشر':12,'طنعش':12};
+function vcParse46(raw){const t=nz46(raw);const me=S.me;const R={raw,type:'task',who:me,date:'',time:'',co:'',emp:null,title:''};
+ const now=new Date(TODAY);const add=n=>{const d=new Date(now);d.setDate(d.getDate()+n);return ymd35(d)};
+ /* النوع */
+ if(/(^| )(موعد|اجتماع|مقابله|زياره)( |$)/.test(t))R.type='appt';else if(/(^| )(ذكر|ذكرني|ذكري|تذكير|نبه|نبهني)( |$)/.test(t))R.type='rem';
+ /* المسؤول */
+ const P={s:/(^| )(لل?شيخه|شيخه)( |$)/,k:/(^| )(لخالد|خالد)( |$)/,r:/(^| )(لرشيد|رشيد)( |$)/};
+ if(/(^| )(ذكرني|نبهني|علي|عندي)( |$)/.test(t))R.who=me;else{for(const k of ['s','k','r'])if(P[k].test(t)&&k!==me){R.who=k;break}}
+ /* التاريخ */
+ let m;if(/بعد بكره|بعد بكرا|بعد غد/.test(t))R.date=add(2);else if(/(^| )(بكره|بكرا|باكر|غدا|غدوه|الغد)( |$)/.test(t))R.date=add(1);else if(/(^| )(اليوم|الحين|الان)( |$)/.test(t))R.date=add(0);
+ else if((m=t.match(/بعد (\d+|يومين|اسبوعين|اسبوع|شهر|[^ ]+)( (يوم|ايام|اسابيع|اسبوع))?/))&&(/^\d+$|يومين|اسبوع|شهر/.test(m[1])||(NUMW46[m[1]]&&m[3]))){const v=m[1];const n=/^\d+$/.test(v)?+v:NUMW46[v]||0;R.date=add(v==='يومين'?2:v==='اسبوع'?7:v==='اسبوعين'?14:v==='شهر'?30:/اسبوع|اسابيع/.test(m[3]||'')?n*7:n)}
+ else if(/نهايه الاسبوع|اخر الاسبوع/.test(t)){const d=new Date(now);d.setDate(d.getDate()+((4-d.getDay()+7)%7));R.date=ymd35(d)}
+ else if(/نهايه الشهر|اخر الشهر/.test(t)){R.date=ymd35(new Date(now.getFullYear(),now.getMonth()+1,0))}
+ else if((m=t.match(/(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/))){let y=m[3]?+m[3]:now.getFullYear();if(y<100)y+=2000;const d=new Date(y,+m[2]-1,+m[1]);if(!m[3]&&d<now)d.setFullYear(y+1);R.date=ymd35(d)}
+ else{const i=WD46.findIndex(w=>new RegExp('(^| )(يوم )?'+w+'( |$)').test(t));if(i>=0){const d=new Date(now);let k=(i-d.getDay()+7)%7;if(k===0)k=7;d.setDate(d.getDate()+k);R.date=ymd35(d)}}
+ if(!R.date&&R.type!=='appt')R.date=add(R.type==='rem'?1:0);
+ /* الوقت */
+ if((m=t.match(/الساعه (\d{1,2})(?::(\d{2}))?|الساعه ([^ ]+(?: عشر)?)/))){let h=m[1]?+m[1]:NUMW46[m[3]]||NUMW46[(m[3]||'').split(' ')[0]]||0;let mi=m[2]?+m[2]:/ونص|و نص|ونصف/.test(t)?30:/وربع/.test(t)?15:0;
+  if(h){if(/(العصر|المغرب|العشا|الليل|مساء|بالليل|الظهر)/.test(t)&&h<12)h+=h===12?0:12;else if(!/(الصبح|صباحا|الفجر)/.test(t)&&h>=1&&h<=6)h+=12;R.time=String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0')}}
+ /* الموظف */
+ let best=null,bs=0;const tk=new Set(t.split(' '));(S.employees||[]).forEach(e=>{const w=nz46(e.name).split(' ').filter(x=>x.length>1);let sc=0;w.forEach((x,i)=>{if(tk.has(x)||tk.has('ل'+x)||tk.has('و'+x))sc+=i===0?1.2:1});if(sc>bs){bs=sc;best=e}});
+ if(best&&bs>=2.2)R.emp=best;
+ /* الشركة أو العميل */
+ const cos=[...new Set([...HRS44(),'أركان',...((S.clients||[]).map(c=>c.name))])];let co=cos.filter(c=>t.includes(nz46(c).replace(/^(شركه|مؤسسه) /,''))).sort((a,b)=>b.length-a.length)[0];
+ R.co=co||(R.emp?R.emp.co:(S.me==='k'?'':CUR44()));
+ /* نص المطلوب */
+ let x=String(raw).trim();
+ x=x.replace(/^\s*(ذكّر|ذكر|ذكّرني|ذكرني|نبّه|نبه|نبّهني|نبهني|خلّ|خل|خلي|خلّي|قل|قول)\s+(ل?شيخة|ل?خالد|ل?رشيد)?\s*/,'').replace(/^\s*(مهمة|تذكير|ملاحظة)\s*[:：]\s*/,'');
+ if(R.type==='task')x=x.replace(/^\s*(شيخة|خالد|رشيد)\s+/,'');
+ x=x.replace(/\s*(بعد بكرة|بعد بكرا|بكرة|بكرا|باكر|غداً|غدا|اليوم|الحين|بعد (\d+|يومين|أسبوعين|اسبوعين|أسبوع|اسبوع|شهر|واحد|اثنين|ثلاث|ثلاثة|أربع|أربعة|اربع|اربعة|خمس|خمسة|ست|ستة|سبع|سبعة|ثمان|ثمانية|تسع|تسعة|عشر|عشرة)( (يوم|أيام|ايام|أسابيع|اسابيع))?|\d{1,2}[\/\-]\d{1,2}([\/\-]\d{2,4})?|نهاية الأسبوع|نهاية الاسبوع|قبل نهاية الأسبوع|قبل نهاية الاسبوع|نهاية الشهر|آخر الشهر)\s*/g,' ');
+ x=x.replace(/\s*(يوم\s+)?(الأحد|الاحد|الإثنين|الاثنين|الثلاثاء|الأربعاء|الاربعاء|الخميس|الجمعة|السبت)\s*/g,' ').replace(/\s*الساعة\s+\S+(\s+(و?نص|ونصف|وربع|الصبح|صباحاً|صباحا|العصر|المغرب|الظهر|بالليل|الليل|مساءً|مساء))*\s*/g,' ');
+ if(co)x=x.replace(new RegExp('(\\s*[،,]\\s*(ل|لشركة |لمؤسسة |شركة |مؤسسة )?|\\s+(ل|لشركة |لمؤسسة ))'+co.replace(/^(شركة|مؤسسة) /,'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*$'),'');
+ x=x.replace(/^\s*(أن|ان)\s+/,'').replace(/\s+/g,' ').replace(/^[،,.\s]+|[،,.\s]+$/g,'');
+ R.title=x||String(raw).trim();return R}
+
+/*FUSHA-ON*/
+/* ---------- واجهة التسجيل ---------- */
+let VC46=null;
+const SR46=()=>window.SpeechRecognition||window.webkitSpeechRecognition||null;
+function vcOpen46(){try{VC46&&VC46.abort&&VC46.abort()}catch(e){}VC46=null;const can=!!SR46();
+ modal(`<div class="mh"><b>${ic('mic46',18,'var(--br)')} إضافة بالصوت</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb vc46">
+ ${can?`<button class="vc46m" data-act="vc46r" aria-label="ابدأ التسجيل">${ic('mic46',38,'#fff')}</button><div class="vc46s" id="vc46s">اضغط الميكروفون وتحدّث بشكل طبيعي</div>`:`<div class="vc46s">اضغط ميكروفون لوحة المفاتيح 🎤 وتحدّث ليُكتب كلامك هنا</div>`}
+ <textarea id="vc46t" class="inp" rows="3" placeholder="مثال: ذكّر شيخة بكرة تجدد إقامة أحمد السيراوي"></textarea>
+ <div class="vc46ex"><b>أمثلة:</b> «خالد يتابع السجل التجاري لشركة فراس نهاية الأسبوع» · «موعد مع أيهم الثلاثاء الساعة عشر» · «ذكّرني بكرة أراجع مسير الرواتب»</div></div>
+ <div class="mf"><button class="btn pri" data-act="vc46p">${ic('tick',15,'#fff')}فهم الطلب</button><button class="btn" data-act="closeov">إلغاء</button></div>`);
+ if(!can)setTimeout(()=>document.getElementById('vc46t')?.focus(),50)}
+function vcRec46(btn){const C=SR46();if(!C)return;if(VC46){try{VC46.stop()}catch(e){}return}
+ const r=new C();VC46=r;r.lang='ar-SA';r.interimResults=true;r.continuous=false;r.maxAlternatives=1;let fin='';const st=document.getElementById('vc46s'),ta=document.getElementById('vc46t');
+ btn.classList.add('on');if(st)st.textContent='أستمع إليك… تحدّث الآن';
+ r.onresult=e=>{let s='';for(let i=0;i<e.results.length;i++){s+=e.results[i][0].transcript;if(e.results[i].isFinal)fin=s}if(ta)ta.value=s};
+ r.onerror=e=>{if(st)st.textContent=/not-allowed|service-not-allowed/.test(e.error)?'الميكروفون غير مسموح · اسمح به من إعدادات المتصفح، أو استخدم ميكروفون لوحة المفاتيح':e.error==='no-speech'?'لم يصل أي صوت · حاول مرة أخرى':'تعذّر التسجيل · استخدم ميكروفون لوحة المفاتيح'};
+ r.onend=()=>{VC46=null;btn.classList.remove('on');const v=(ta&&ta.value||'').trim();if(v){if(st)st.textContent='تم · راجع النص ثم اضغط «فهم الطلب»';vcShow46(vcParse46(v))}else if(st&&/أستمع إليك/.test(st.textContent))st.textContent='اضغط الميكروفون وتحدّث بشكل طبيعي'};
+ try{r.start()}catch(e){VC46=null;btn.classList.remove('on')}}
+function vcShow46(R){const who=['r','s','k'].filter(p=>PEOPLE[p]);const cos=[...new Set([...HRS44(),'أركان',...((S.clients||[]).map(c=>c.name))])];
+ modal(`<div class="mh"><b>هذا ما فهمته · راجع واحفظ</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><form data-form="vc46"><div class="mb">
+ <div class="vc46q">«${esc(R.raw)}»</div>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px">
+ <div class="field"><label for="vc46y">النوع</label><select id="vc46y" class="inp">${[['task','مهمة'],['rem','تذكير'],['appt','موعد']].map(([k,l])=>`<option value="${k}" ${R.type===k?'selected':''}>${l}</option>`).join('')}</select></div>
+ <div class="field" id="vc46wf"><label for="vc46w">المسؤول</label><select id="vc46w" class="inp">${who.map(p=>`<option value="${p}" ${R.who===p?'selected':''}>${PEOPLE[p].name}${p===S.me?' (أنت)':''}</option>`).join('')}</select></div>
+ <div class="field" style="grid-column:1/-1"><label for="vc46n">المطلوب</label><input id="vc46n" class="inp" required value="${esc(R.title)}"></div>
+ <div class="field"><label for="vc46d">التاريخ</label><input id="vc46d" class="inp" type="date" value="${R.date}"></div>
+ <div class="field" id="vc46tf"><label for="vc46h">الوقت</label><input id="vc46h" class="inp" type="time" value="${R.time}"></div>
+ <div class="field"><label for="vc46c">الشركة أو العميل</label><input id="vc46c" class="inp" list="vc46cl" value="${esc(R.co||'')}"><datalist id="vc46cl">${cos.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></div>
+ ${R.emp?`<div class="field"><label>مرتبط بالموظف</label><div class="vc46e">${esc(R.emp.name)}</div></div>`:''}
+ </div><p class="mini" style="margin:12px 2px 0">تُحفظ باسمك (${PEOPLE[S.me].name}) مثل ما تضيفها بيدك · عدّل أي خانة قبل الحفظ</p></div>
+ <div class="mf"><button class="btn pri" type="submit">${ic('tick',15,'#fff')}احفظ</button><button class="btn" type="button" data-act="vc46b">${ic('mic46',15)}سجّل من جديد</button></div></form>`);
+ ui.vc46=R;vcType46()}
+function vcType46(){const y=(document.getElementById('vc46y')||{}).value;const wf=document.getElementById('vc46wf'),tf=document.getElementById('vc46tf');if(wf)wf.style.display=y==='appt'?'none':'';if(tf)tf.style.display=y==='appt'?'':'none'}
+document.addEventListener('change',e=>{if(e.target.id==='vc46y')vcType46()},true);
+document.addEventListener('submit',e=>{const f=e.target.closest('form[data-form="vc46"]');if(!f)return;e.preventDefault();e.stopImmediatePropagation();const V=id=>((document.getElementById(id)||{}).value||'').trim();
+ const y=V('vc46y'),t=V('vc46n'),d=V('vc46d'),h=V('vc46h'),co=V('vc46c');const R=ui.vc46||{};if(!t){toast('اكتب المطلوب');return}
+ if(y==='appt'){if(!d){toast('حدّد تاريخ الموعد');return}act(async()=>{await apSave35(L=>{L.push({id:Date.now(),t,d,tm:h,n:'أُضيف بالصوت',with:'',by:S.me,at:new Date().toISOString()})});closeModal()},'تم حفظ الموعد ✓');return}
+ const who=V('vc46w')||S.me;
+ act(async()=>{const chain=[S.me].concat(who!==S.me?[who]:[]);const f={Title:t,AssignedTo:PEOPLE[who].name,AssignedBy:PEOPLE[S.me].name,DueDate:d?d+'T12:00:00Z':null,Company:co,Status:'مفتوحة',Notes:'أُضيفت بالصوت: «'+(R.raw||t)+'»',Chain:chain.join(',')};if(y==='rem')f.ReqType='تذكير';if(R.emp)f.EmpName=R.emp.name;
+  let it;try{it=await spCreate('Tasks',f)}catch(x){if(f.EmpName){delete f.EmpName;it=await spCreate('Tasks',f)}else throw x}RAW.Tasks.push(it);
+  if(who!==S.me)await notify(PEOPLE[who].name,`${PEOPLE[S.me].name} ${S.me==='s'?'أعطتك':'أعطاك'} ${y==='rem'?'تذكيراً':'مهمة'}: ${t}`,d?'الموعد '+d.split('-').reverse().join('/'):'',`task-${it.id}`,'check');closeModal()},y==='rem'?'تم حفظ التذكير ✓':'تمت إضافة المهمة ✓')},true);
+window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act^="vc46"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();const a=b.dataset.act;
+ if(a==='vc46o'||a==='vc46b'){vcOpen46();return}
+ if(a==='vc46r'){vcRec46(b);return}
+ if(a==='vc46p'){const v=((document.getElementById('vc46t')||{}).value||'').trim();if(!v){toast('سجّل أو اكتب الطلب أولاً');return}try{VC46&&VC46.abort()}catch(x){}VC46=null;vcShow46(vcParse46(v));return}},true);
+/* أيقونة الميكروفون */
+try{P.mic46="<rect x='9' y='2' width='6' height='12' rx='3'/><path d='M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8'/>"}catch(e){}
+/* زر في الشريط العلوي + داخل نافذة «مهمة جديدة» */
+{const o=topbar;topbar=function(){let h=o.apply(this,arguments);try{h=h.replace('<button class="ib" data-act="newtask"',`<button class="ib vc46tb" data-act="vc46o" aria-label="إضافة بالصوت" title="إضافة بالصوت">${ic('mic46',19)}</button><button class="ib" data-act="newtask"`)}catch(e){}return h}}
+{const o=newTask;newTask=function(){const r=o.apply(this,arguments);try{const mh=document.querySelector('.ov .mh');if(mh&&!mh.querySelector('[data-act="vc46o"]')){const b=document.createElement('button');b.type='button';b.className='btn sm';b.dataset.act='vc46o';b.innerHTML=ic('mic46',15)+'بالصوت';b.style.marginInlineStart='auto';const x=mh.querySelector('[data-act="closeov"]');if(x){x.style.marginInlineStart='8px';mh.insertBefore(b,x)}else mh.appendChild(b)}}catch(e){}return r}}
+
+/* ===================== v47 · طلبات الإجازة من الموظفين: الرصيد، التعارض، مراجعة شيخة، اعتماد رشيد، واتساب + PDF ===================== */
+/*FUSHA-OFF*/
+const dg47=s=>String(s||'').replace(/[٠-٩]/g,x=>'٠١٢٣٤٥٦٧٨٩'.indexOf(x)).replace(/\D/g,'');
+const ph47=s=>{const d=dg47(s);return d.length>=9?d.slice(-9):''};
+const lvDays47=l=>{const a=D(l.from),b=D(l.to);if(!a||!b)return +l.days||0;return Math.max(1,Math.round((b-a)/864e5)+1)};
+/* ربط طلبات النموذج بالموظف (بالجوال ثم بالاسم) */
+{const o=build;build=function(){const r=o.apply(this,arguments);try{const byPh={};S.employees.forEach(e=>{const raw=(RAW.Employees.find(x=>x.id===e.id)||{}).Phone;const p=ph47(raw||e.phone);if(p)byPh[p]=e});
+ S.leaves.forEach(l=>{l.form=/نموذج الموظف/.test(l.notes||'');if(!l.days)l.days=lvDays47(l)||'';let e=l.eid?S.employees.find(x=>x.id===l.eid):null;
+  if(!e){const m=String(l.notes||'').match(/(?:الجوال|جوال)\s*[:：]\s*([+\d٠-٩ ]{9,16})/);const p=m?ph47(m[1]):'';if(p&&byPh[p])e=byPh[p]}
+  if(!e&&l.emp){const w=nz46(l.emp).split(' ').filter(x=>x.length>1);let best=null,bs=0;S.employees.forEach(x=>{const xs=new Set(nz46(x.name).split(' '));const sc=w.filter(t=>xs.has(t)).length;if(sc>bs){bs=sc;best=x}});if(best&&bs>=2)e=best}
+  if(e){l.typed=l.emp!==e.name?l.emp:'';l.emp=e.name;l.eid=e.id;if(!l.co)l.co=e.co}else l.nomatch=1})}catch(e){console.warn('v47',e)}return r}}
+/* الرصيد حسب نظام العمل: 21 يوماً، و30 بعد 5 سنوات (أو المسجّل في عقد الموظف إن كان أكثر) */
+function lvBal47(e,except){if(!e)return null;const raw=RAW.Employees.find(x=>x.id===e.id)||{};const j=D(iso2(raw.JoinDate));const yrs=j?(TODAY-j)/(365.25*864e5):0;
+ const ent=Math.max(+raw.LeaveDays||21,yrs>=5?30:21);const y=TODAY.getFullYear();const mine=S.leaves.filter(l=>(l.eid===e.id||l.emp===e.name)&&l.status==='معتمد'&&l.id!==except&&D(l.from)&&D(l.from).getFullYear()===y);
+ const used=mine.filter(l=>l.type==='سنوية').reduce((s,l)=>s+(+l.days||lvDays47(l)),0);const sick=mine.filter(l=>l.type==='مرضية').reduce((s,l)=>s+(+l.days||lvDays47(l)),0);
+ return{ent,used,left:ent-used,sick,yrs,join:j}}
+/* التعارض: زميل بنفس المسمى في إجازة بنفس الفترة */
+function lvConf47(l){const e=S.employees.find(x=>x.id===l.eid);if(!e||!e.job||!D(l.from))return[];const a=D(l.from),b=D(l.to)||a;
+ return S.leaves.filter(o=>o.id!==l.id&&o.eid!==l.eid&&['معتمد','بانتظار الاعتماد','جديد'].includes(o.status)&&D(o.from)&&D(o.from)<=b&&(D(o.to)||D(o.from))>=a).map(o=>({o,e:S.employees.find(x=>x.id===o.eid)})).filter(x=>x.e&&x.e.job===e.job)}
+const lvMsg47=(l,ok)=>{const e=S.employees.find(x=>x.id===l.eid)||{};const c=coInfo44(l.co||e.co);const b=lvBal47(e);const back=l.to?fmt(new Date(D(l.to).getTime()+864e5)):'';const dd=+l.days||lvDays47(l);
+ return ok?`السلام عليكم ${(l.emp||'').split(' ')[0]}،\nتم اعتماد إجازتك ${l.type} من ${l.from} إلى ${l.to} (${dd29(dd)}).${l.type==='سنوية'&&b?`\nالرصيد المتبقي: ${dd29(Math.max(0,b.left))}`:''}${back?`\nتاريخ المباشرة: ${back}`:''}\nنتمنى لك إجازة سعيدة.\n\nقسم الموارد البشرية · ${c.full}`
+ :`السلام عليكم ${(l.emp||'').split(' ')[0]}،\nنعتذر، لم يتم اعتماد طلب إجازتك ${l.type} من ${l.from} إلى ${l.to}.\nللاستفسار تواصل مع قسم الموارد البشرية.\n\nقسم الموارد البشرية · ${c.full}`};
+const lvPh47=l=>{const e=S.employees.find(x=>x.id===l.eid)||{};const raw=RAW.Employees.find(x=>x.id===e.id)||{};const m=String(l.notes||'').match(/(?:الجوال|جوال)\s*[:：]\s*([+\d٠-٩ ]{9,16})/);return raw.Phone||e.phone||(m?m[1]:'')};
+
+/* ---------- قسم «طلبات الموظفين» أعلى صفحة الإجازات ---------- */
+function lvReqCard47(){const L=visLeaves().filter(l=>['جديد','بانتظار الاعتماد'].includes(l.status));const me=S.me;
+ const row=l=>{const e=S.employees.find(x=>x.id===l.eid);const b=e&&l.type==='سنوية'?lvBal47(e,l.id):null;const dd=+l.days||lvDays47(l);const C=lvConf47(l);
+  const bal=b?(dd>b.left?`<span class="pill exp">الرصيد ${b.left} فقط</span>`:`<span class="pill ok">متبقٍ ${b.left} من ${b.ent}</span>`):l.type==='مرضية'?`<span class="pill info">${/تقرير|مرفق/.test(l.notes||'')?'مرفق تقرير':'بدون تقرير'}</span>`:'<span class="mini">—</span>';
+  const warn=[l.nomatch?'<span class="pill exp">الاسم غير موجود في الموظفين</span>':'',C.length?`<span class="pill exp">${esc(C[0].e.job)} آخر في إجازة ${fmt(D(C[0].o.from)).slice(0,5)}</span>`:''].filter(Boolean).join(' ')||'<span class="mini">—</span>';
+  const act=me==='r'?`${btn('اعتماد','tick','sm pri',`lv47a:${l.id}`)} ${btn('رفض','x','sm',`lv47r:${l.id}`)}`:me==='s'?(l.status==='جديد'?`${btn('أرسل لرشيد','left','sm pri',`lv47f:${l.id}`)} ${btn('رفض','x','sm',`lv47r:${l.id}`)}`:'<span class="pill soon">عند رشيد</span>'):'';
+  return `<tr><td>${l.eid?empLink(l.emp,l.eid):`<b>${esc(l.emp)}</b>`}${l.typed?`<span class="sub">كتب: ${esc(l.typed)}</span>`:''}${l.form?'<span class="sub">من نموذج الموظف</span>':''}</td><td>${esc(l.type)}</td><td>${l.from||'—'} – ${l.to||'—'}<span class="sub">${dd29(dd)}</span></td><td>${bal}</td><td>${warn}</td><td>${pill(l.status==='جديد'?'جديد':me==='r'?'بانتظار اعتمادك':'بانتظار الاعتماد',l.status==='جديد'?'info':'soon')}</td><td><div class="lv47a">${act}</div></td></tr>`};
+ return `<section class="card lv47" style="overflow:hidden;margin-bottom:16px"><div class="lv47h"><b>${ic('inbox',18,'var(--br)')} طلبات الموظفين</b><span class="mini">${(()=>{const n=me==='s'?L.filter(l=>l.status==='جديد').length:L.length;return n?(me==='s'?`${n} جديد تحتاج مراجعتك`:`${n} بانتظار القرار`):L.length?'لا يوجد ما يحتاج إجراءك':'لا توجد طلبات معلّقة'})()}</span><span style="flex:1"></span><button class="btn sm" data-act="lv47l">${ic('wa',15)}رابط طلب الإجازة للموظفين</button></div>
+ ${L.length?`<div class="tbl"><table><thead><tr><th>الموظف</th><th>النوع</th><th>الفترة</th><th>الرصيد</th><th>تنبيه</th><th>الحالة</th><th></th></tr></thead><tbody>${L.map(row).join('')}</tbody></table></div>`:''}</section>`}
+{const o=PAGES.leaves;PAGES.leaves=p=>{const h=o(p);if(S.me==='k')return h;try{const pend=visLeaves().some(l=>['جديد','بانتظار الاعتماد'].includes(l.status));let i=pend?h.indexOf('<div class="grid g4">'):-1;if(i<0)i=h.indexOf('<section class="card" style="overflow:hidden">');if(i<0)return h+lvReqCard47();return h.slice(0,i)+lvReqCard47()+h.slice(i)}catch(e){return h}}}
+CR.leaves=CR.leaves||['الإجازات والسفر'];
+
+/* ---------- رابط النموذج لكل شركة ---------- */
+const lvForm47=()=>(((SET10||{}).lvform44)||{})[CUR44()]||'';
+function lvLink47(){const u=lvForm47();const c=coInfo44();const E=visEmp().filter(e=>{const r=RAW.Employees.find(x=>x.id===e.id)||{};return r.Phone||e.phone});
+ const msg=e=>`السلام عليكم ${(e?e.name:'').split(' ')[0]}،\nلطلب إجازة استخدم هذا الرابط واحفظه عندك:\n${u}\n\nاكتب اسمك ورقم جوالك كما هو مسجّل لدينا.\nقسم الموارد البشرية · ${c.full}`;
+ modal(`<div class="mh"><b>رابط طلب الإجازة · ${esc(CUR44())}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb">
+ ${u?`<div class="field"><label>الرابط</label><div style="display:flex;gap:8px"><input class="inp" dir="ltr" readonly value="${esc(u)}" id="lv47u"><button class="btn" data-act="lv47c">نسخ</button></div></div>
+ <div class="field" style="margin-top:12px"><label for="lv47e">أرسله لموظف عبر واتساب</label><div style="display:flex;gap:8px"><select id="lv47e" class="inp">${E.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</select><button class="btn pri" data-act="lv47w">${ic('wa',15,'#fff')}واتساب</button></div></div>
+ <p class="mini" style="margin:12px 2px 0">الموظف يعبّي الطلب من جواله بدون حساب، ويصل الطلب هنا تلقائياً في «طلبات الموظفين»</p>`
+ :`<div class="em35">لم يتم ربط نموذج الطلب لهذه الشركة بعد</div>${S.me==='r'?`<div class="field" style="margin-top:12px"><label for="lv47s">رابط نموذج Microsoft Forms</label><input id="lv47s" class="inp" dir="ltr" placeholder="https://forms.office.com/r/…"></div>`:''}`}
+ </div><div class="mf">${!u&&S.me==='r'?`<button class="btn pri" data-act="lv47sv">احفظ الرابط</button>`:''}${u&&S.me==='r'?`<button class="btn" data-act="lv47x">تغيير الرابط</button>`:''}<button class="btn" data-act="closeov">إغلاق</button></div>`);ui.lv47msg=msg}
+
+/* ---------- بعد الاعتماد أو الرفض: رسالة واتساب جاهزة + نموذج PDF ---------- */
+function lvDone47(l,ok){const p=lvPh47(l);const m=lvMsg47(l,ok);
+ modal(`<div class="mh"><b>${ok?'تم اعتماد الإجازة ✓':'تم رفض الطلب'}</b><button class="ib" style="margin-inline-start:auto" data-act="closeov" aria-label="إغلاق">${ic('x',18)}</button></div><div class="mb">
+ <div class="vc46q" style="white-space:pre-line">${esc(m)}</div>
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">${p?`<a class="btn pri" target="_blank" rel="noopener" href="${waHref10(p,m)}">${ic('wa',15,'#fff')}أرسل للموظف واتساب</a>`:'<span class="mini">لا يوجد رقم جوال للموظف</span>'}<button class="btn" data-act="lv47cm">${ic('file',15)}نسخ الرسالة</button>${ok?`<button class="btn" data-act="lv47p:${l.id}">${ic('print',15)}نموذج الإجازة PDF</button>`:''}</div>
+ ${ok?'<p class="mini" style="margin:12px 2px 0">نموذج الإجازة يطلع بشعار الشركة · من الجوال اضغط «تنزيل PDF» ثم شاركه في نفس محادثة الواتساب</p>':''}</div><div class="mf"><button class="btn" data-act="closeov">تم</button></div>`);ui.lv47m=m}
+
+window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act^="lv47"],[data-act^="lvset:"]');if(!b)return;const a=b.dataset.act;
+ /* الاعتماد من الجدول القديم يمر بنفس المسار الجديد */
+ if(a.startsWith('lvset:')){const [,id,st]=a.split(':');if(st!=='معتمد'&&st!=='مرفوض')return;e.preventDefault();e.stopImmediatePropagation();lvSet47(+id,st);return}
+ e.preventDefault();e.stopImmediatePropagation();const [k,x]=a.split(':');
+ if(k==='lv47a'){lvSet47(+x,'معتمد');return}
+ if(k==='lv47r'){lvSet47(+x,'مرفوض');return}
+ if(k==='lv47f'){const l=S.leaves.find(q=>q.id==x);if(!l)return;act(async()=>{const f={Status:'بانتظار الاعتماد'};if(l.eid)f.EmployeeName=l.emp;if(l.eid&&!(RAW.Leaves.find(q=>q.id==l.id)||{}).Company)f.Company=l.co;if(!(RAW.Leaves.find(q=>q.id==l.id)||{}).Days)f.Days=+l.days||lvDays47(l);await spPatch('Leaves',l.id,f);syncRaw('Leaves',l.id,f);await notify('رشيد',`طلب إجازة بانتظار اعتمادك · ${l.emp}`,`${l.type} · ${l.from} ← ${l.to}`,'leaves','cal')},'تم الإرسال لرشيد للاعتماد');return}
+ if(k==='lv47l'){lvLink47();return}
+ if(k==='lv47c'){copyText((document.getElementById('lv47u')||{}).value||'');return}
+ if(k==='lv47cm'){copyText(ui.lv47m||'');return}
+ if(k==='lv47w'){const id=+(document.getElementById('lv47e')||{}).value;const em=S.employees.find(q=>q.id===id);const raw=RAW.Employees.find(q=>q.id===id)||{};if(!em)return;window.open(waHref10(raw.Phone||em.phone,ui.lv47msg(em)),'_blank','noopener');return}
+ if(k==='lv47sv'||k==='lv47x'){if(k==='lv47x'){const s=SET10.lvform44||{};const u=s[CUR44()];modal(`<div class="mh"><b>تغيير رابط النموذج</b></div><div class="mb"><input id="lv47s" class="inp" dir="ltr" value="${esc(u||'')}"></div><div class="mf"><button class="btn pri" data-act="lv47sv">احفظ</button><button class="btn" data-act="closeov">إلغاء</button></div>`);return}
+  const u=((document.getElementById('lv47s')||{}).value||'').trim();if(!/^https:\/\/(forms\.office\.com|forms\.microsoft\.com)\//.test(u)){toast('الصق رابط نموذج Microsoft Forms');return}const co=CUR44();
+  act(async()=>{await updSet10(s=>{s.lvform44=Object.assign({},s.lvform44||{},{[co]:u})});closeModal();setTimeout(lvLink47,50)},'تم حفظ الرابط ✓');return}
+ if(k==='lv47p'){const l=S.leaves.find(q=>q.id==x);if(l){closeModal();printLeaveForm(l)}return}},true);
+
+async function lvSet47(id,st){const l=S.leaves.find(q=>q.id==id);if(!l)return;if(S.me!=='r'&&st==='معتمد'){toast('الاعتماد لرشيد');return}
+ const raw=RAW.Leaves.find(q=>q.id==id)||{};const f={Status:st,ApprovedBy:PEOPLE[S.me].name,ApprovedOn:nowIso()};if(!raw.Days)f.Days=+l.days||lvDays47(l);if(l.eid&&raw.EmployeeName!==l.emp)f.EmployeeName=l.emp;if(!raw.Company&&l.co)f.Company=l.co;
+ await act(async()=>{await spPatch('Leaves',l.id,f);syncRaw('Leaves',l.id,f);if(S.me!=='s')await notify('شيخة',`${st==='معتمد'?'اعتُمدت':'رُفضت'} إجازة ${l.emp}`,`${l.type} · ${l.from} ← ${l.to}`,'leaves','cal')},st==='معتمد'?'اعتُمدت الإجازة':'رُفضت الإجازة');
+ const n=S.leaves.find(q=>q.id==id)||l;setTimeout(()=>lvDone47(n,st==='معتمد'),60)}
+
+/* ---------- رصيد الإجازات في صفحة الموظف ---------- */
+{const o=PAGES.emp;PAGES.emp=prm=>{let h=o(prm);try{if(S.me==='k')return h;const e=S.employees.find(x=>x.id==prm.id);const b=lvBal47(e);if(!b)return h;
+ const rows=[['الاستحقاق السنوي',dd29(b.ent)],['المأخوذ هذه السنة',b.used?dd29(b.used):'لا شيء'],['المتبقي',dd29(Math.max(0,b.left))],['الإجازات المرضية هذه السنة',b.sick?`${b.sick} من 30 بأجر كامل`:'لا شيء']];
+ h+=`<section class="cd18 c35" style="margin-top:14px"><div class="h18">${ic('cal',18,'var(--br)')}<b>رصيد الإجازات</b><small>${b.join?`مباشرة ${fmt(b.join)}${b.yrs>=1?' · '+Math.floor(b.yrs)+' سنة خدمة':''}`:'تاريخ المباشرة غير مسجّل'}</small></div><div class="lv47b">${rows.map(r=>`<div><small>${r[0]}</small><b>${r[1]}</b></div>`).join('')}</div>${b.yrs<5?`<div class="mini" style="margin-top:8px">يصبح 30 يوماً بعد 5 سنوات خدمة</div>`:''}</section>`}catch(x){}return h}}
+
+/* ---------- تنبيهات في «العاجل جداً» ---------- */
+{const o=prio28;prio28=function(){const L=o.apply(this,arguments);if(L._v47)return L;L._v47=1;try{if(S.me==='k')return L;
+ visLeaves().filter(l=>(S.me==='s'&&l.status==='جديد')||(S.me==='r'&&['جديد','بانتظار الاعتماد'].includes(l.status))).forEach(l=>{const key='lv47:'+l.id+':'+l.status;if(snz28(key))return;
+  L.push({lv:'i',key,i:'cal',t:`طلب إجازة ${l.type} · ${l.emp}`,s:`${l.from} ← ${l.to} · ${l.status==='جديد'?'طلب جديد من الموظف':'بانتظار اعتمادك'}`,go:'leaves'})});
+ const or={u:0,i:1,f:2};L.sort((a,b)=>or[a.lv]-or[b.lv])}catch(e){}return L}}
+/* عدّاد القائمة: الطلبات المعلقة */
+['r','s'].forEach(u=>{const N=NAV[u];if(!N)return;const i=N.findIndex(n=>Array.isArray(n)&&n[2]==='leaves');if(i<0)return;const it=N[i].slice();it[3]=()=>visLeaves().filter(l=>S.me==='s'?l.status==='جديد':['جديد','بانتظار الاعتماد'].includes(l.status)).length+(typeof lateBack==='function'?lateBack():0);it[4]=1;N[i]=it});
+/*FUSHA-ON*/
 
 /* ===================== boot ===================== */
 function splash(msg,btnHtml=''){document.getElementById('app').innerHTML=`<div style="flex:1;display:grid;place-items:center;padding:16px"><div class="card" style="padding:36px 32px;width:min(460px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><span class="logo" style="border:0;padding:0;margin:0"><span class="m" style="width:56px;height:56px">${ic('layers',28,'#fff')}</span></span><h1 style="margin:6px 0 0;font-size:24px">منصة رشيد</h1><p class="mini" style="font-size:14px;margin:0">الموارد البشرية والخدمات</p><div style="margin-top:8px;color:var(--ink2)">${msg}</div>${btnHtml}</div></div>`}
