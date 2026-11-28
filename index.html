@@ -3570,7 +3570,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261128160452';
+const APPV18='20261128162013';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -5912,7 +5912,7 @@ function lvLink47(){const u=lvForm47();const c=coInfo44();const E=visEmp().filte
  ${u?`<div class="field"><label>الرابط</label><div style="display:flex;gap:8px"><input class="inp" dir="ltr" readonly value="${esc(u)}" id="lv47u"><button class="btn" data-act="lv47c">نسخ</button></div></div>
  <div class="field" style="margin-top:12px"><label for="lv47e">أرسله لموظف عبر واتساب</label><div style="display:flex;gap:8px"><select id="lv47e" class="inp">${E.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</select><button class="btn pri" data-act="lv47w">${ic('wa',15,'#fff')}واتساب</button></div></div>
  <p class="mini" style="margin:12px 2px 0">الموظف يعبّي الطلب من جواله بدون حساب، ويصل الطلب هنا تلقائياً في «طلبات الموظفين»</p>`
- :`<div class="em35">لم يتم ربط نموذج الطلب لهذه الشركة بعد</div>${S.me==='r'?`<div class="field" style="margin-top:12px"><label for="lv47s">رابط نموذج Microsoft Forms</label><input id="lv47s" class="inp" dir="ltr" placeholder="https://forms.office.com/r/…"></div>`:''}`}
+ :`<div class="em35">لم يتم ربط نموذج الطلب لهذه الشركة بعد</div>${S.me==='r'?`<div class="field" style="margin-top:12px"><label for="lv47s">رابط نموذج Microsoft Forms</label><input id="lv47s" class="inp" dir="ltr" placeholder="https://forms.cloud.microsoft/r/…"></div>`:''}`}
  </div><div class="mf">${!u&&S.me==='r'?`<button class="btn pri" data-act="lv47sv">احفظ الرابط</button>`:''}${u&&S.me==='r'?`<button class="btn" data-act="lv47x">تغيير الرابط</button>`:''}<button class="btn" data-act="closeov">إغلاق</button></div>`);ui.lv47msg=msg}
 
 /* ---------- بعد الاعتماد أو الرفض: رسالة واتساب جاهزة + نموذج PDF ---------- */
@@ -5934,7 +5934,7 @@ window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('
  if(k==='lv47cm'){copyText(ui.lv47m||'');return}
  if(k==='lv47w'){const id=+(document.getElementById('lv47e')||{}).value;const em=S.employees.find(q=>q.id===id);const raw=RAW.Employees.find(q=>q.id===id)||{};if(!em)return;window.open(waHref10(raw.Phone||em.phone,ui.lv47msg(em)),'_blank','noopener');return}
  if(k==='lv47sv'||k==='lv47x'){if(k==='lv47x'){const s=SET10.lvform44||{};const u=s[CUR44()];modal(`<div class="mh"><b>تغيير رابط النموذج</b></div><div class="mb"><input id="lv47s" class="inp" dir="ltr" value="${esc(u||'')}"></div><div class="mf"><button class="btn pri" data-act="lv47sv">احفظ</button><button class="btn" data-act="closeov">إلغاء</button></div>`);return}
-  const u=((document.getElementById('lv47s')||{}).value||'').trim();if(!/^https:\/\/(forms\.office\.com|forms\.microsoft\.com)\//.test(u)){toast('الصق رابط نموذج Microsoft Forms');return}const co=CUR44();
+  const u=((document.getElementById('lv47s')||{}).value||'').trim();if(!/^https:\/\/(forms\.office\.com|forms\.microsoft\.com|forms\.cloud\.microsoft)\//.test(u)){toast('الصق رابط نموذج Microsoft Forms');return}const co=CUR44();
   act(async()=>{await updSet10(s=>{s.lvform44=Object.assign({},s.lvform44||{},{[co]:u})});closeModal();setTimeout(lvLink47,50)},'تم حفظ الرابط ✓');return}
  if(k==='lv47p'){const l=S.leaves.find(q=>q.id==x);if(l){closeModal();printLeaveForm(l)}return}},true);
 
