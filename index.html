@@ -3590,7 +3590,7 @@ const _expiryV181=PAGES.expiry;PAGES.expiry=prm=>{let h=_expiryV181(prm);const L
  h=h.slice(0,i+7)+out+h.slice(j);h=h.replace('<th>الاسم / اللوحة</th>','<th>الاسم / اللوحة</th><th>الرقم</th>');const th=h.lastIndexOf('<tr>',h.indexOf('<th>النوع</th>'));return th>=0?h.slice(0,th+4)+'<th class="sq18">#</th>'+h.slice(th+4):h};
 
 /* v18.3 — إذا انرفعت نسخة جديدة، المنصة تنبهك وتحدّث نفسها بضغطة */
-const APPV18='20261128180035';
+const APPV18='20261128181050';
 async function chkV18(){try{const t=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(r=>r.text());const m=t.match(/const APPV18='(\d+)'/);if(m&&m[1]!==APPV18&&!document.getElementById('nv18')){
  const d=document.createElement('div');d.id='nv18';d.innerHTML=`${ic('hist',17)}<span>توجد نسخة جديدة من المنصة</span><button data-act="nv18">حدّث الآن</button>`;document.body.appendChild(d)}}catch(e){}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-act="nv18"]')){e.stopPropagation();location.replace(location.pathname+'?v='+Date.now()+location.hash)}},true);
@@ -6091,14 +6091,14 @@ function presDeco50(){const m=document.getElementById('main');if(!m)return;docum
 /* شبكة أمان: أي نص متبقٍ يذكر خالد أو عميلاً آخر يُخفى عنصره (القوائم، النوافذ، البحث) */
 function presScrub50(root){if(!presOn50()||PRESR50||!root)return;const P=PRESW50||presWords50();PRESW50=P;
  const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const hits=[];let n;while((n=tw.nextNode())){const v=n.nodeValue;if(!v||!v.trim())continue;if(presBad50(P,v))hits.push(n)}
- hits.forEach(t=>{const el=t.parentElement;if(!el||!el.isConnected||el.closest('.pres50bar,script,style'))return;let box=el.closest('option,li,tr,.chip,label,button,a,.mi,.it,.li,.pill,.co44r,.ag35,.nt');if(!box||(box.textContent||'').length>400)box=el;box.style.display='none';box.setAttribute('data-pres50','1')})}
+ hits.forEach(t=>{const el=t.parentElement;if(!el||!el.isConnected||el.closest('.pres50bar,.pres50t,script,style'))return;let box=el.closest('option,li,tr,.chip,label,button,a,.mi,.it,.li,.pill,.co44r,.ag35,.nt');if(!box||(box.textContent||'').length>400)box=el;box.style.display='none';box.setAttribute('data-pres50','1')})}
 {let pend=false;const mo=new MutationObserver(()=>{if(!presOn50()||PRESR50||pend)return;pend=true;requestAnimationFrame(()=>{pend=false;try{presScrub50(document.body)}catch(e){}})});
  const go=()=>{try{mo.observe(document.body,{childList:true,subtree:true})}catch(e){}};if(document.body)go();else document.addEventListener('DOMContentLoaded',go)}
 /* تشغيل وإيقاف من قائمة اختيار الشركة */
 function presSet50(on){try{localStorage.setItem('pres50',on?'1':'0')}catch(e){}PRESW50=null;if(typeof closeModal==='function')closeModal();if(on){view.route='dash';view.params={}}render();toast(on?'وضع العرض للإدارة يعمل · '+CUR44()+' فقط':'انتهى وضع العرض · رجعت كل البيانات')}
 {const o=coMenu44;coMenu44=function(){const r=o.apply(this,arguments);try{if(S.realMe!=='r'||S.me!=='r')return r;const mb=document.querySelector('.ov .mb');if(!mb)return r;const on=presOn50();
  if(on){mb.querySelectorAll('.co44r:not(.on)').forEach(b=>b.remove())}
- const w=document.createElement('div');w.className='pres50t';w.innerHTML=`<button type="button" class="pres50row ${on?'on':''}" data-act="pres50t">${ic('eye',17,'#6E5F45')}<span><b>وضع العرض للإدارة</b><small>يُظهر ${esc(CUR44())} فقط · يُخفي خالد والعملاء والشركات الأخرى · لا يغيّر أي بيانات</small></span><i class="sw50"></i></button>`;
+ const w=document.createElement('div');w.className='pres50t';w.innerHTML=`<button type="button" class="pres50row ${on?'on':''}" data-act="pres50t">${ic('eye',17,'#6E5F45')}<span><b>وضع العرض للإدارة</b><small>يُظهر ${esc(CUR44())} فقط لك ولشيخة · يُخفي بقية الفريق والعملاء والشركات الأخرى · لا يغيّر أي بيانات</small></span><i class="sw50"></i></button>`;
  const p=mb.querySelector('p.mini');if(p)mb.insertBefore(w,p);else mb.appendChild(w)}catch(e){console.warn(e)}return r}}
 window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-act="pres50t"],[data-act="pres50off"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
  if(b.dataset.act==='pres50off'){presSet50(false);return}presSet50(!presOn50())},true);
